@@ -1,0 +1,52 @@
+object frmLogin: TfrmLogin
+  Left = 426
+  Height = 240
+  Top = 268
+  Width = 320
+  Caption = 'FPC Paymo Widget - Login'
+  ClientHeight = 240
+  ClientWidth = 320
+  Position = poMainFormCenter
+  LCLVersion = '1.9.0.0'
+  object edtAPIKey: TLabeledEdit
+    Left = 8
+    Height = 23
+    Top = 112
+    Width = 304
+    EchoMode = emPassword
+    EditLabel.AnchorSideLeft.Control = edtAPIKey
+    EditLabel.AnchorSideRight.Control = edtAPIKey
+    EditLabel.AnchorSideRight.Side = asrBottom
+    EditLabel.AnchorSideBottom.Control = edtAPIKey
+    EditLabel.Left = 8
+    EditLabel.Height = 15
+    EditLabel.Top = 94
+    EditLabel.Width = 304
+    EditLabel.Caption = 'API Key'
+    EditLabel.ParentColor = False
+    PasswordChar = '*'
+    TabOrder = 0
+  end
+  object lblGenerateAPIKey: TLabel
+    Cursor = crHandPoint
+    Left = 8
+    Height = 15
+    Top = 64
+    Width = 137
+    Caption = 'Generate API Key to Login'
+    Font.Color = 16744448
+    Font.Style = [fsUnderline]
+    ParentColor = False
+    ParentFont = False
+    OnClick = lblGenerateAPIKeyClick
+  end
+  object btnLogin: TButton
+    Left = 237
+    Height = 25
+    Top = 152
+    Width = 75
+    Caption = 'Login'
+    OnClick = btnLoginClick
+    TabOrder = 1
+  end
+end
