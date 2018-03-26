@@ -1,23 +1,16 @@
 object frmMain: TfrmMain
   Left = 353
-  Height = 240
+  Height = 540
   Top = 128
-  Width = 320
+  Width = 360
   Caption = 'FPC Paymo Widget'
-  ClientHeight = 240
-  ClientWidth = 320
+  Color = clWhite
+  Constraints.MinHeight = 540
+  Constraints.MinWidth = 360
   OnCreate = FormCreate
   OnDestroy = FormDestroy
+  OnResize = FormResize
   OnShow = FormShow
   Position = poScreenCenter
   LCLVersion = '1.9.0.0'
-  object ListBox1: TListBox
-    Left = 0
-    Height = 240
-    Top = 0
-    Width = 320
-    Align = alClient
-    ItemHeight = 0
-    TabOrder = 0
-  end
 end

@@ -221,15 +221,12 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="2">
+    <RequiredPackages Count="1">
       <Item1>
-        <PackageName Value="laz_synapse"/>
-      </Item1>
-      <Item2>
         <PackageName Value="LCL"/>
-      </Item2>
+      </Item1>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="6">
       <Unit0>
         <Filename Value="paymowidget.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -252,6 +249,14 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="uresourcestring.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="utasklist.pas"/>
+        <IsPartOfProject Value="True"/>
+      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

@@ -33,6 +33,7 @@ type
   public
     function ProjectsArray: TJSONArray;
     function TasksArray: TJSONArray;
+    function GetProjectName(ProjectID: integer): string;
   public
     destructor Destroy; override;
     property APIKey: string read FAPIKey write SetFAPIKey;
@@ -88,6 +89,20 @@ begin
   FTasks.Find('tasks', Result);
 end;
 
+function TPaymo.GetProjectName(ProjectID: integer): string;
+var
+  i: integer;
+  arr: TJSONArray;
+begin
+  Result := '';
+  arr := ProjectsArray;
+  for i := 0 to arr.Count - 1 do
+  begin
+    if ProjectID = arr[i].GetPath('id').AsInteger then
+      exit(arr[i].GetPath('name').AsString);
+  end;
+end;
+
 destructor TPaymo.Destroy;
 begin
   if Assigned(FProjects) then
@@ -137,7 +152,7 @@ function TPaymo.GetTasks(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('tasks', response);
+  Result := Get('tasks?include=entries', response);
   case Result of
     prOK:
     begin

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  LCLIntF, upaymo;
+  LCLIntF, upaymo, uresourcestring;
 
 type
 
@@ -45,8 +45,8 @@ begin
   frmMain.Paymo.APIKey := edtAPIKey.Text;
   case frmMain.Paymo.Login of
     prOK: ModalResult := mrOK;
-    prTRYAGAIN: ShowMessage('Too many Requests. Try again soon.');
-    prERROR: ShowMessage('Can''t login.)');
+    prTRYAGAIN: ShowMessage(rsTooManyRequestsTryAgainSoon);
+    prERROR: ShowMessage(rsErrorCantLogin);
   end;
 end;
 

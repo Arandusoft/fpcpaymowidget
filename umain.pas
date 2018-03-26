@@ -5,25 +5,25 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  upaymo, fpjson;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
+  ExtCtrls, upaymo, fpjson, uresourcestring, Types, utasklist;
 
 type
 
   { TfrmMain }
 
   TfrmMain = class(TForm)
-    ListBox1: TListBox;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
-
+    Tasks: TTaskList;
   public
     Paymo: TPaymo;
     procedure Login;
-    procedure ListProjects(ListBox: TListBox);
-    procedure ListTasks(ListBox: TListBox);
+    procedure ListProjects();
+    procedure ListTasks();
   end;
 
 var
@@ -40,12 +40,18 @@ uses
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  DoubleBuffered := True;
   Paymo := TPaymo.Create;
   Paymo.LoadSettings;
   Login;
   if Paymo.LoggedIn then
   begin
     Paymo.GetTasks();
+    //ShowMessage(Paymo.TasksArray.FormatJSON());
+    Tasks := TTaskList.Create(Self);
+    Tasks.PaymoInstance := Paymo;
+    Tasks.Parent := Self;
+    Tasks.Align := alClient;
   end;
 end;
 
@@ -54,9 +60,14 @@ begin
   Paymo.Free;
 end;
 
+procedure TfrmMain.FormResize(Sender: TObject);
+begin
+
+end;
+
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
-  ListTasks(ListBox1);
+  ListTasks();
 end;
 
 procedure TfrmMain.Login;
@@ -83,11 +94,11 @@ begin
 
   case Paymo.Login of
     // api limit error
-    prTRYAGAIN: ShowMessage('Too many Requests. Try again soon.');
+    prTRYAGAIN: ShowMessage(rsTooManyRequestsTryAgainSoon);
     // login error
     prERROR:
     begin
-      ShowMessage('Error: Can''t login. Try generating a new API Key.');
+      ShowMessage(rsErrorCantLoginTryGeneratingANewAPIKey);
       try
         frmLogin := TfrmLogin.Create(nil);
         case frmLogin.ShowModal of
@@ -107,30 +118,14 @@ begin
   end;
 end;
 
-procedure TfrmMain.ListProjects(ListBox: TListBox);
-var
-  i: integer;
-  arr: TJSONArray;
+procedure TfrmMain.ListProjects();
 begin
-  ListBox.Clear;
-  arr := Paymo.ProjectsArray;
-  for i:=0 to arr.Count-1 do
-  begin
-    ListBox.AddItem(arr[i].GetPath('name').AsString, nil);
-  end;
+
 end;
 
-procedure TfrmMain.ListTasks(ListBox: TListBox);
-var
-  i: integer;
-  arr: TJSONArray;
+procedure TfrmMain.ListTasks();
 begin
-  ListBox.Clear;
-  arr := Paymo.TasksArray;
-  for i:=0 to arr.Count-1 do
-  begin
-    ListBox.AddItem(arr[i].GetPath('name').AsString, nil);
-  end;
+  Tasks.RefreshItems;
 end;
 
 end.
