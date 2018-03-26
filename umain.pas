@@ -22,7 +22,8 @@ type
   public
     Paymo: TPaymo;
     procedure Login;
-    procedure ListProjects;
+    procedure ListProjects(ListBox: TListBox);
+    procedure ListTasks(ListBox: TListBox);
   end;
 
 var
@@ -42,6 +43,10 @@ begin
   Paymo := TPaymo.Create;
   Paymo.LoadSettings;
   Login;
+  if Paymo.LoggedIn then
+  begin
+    Paymo.GetTasks();
+  end;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
@@ -51,7 +56,7 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
-  ListProjects;
+  ListTasks(ListBox1);
 end;
 
 procedure TfrmMain.Login;
@@ -102,15 +107,29 @@ begin
   end;
 end;
 
-procedure TfrmMain.ListProjects;
+procedure TfrmMain.ListProjects(ListBox: TListBox);
 var
   i: integer;
   arr: TJSONArray;
 begin
+  ListBox.Clear;
   arr := Paymo.ProjectsArray;
   for i:=0 to arr.Count-1 do
   begin
-    ListBox1.AddItem(arr[i].GetPath('name').AsString, nil);
+    ListBox.AddItem(arr[i].GetPath('name').AsString, nil);
+  end;
+end;
+
+procedure TfrmMain.ListTasks(ListBox: TListBox);
+var
+  i: integer;
+  arr: TJSONArray;
+begin
+  ListBox.Clear;
+  arr := Paymo.TasksArray;
+  for i:=0 to arr.Count-1 do
+  begin
+    ListBox.AddItem(arr[i].GetPath('name').AsString, nil);
   end;
 end;
 
