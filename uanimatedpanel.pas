@@ -14,7 +14,7 @@ type
   TAnimatedPanel = class(TPanel)
   private
     FShow: boolean;
-    FWidth, FHeight: integer;
+    FWidth, FHeight, FStep: integer;
     FTimer: TTimer;
     procedure OnStartTimer(Sender: TObject);
     procedure OnStopTimer(Sender: TObject);
@@ -50,7 +50,7 @@ var
 begin
   if FShow then
   begin
-    temp := Height + 5;
+    temp := Height + FStep;
     if temp <= FHeight then
       Height := temp
     else
@@ -61,7 +61,7 @@ begin
   end
   else
   begin
-    temp := Height - 5;
+    temp := Height - FStep;
     if temp > 0 then
       Height := temp
     else
@@ -76,6 +76,7 @@ procedure TAnimatedPanel.OnStartTimer(Sender: TObject);
 begin
   CalculatePreferredSize(FWidth, FHeight, False);
   FShow := FHeight <> Height;
+  FStep := FHeight div 10;
 end;
 
 procedure TAnimatedPanel.OnStopTimer(Sender: TObject);

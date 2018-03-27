@@ -114,6 +114,11 @@ begin
 
   for i := 0 to arr.Count - 1 do
   begin
+    // time entries
+    arrEntries := TJSONArray(arr[i].GetPath('entries'));
+    // hide "empty time" entries
+    if (arrEntries.Count = 0) then
+      Continue;
     // container
     p := TPanel.Create(Self);
     p.BevelOuter := bvNone;
@@ -198,7 +203,6 @@ begin
     e.ChildSizing.TopBottomSpacing := 10;
     e.Parent := p;
     // time entries
-    arrEntries := TJSONArray(arr[i].GetPath('entries'));
     sum := 0;
     for j := 0 to arrEntries.Count - 1 do
     begin

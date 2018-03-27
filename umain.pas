@@ -49,6 +49,9 @@ begin
     Paymo.GetMe();
     //ShowMessage(Paymo.MyData.FormatJSON());
     Paymo.GetTasks();
+    Paymo.GetTaskLists();
+    //Paymo.CreateTask('"Hola" Mundo', 'From @FPC', Paymo.TaskListsArray[0].GetPath('id').AsInteger);
+    //ShowMessage(Paymo.MyData[0].FindPath('id').AsString);
     //ShowMessage(Paymo.TasksArray.FormatJSON());
     Tasks := TTaskList.Create(Self);
     Tasks.PaymoInstance := Paymo;
