@@ -206,6 +206,9 @@ begin
     sum := 0;
     for j := 0 to arrEntries.Count - 1 do
     begin
+      // hide time entries of other users
+      if arrEntries[j].GetPath('user_id').AsInteger <> PaymoInstance.MyData[0].GetPath('id').AsInteger then
+        Continue;
       // start - end time label
       l := TLabel.Create(e);
       l.Cursor := crHandPoint;

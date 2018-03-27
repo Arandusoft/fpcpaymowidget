@@ -192,7 +192,6 @@ function TPaymo.GetTasks(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  //Result := Get('tasks?where=users=' + MyData[0].GetPath('id').AsString + '&include=entries', response);
   Result := Get('tasks?where=mytasks=true&include=entries', response);
   case Result of
     prOK:
