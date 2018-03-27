@@ -152,7 +152,7 @@ function TPaymo.GetTasks(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('tasks?include=entries', response);
+  Result := Get('tasks?where=mytasks=true&include=entries', response);
   case Result of
     prOK:
     begin
