@@ -16,12 +16,15 @@ type
   private
     FItems: TJSONArray;
     FPaymo: TPaymo;
+    procedure OnMouseEnterTimeLabel(Sender: TObject);
+    procedure OnMouseLeaveTimeLabel(Sender: TObject);
     procedure SetFItems(AValue: TJSONArray);
     procedure SetFPaymo(AValue: TPaymo);
   protected
     function SecondsToString(Seconds: integer): string;
+    function StringToDateTime(DateTime: string): TDateTime;
     procedure OnClickItem(Sender: TObject);
-    procedure OnClickItemTime(Sender: TObject);
+    procedure OnClickItemParent(Sender: TObject);
   public
     constructor Create(AOwner: TComponent); override;
   public
@@ -41,12 +44,19 @@ begin
   RefreshItems;
 end;
 
-procedure TTaskList.OnClickItemTime(Sender: TObject);
-var
-  p: TControl;
+procedure TTaskList.OnMouseEnterTimeLabel(Sender: TObject);
 begin
-  p := TControl(TControl(Sender).Parent.Parent.FindComponent('entries'));
-  p.Visible := not p.Visible;
+  TLabel(Sender).Font.Color := RGBToColor(57, 202, 84);
+end;
+
+procedure TTaskList.OnMouseLeaveTimeLabel(Sender: TObject);
+begin
+  TLabel(Sender).Font.Color := clGray;
+end;
+
+procedure TTaskList.OnClickItemParent(Sender: TObject);
+begin
+  OnClickItem(TControl(Sender).Parent);
 end;
 
 procedure TTaskList.SetFPaymo(AValue: TPaymo);
@@ -69,12 +79,23 @@ begin
     Result := t + ':' + t2;
 end;
 
+function TTaskList.StringToDateTime(DateTime: string): TDateTime;
+begin
+ Result := ScanDateTime('yyyy-mm-dd"T"hh:nn:ss', Copy(DateTime, 1, 19));
+ Result := UniversalTimeToLocal(Result);
+end;
+
 procedure TTaskList.OnClickItem(Sender: TObject);
 var
   p: TControl;
 begin
   p := TControl(TControl(Sender).Parent.FindComponent('entries'));
   p.Visible := not p.Visible;
+  p := TControl(TControl(Sender).Parent.FindComponent('arrow_container').FindComponent('arrow'));
+  if p.Caption = '˅' then
+    p.Caption := '˄'
+  else
+    p.Caption := '˅';
 end;
 
 procedure TTaskList.RefreshItems;
@@ -101,15 +122,35 @@ begin
     p.Align := alTop;
     p.AutoSize := True;
     p.Parent := Self;
+    // title and arrow container
+    pc := TPanel.Create(p);
+    pc.BevelOuter := bvNone;
+    pc.Align := alTop;
+    pc.AutoSize := True;
+    pc.Name := 'arrow_container';
+    pc.Caption := '';
+    pc.Parent := p;
     // title
-    l := TLabel.Create(p);
+    l := TLabel.Create(pc);
     l.Cursor := crHandPoint;
     l.Font.Color := clGray;
     l.Font.Size := -12;
-    l.Align := alTop;
+    l.Align := alLeft;
     l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger);
-    l.OnClick := @OnClickItem;
-    l.Parent := p;
+    l.OnClick := @OnClickItemParent;
+    l.Parent := pc;
+    // arrow
+    l := TLabel.Create(pc);
+    l.Cursor := crHandPoint;
+    l.Font.Color := clGray;
+    l.Font.Size := -12;
+    l.Font.Name := 'Courier New';
+    l.Align := alRight;
+    l.Alignment := taRightJustify;
+    l.Name := 'arrow';
+    l.Caption := '˅';
+    l.OnClick := @OnClickItemParent;
+    l.Parent := pc;
     // name
     l := TLabel.Create(p);
     l.Cursor := crHandPoint;
@@ -135,7 +176,7 @@ begin
     lt.Font.Size := -12;
     lt.Alignment := taRightJustify;
     lt.Align := alBottom;
-    lt.OnClick:=@OnClickItemTime;
+    lt.OnClick:=@OnClickItemParent;
     lt.Parent := pc;
     // time entries container
     e := TPanel.Create(p);
@@ -145,21 +186,38 @@ begin
     e.Visible := False;
     e.Name := 'entries';
     e.Caption := '';
+    e.ChildSizing.ControlsPerLine := 2;
+    e.ChildSizing.Layout := cclLeftToRightThenTopToBottom;
+    e.ChildSizing.EnlargeHorizontal := crsScaleChilds;
+    e.ChildSizing.VerticalSpacing := 20;
+    e.ChildSizing.TopBottomSpacing := 10;
     e.Parent := p;
     // time entries
     arrEntries := TJSONArray(arr[i].GetPath('entries'));
     sum := 0;
     for j := 0 to arrEntries.Count - 1 do
     begin
+      // start - end time label
+      l := TLabel.Create(e);
+      l.Cursor := crHandPoint;
+      l.Font.Color := clGray;
+      l.Font.Size := -12;
+      l.Alignment := taLeftJustify;
+      l.Caption := FormatDateTime('t', StringToDateTime(arrEntries[j].GetPath('start_time').AsString)) + ' ‒ ' + FormatDateTime('t', StringToDateTime(arrEntries[j].GetPath('end_time').AsString));;
+      l.OnMouseEnter:=@OnMouseEnterTimeLabel;
+      l.OnMouseLeave:=@OnMouseLeaveTimeLabel;
+      l.Parent := e;
+      // entry time label
       l := TLabel.Create(e);
       l.Font.Color := clGray;
       l.Font.Size := -12;
       l.Alignment := taRightJustify;
       l.Caption := SecondsToString(arrEntries[j].GetPath('duration').AsInteger);
-      l.Align := alTop;
       l.Parent := e;
+      // sum of all time entries
       sum := sum + arrEntries[j].GetPath('duration').AsInteger;
     end;
+    // sum of all time entries
     lt.Caption := SecondsToString(sum);
   end;
 end;
