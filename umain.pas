@@ -46,6 +46,8 @@ begin
   Login;
   if Paymo.LoggedIn then
   begin
+    Paymo.GetMe();
+    //ShowMessage(Paymo.MyData.FormatJSON());
     Paymo.GetTasks();
     //ShowMessage(Paymo.TasksArray.FormatJSON());
     Tasks := TTaskList.Create(Self);
