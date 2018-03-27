@@ -16,6 +16,7 @@ type
   private
     FItems: TJSONArray;
     FPaymo: TPaymo;
+
     procedure OnMouseEnterTimeLabel(Sender: TObject);
     procedure OnMouseLeaveTimeLabel(Sender: TObject);
     procedure SetFItems(AValue: TJSONArray);
@@ -23,8 +24,11 @@ type
   protected
     function SecondsToString(Seconds: integer): string;
     function StringToDateTime(DateTime: string): TDateTime;
+    function IsSameDate(Date1, Date2: TDateTime): boolean;
     procedure OnClickItem(Sender: TObject);
     procedure OnClickItemParent(Sender: TObject);
+    procedure DayClick(Sender: TObject);
+    procedure DayClickParent(Sender: TObject);
   public
     constructor Create(AOwner: TComponent); override;
   public
@@ -47,6 +51,14 @@ end;
 procedure TTaskList.OnMouseEnterTimeLabel(Sender: TObject);
 begin
   TLabel(Sender).Font.Color := RGBToColor(57, 202, 84);
+end;
+
+procedure TTaskList.DayClickParent(Sender: TObject);
+var
+  p: TAnimatedPanel;
+begin
+  p := TAnimatedPanel(TControl(Sender).Parent.Parent);
+  p.Animate();
 end;
 
 procedure TTaskList.OnMouseLeaveTimeLabel(Sender: TObject);
@@ -81,8 +93,17 @@ end;
 
 function TTaskList.StringToDateTime(DateTime: string): TDateTime;
 begin
- Result := ScanDateTime('yyyy-mm-dd"T"hh:nn:ss', Copy(DateTime, 1, 19));
- Result := UniversalTimeToLocal(Result);
+  Result := ScanDateTime('yyyy-mm-dd"T"hh:nn:ss', Copy(DateTime, 1, 19));
+  Result := UniversalTimeToLocal(Result);
+end;
+
+function TTaskList.IsSameDate(Date1, Date2: TDateTime): boolean;
+var
+  y1, m1, d1, y2, m2, d2: word;
+begin
+  DecodeDate(Date1, y1, m1, d1);
+  DecodeDate(Date2, y2, m2, d2);
+  Result := (y1 = y2) and (m1 = m2) and (d1 = d2);
 end;
 
 procedure TTaskList.OnClickItem(Sender: TObject);
@@ -93,7 +114,8 @@ begin
   p := TAnimatedPanel(TControl(Sender).Parent.FindComponent('entries'));
   p.Animate();
 
-  c := TControl(TControl(Sender).Parent.FindComponent('arrow_container').FindComponent('arrow'));
+  c := TControl(TControl(Sender).Parent.FindComponent(
+    'arrow_container').FindComponent('arrow'));
   if c.Caption = '˅' then
     c.Caption := '˄'
   else
@@ -103,32 +125,59 @@ end;
 procedure TTaskList.RefreshItems;
 var
   i, j, sum: integer;
-  p, pc, e: TPanel;
+  d, p, pc, e: TPanel;
   l, lt: TLabel;
-  arr, arrEntries: TJSONArray;
+  arr, arrEntries, arrFilteredEntries: TJSONArray;
 begin
   for i := Self.ControlCount - 1 downto 0 do
     Self.Controls[i].Free;
 
   arr := PaymoInstance.TasksArray;
 
+  // day panel
+  d := TAnimatedPanel.Create(Self);
+  d.BevelOuter := bvNone;
+  d.Align := alTop;
+  d.BorderSpacing.Top := 20;
+  d.AutoSize := True;
+  //d.OnClick := @DayClick;
+  d.Parent := Self;
+
   for i := 0 to arr.Count - 1 do
   begin
-    // time entries
+    // all time entries
     arrEntries := TJSONArray(arr[i].GetPath('entries'));
+    // filtered time entries
+    arrFilteredEntries := TJSONArray.Create;
+    for j := 0 to arrEntries.Count - 1 do
+    begin
+      // hide time entries of other users
+      if arrEntries[j].GetPath('user_id').AsInteger <>
+        PaymoInstance.MyData[0].GetPath('id').AsInteger then
+        Continue;
+      // show only items that match time
+      if not IsSameDate(StringToDateTime(arrEntries[j].GetPath('start_time').AsString),
+        now) then
+        Continue;
+      // add entries to filtered list
+      arrFilteredEntries.Add(arrEntries[j].Clone);
+    end;
     // hide "empty time" entries
-    if (arrEntries.Count = 0) then
+    if (arrFilteredEntries.Count = 0) then
+    begin
+      arrFilteredEntries.Clear;
+      arrFilteredEntries.Free;
       Continue;
+    end;
     // container
-    p := TPanel.Create(Self);
+    p := TPanel.Create(d);
     p.BevelOuter := bvNone;
     p.BorderSpacing.Left := 40;
-    p.BorderSpacing.Top := 20;
     p.BorderSpacing.Right := 40;
     p.BorderSpacing.Bottom := 20;
     p.Align := alTop;
     p.AutoSize := True;
-    p.Parent := Self;
+    p.Parent := d;
     // title and arrow container
     pc := TPanel.Create(p);
     pc.Cursor := crHandPoint;
@@ -187,7 +236,7 @@ begin
     lt.Font.Size := -12;
     lt.Alignment := taRightJustify;
     lt.Align := alBottom;
-    lt.OnClick:=@OnClickItemParent;
+    lt.OnClick := @OnClickItemParent;
     lt.Parent := pc;
     // time entries container
     e := TAnimatedPanel.Create(p);
@@ -204,20 +253,20 @@ begin
     e.Parent := p;
     // time entries
     sum := 0;
-    for j := 0 to arrEntries.Count - 1 do
+    for j := 0 to arrFilteredEntries.Count - 1 do
     begin
-      // hide time entries of other users
-      if arrEntries[j].GetPath('user_id').AsInteger <> PaymoInstance.MyData[0].GetPath('id').AsInteger then
-        Continue;
       // start - end time label
       l := TLabel.Create(e);
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
       l.Font.Size := -12;
       l.Alignment := taLeftJustify;
-      l.Caption := FormatDateTime('t', StringToDateTime(arrEntries[j].GetPath('start_time').AsString)) + ' ‒ ' + FormatDateTime('t', StringToDateTime(arrEntries[j].GetPath('end_time').AsString));;
-      l.OnMouseEnter:=@OnMouseEnterTimeLabel;
-      l.OnMouseLeave:=@OnMouseLeaveTimeLabel;
+      l.Caption := FormatDateTime('t', StringToDateTime(
+        arrFilteredEntries[j].GetPath('start_time').AsString)) +
+        ' ‒ ' + FormatDateTime('t', StringToDateTime(arrFilteredEntries[j].GetPath(
+        'end_time').AsString));
+      l.OnMouseEnter := @OnMouseEnterTimeLabel;
+      l.OnMouseLeave := @OnMouseLeaveTimeLabel;
       l.Parent := e;
       // entry time label
       l := TLabel.Create(e);
@@ -231,7 +280,25 @@ begin
     end;
     // sum of all time entries
     lt.Caption := SecondsToString(sum);
+    // free filtered entries
+    arrFilteredEntries.Clear;
+    arrFilteredEntries.Free;
   end;
+
+  // day label
+  l := TLabel.Create(p);
+  l.Cursor := crHandPoint;
+  l.Caption := 'TODAY';
+  l.OnClick := @DayClickParent;
+  l.Font.Color := RGBToColor(255, 152, 0);
+  l.Font.Height := -12;
+  l.Font.Style := [fsBold];
+  l.Align := alTop;
+  l.Parent := p;
+  l.BorderSpacing.Top := 10;
+  l.BorderSpacing.Bottom := 10;
+  // min height of container (label height + border spacing)
+  d.Constraints.MinHeight := l.Height + 20;
 end;
 
 constructor TTaskList.Create(AOwner: TComponent);
@@ -241,6 +308,14 @@ begin
   Self.HorzScrollBar.Visible := False;
   Self.VertScrollBar.Smooth := True;
   Self.VertScrollBar.Tracking := True;
+end;
+
+procedure TTaskList.DayClick(Sender: TObject);
+var
+  p: TAnimatedPanel;
+begin
+  p := TAnimatedPanel(TControl(Sender));
+  p.Animate();
 end;
 
 end.

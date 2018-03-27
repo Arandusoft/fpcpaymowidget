@@ -62,11 +62,11 @@ begin
   else
   begin
     temp := Height - FStep;
-    if temp > 0 then
+    if temp > Constraints.MinHeight then
       Height := temp
     else
     begin
-      Height := 0;
+      Height := Constraints.MinHeight;
       Timer.Enabled := False;
     end;
   end;
@@ -77,11 +77,13 @@ begin
   CalculatePreferredSize(FWidth, FHeight, False);
   FShow := FHeight <> Height;
   FStep := FHeight div 10;
+  AutoSize := False;
 end;
 
 procedure TAnimatedPanel.OnStopTimer(Sender: TObject);
 begin
-
+  if FShow then
+    AutoSize := True;
 end;
 
 constructor TAnimatedPanel.Create(AOwner: TComponent);
