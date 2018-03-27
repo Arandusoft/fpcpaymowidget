@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, ExtCtrls, fpjson, StdCtrls, Graphics, Forms,
-  upaymo, Dialogs, DateUtils;
+  upaymo, Dialogs, DateUtils, uanimatedpanel;
 
 type
 
@@ -87,15 +87,17 @@ end;
 
 procedure TTaskList.OnClickItem(Sender: TObject);
 var
-  p: TControl;
+  p: TAnimatedPanel;
+  c: TControl;
 begin
-  p := TControl(TControl(Sender).Parent.FindComponent('entries'));
-  p.Visible := not p.Visible;
-  p := TControl(TControl(Sender).Parent.FindComponent('arrow_container').FindComponent('arrow'));
-  if p.Caption = '˅' then
-    p.Caption := '˄'
+  p := TAnimatedPanel(TControl(Sender).Parent.FindComponent('entries'));
+  p.Animate();
+
+  c := TControl(TControl(Sender).Parent.FindComponent('arrow_container').FindComponent('arrow'));
+  if c.Caption = '˅' then
+    c.Caption := '˄'
   else
-    p.Caption := '˅';
+    c.Caption := '˅';
 end;
 
 procedure TTaskList.RefreshItems;
@@ -124,11 +126,13 @@ begin
     p.Parent := Self;
     // title and arrow container
     pc := TPanel.Create(p);
+    pc.Cursor := crHandPoint;
     pc.BevelOuter := bvNone;
     pc.Align := alTop;
     pc.AutoSize := True;
     pc.Name := 'arrow_container';
     pc.Caption := '';
+    pc.OnClick := @OnClickItem;
     pc.Parent := p;
     // title
     l := TLabel.Create(pc);
@@ -165,9 +169,11 @@ begin
     l.Parent := p;
     // sum of time entries container
     pc := TPanel.Create(p);
+    pc.Cursor := crHandPoint;
     pc.BevelOuter := bvNone;
     pc.Align := alRight;
     pc.AutoSize := True;
+    pc.OnClick := @OnClickItem;
     pc.Parent := p;
     // sum of time entries
     lt := TLabel.Create(pc);
@@ -179,11 +185,10 @@ begin
     lt.OnClick:=@OnClickItemParent;
     lt.Parent := pc;
     // time entries container
-    e := TPanel.Create(p);
+    e := TAnimatedPanel.Create(p);
     e.BevelOuter := bvNone;
     e.Align := alBottom;
-    e.AutoSize := True;
-    e.Visible := False;
+    e.Height := 0;
     e.Name := 'entries';
     e.Caption := '';
     e.ChildSizing.ControlsPerLine := 2;
