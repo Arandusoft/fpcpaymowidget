@@ -8,6 +8,12 @@ uses
   Classes, SysUtils, Controls, ExtCtrls, fpjson, StdCtrls, Graphics, Forms,
   upaymo, Dialogs, DateUtils, uanimatedpanel, LazUTF8, Math, uresourcestring;
 
+const
+  FONTNAME = 'Nunito Sans';
+  FONTNAMELIGHT = 'Nunito Sans ExtraLight';
+  FONTNAMEBOLD = 'Nunito Sans ExtraBold';
+  FONTNAMEARROW = 'Courier New';
+
 type
 
   { TTaskList }
@@ -193,6 +199,7 @@ begin
 
     // day panel
     d := TAnimatedPanel.Create(Self);
+    d.Font.Name := FONTNAME;
     d.BevelOuter := bvNone;
     d.Align := alTop;
     d.BorderSpacing.Top := 20;
@@ -228,6 +235,7 @@ begin
       end;
       // task container
       p := TPanel.Create(d);
+      p.Font.Name := FONTNAME;
       p.BevelOuter := bvNone;
       p.BorderSpacing.Left := 30;
       p.BorderSpacing.Right := 30;
@@ -237,6 +245,7 @@ begin
       p.Parent := d;
       // title and arrow container
       pc := TPanel.Create(p);
+      pc.Font.Name := FONTNAME;
       pc.Cursor := crHandPoint;
       pc.BevelOuter := bvNone;
       pc.Align := alTop;
@@ -247,6 +256,7 @@ begin
       pc.Parent := p;
       // project title
       l := TLabel.Create(pc);
+      l.Font.Name := FONTNAME;
       l.BorderSpacing.Left := 30;
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
@@ -257,10 +267,10 @@ begin
       l.Parent := pc;
       // task right arrow
       l := TLabel.Create(pc);
+      l.Font.Name := FONTNAMEARROW;
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
       l.Font.Size := -12;
-      l.Font.Name := 'Courier New';
       l.Align := alRight;
       l.Alignment := taRightJustify;
       l.Name := 'arrow';
@@ -269,6 +279,7 @@ begin
       l.Parent := pc;
       // play button
       play := TPanel.Create(p);
+      play.Font.Name := FONTNAME;
       play.BevelOuter := bvNone;
       play.Font.Color := RGBToColor(221, 221, 221);
       play.Align := alLeft;
@@ -293,6 +304,7 @@ begin
       play.Parent := p;
       // task name
       l := TLabel.Create(p);
+      l.Font.Name := FONTNAME;
       l.Cursor := crHandPoint;
       l.Font.Color := clBlack;
       l.Font.Size := -14;
@@ -305,6 +317,7 @@ begin
       l.Parent := p;
       // sum of time entries container
       pc := TPanel.Create(p);
+      pc.Font.Name := FONTNAME;
       pc.Cursor := crHandPoint;
       pc.BevelOuter := bvNone;
       pc.Align := alRight;
@@ -313,6 +326,7 @@ begin
       pc.Parent := p;
       // sum of time entries
       lt := TLabel.Create(pc);
+      lt.Font.Name := FONTNAME;
       lt.Cursor := crHandPoint;
       lt.Font.Color := clGray;
       lt.Font.Size := -12;
@@ -322,6 +336,7 @@ begin
       lt.Parent := pc;
       // time entries container
       e := TAnimatedPanel.Create(p);
+      e.Font.Name := FONTNAME;
       e.BorderSpacing.Left := 30;
       e.BevelOuter := bvNone;
       e.Align := alBottom;
@@ -340,6 +355,7 @@ begin
       begin
         // start - end time label
         l := TLabel.Create(e);
+        l.Font.Name := FONTNAME;
         l.Cursor := crHandPoint;
         l.Font.Color := clGray;
         l.Font.Size := -12;
@@ -353,6 +369,7 @@ begin
         l.Parent := e;
         // entry time label
         l := TLabel.Create(e);
+        l.Font.Name := FONTNAME;
         l.Font.Color := clGray;
         l.Font.Size := -12;
         l.Alignment := taRightJustify;
@@ -374,6 +391,7 @@ begin
 
     // day and date container
     pc := TPanel.Create(p);
+    pc.Font.Name := FONTNAME;
     pc.BevelOuter := bvNone;
     pc.Align := alTop;
     pc.AutoSize := True;
@@ -383,10 +401,10 @@ begin
     pc.Parent := p;
     // day label
     l := TLabel.Create(pc);
+    l.Font.Name := FONTNAMEBOLD;
     l.Cursor := crHandPoint;
     l.OnClick := @DayClickParent;
     l.Font.Height := -12;
-    l.Font.Style := [fsBold];
     l.BorderSpacing.Top := 10;
     l.BorderSpacing.Bottom := 10;
     l.Parent := pc;
@@ -406,6 +424,7 @@ begin
       l.Font.Color := RGBToColor(99, 213, 120);
       // show date
       lt := TLabel.Create(pc);
+      lt.Font.Name := FONTNAME;
       lt.Cursor := crHandPoint;
       lt.OnClick := @DayClickParent;
       lt.Font.Height := -12;
@@ -417,23 +436,25 @@ begin
     d.Constraints.MinHeight := l.Height + 20;
     // arrow
     l := TLabel.Create(pc);
+    l.Font.Name := FONTNAMEARROW;
     l.Cursor := crHandPoint;
     l.Font.Color := clGray;
     l.Font.Size := -12;
-    l.Font.Name := 'Courier New';
     l.Name := 'arrow';
     l.Caption := '˄';
     l.OnClick := @DayClickParent;
     l.Parent := pc;
     // total time container
     p := TPanel.Create(pc);
+    p.Font.Name := FONTNAME;
     p.BevelOuter := bvNone;
     p.Align := alRight;
     p.AutoSize := True;
     p.Parent := pc;
     // total time of day
     lt := TLabel.Create(p);
-    lt.Font.Height := -24;
+    lt.Font.Name := FONTNAMELIGHT;
+    lt.Font.Height := -23;
     lt.Align := alTop;
     lt.Font.Color := clBlack;
     lt.Caption := SecondsToString(sumDay);
