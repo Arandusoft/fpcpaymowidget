@@ -14,6 +14,12 @@ type
   { TfrmMain }
 
   TfrmMain = class(TForm)
+    ilTrayAnimWin: TImageList;
+    ilTrayAnimMac: TImageList;
+    ilTrayOfflineMac: TImageList;
+    ilTrayNormalWin: TImageList;
+    ilTrayNormalMac: TImageList;
+    ilTrayOfflineWin: TImageList;
     miShow: TMenuItem;
     miAbout: TMenuItem;
     miQuit: TMenuItem;
@@ -94,6 +100,14 @@ end;
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
   tiTray.Show;
+  {$IFDEF WINDOWS}
+  tiTray.Icons := ilTrayNormalWin;
+  tiTray.Animate := True;
+  {$ENDIF}
+  {$IFDEF DARWIN}
+  tiTray.Icons := ilTrayNormalMac;
+  tiTray.Animate := True;
+  {$ENDIF}
   ListTasks();
 end;
 

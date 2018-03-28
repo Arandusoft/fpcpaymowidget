@@ -15,6 +15,7 @@
         <TextName Value="Arandusoft.FPCPaymoWidget.FPCPaymoWidget"/>
         <TextDesc Value="FPC Paymo Widget"/>
       </XPManifest>
+      <Icon Value="0"/>
     </General>
     <i18n>
       <EnableI18N Value="True"/>
