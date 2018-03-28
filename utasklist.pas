@@ -56,9 +56,16 @@ end;
 procedure TTaskList.DayClickParent(Sender: TObject);
 var
   p: TAnimatedPanel;
+  c: TControl;
 begin
-  p := TAnimatedPanel(TControl(Sender).Parent.Parent);
+  p := TAnimatedPanel(TControl(Sender).Parent.Parent.Parent);
   p.Animate();
+
+  c := TControl(TControl(Sender).Parent.FindComponent('arrow'));
+  if c.Caption = '˅' then
+    c.Caption := '˄'
+  else
+    c.Caption := '˅';
 end;
 
 procedure TTaskList.OnMouseLeaveTimeLabel(Sender: TObject);
@@ -312,10 +319,24 @@ begin
       arrFilteredEntries.Free;
     end;
 
+    // day and date container
+    pc := TPanel.Create(p);
+    pc.BevelOuter := bvNone;
+    pc.Align := alTop;
+    pc.AutoSize := True;
+    pc.ChildSizing.ControlsPerLine := 3;
+    pc.ChildSizing.Layout := cclLeftToRightThenTopToBottom;
+    pc.ChildSizing.HorizontalSpacing := 5;
+    pc.Parent := p;
     // day label
-    l := TLabel.Create(p);
+    l := TLabel.Create(pc);
     l.Cursor := crHandPoint;
     l.OnClick := @DayClickParent;
+    l.Font.Height := -12;
+    l.Font.Style := [fsBold];
+    l.BorderSpacing.Top := 10;
+    l.BorderSpacing.Bottom := 10;
+    l.Parent := pc;
     if (IsSameDate(t, now)) then
     begin
       l.Caption := 'TODAY';
@@ -330,15 +351,27 @@ begin
     begin
       l.Caption := UTF8UpperCase(LongDayNames[dayofweek(t)]);
       l.Font.Color := RGBToColor(99, 213, 120);
+      // show date
+      lt := TLabel.Create(pc);
+      lt.Cursor := crHandPoint;
+      lt.OnClick := @DayClickParent;
+      lt.Font.Height := -12;
+      lt.Font.Color := clGray;
+      lt.Caption := UTF8UpperCase(FormatDateTime('ddddd', t));
+      lt.Parent := pc;
     end;
-    l.Font.Height := -12;
-    l.Font.Style := [fsBold];
-    l.Align := alTop;
-    l.Parent := p;
-    l.BorderSpacing.Top := 10;
-    l.BorderSpacing.Bottom := 10;
     // min height of container (label height + border spacing)
     d.Constraints.MinHeight := l.Height + 20;
+    // arrow
+    l := TLabel.Create(pc);
+    l.Cursor := crHandPoint;
+    l.Font.Color := clGray;
+    l.Font.Size := -12;
+    l.Font.Name := 'Courier New';
+    l.Name := 'arrow';
+    l.Caption := '˄';
+    l.OnClick := @DayClickParent;
+    l.Parent := pc;
   end;
   sl.Free;
 end;
