@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, ExtCtrls, fpjson, StdCtrls, Graphics, Forms,
-  upaymo, Dialogs, DateUtils, uanimatedpanel, LazUTF8;
+  upaymo, Dialogs, DateUtils, uanimatedpanel, LazUTF8, Math;
 
 type
 
@@ -80,15 +80,11 @@ end;
 
 function TTaskList.SecondsToString(Seconds: integer): string;
 var
-  t, t2: string;
+  hh, mins, ss: DWord;
 begin
-  t := trunc(Seconds / 3600).ToString();
-  t2 := trunc(Frac(Seconds / 3600) * 60).ToString();
-
-  if t2.Length = 1 then
-    Result := t + ':0' + t2
-  else
-    Result := t + ':' + t2;
+  DivMod(Seconds, SecsPerMin, mins, ss);
+  DivMod(mins, MinsPerHour, hh, mins);
+  Result := Format('%.2d:%.2d', [hh, mins]);
 end;
 
 function TTaskList.StringToDateTime(DateTime: string): TDateTime;
@@ -124,7 +120,7 @@ end;
 
 procedure TTaskList.RefreshItems;
 var
-  i, j, k, sum: integer;
+  i, j, k, sum, sec: integer;
   d, p, pc, e: TPanel;
   l, lt: TLabel;
   arr, arrEntries, arrFilteredEntries: TJSONArray;
@@ -291,8 +287,8 @@ begin
         l.Alignment := taLeftJustify;
         l.Caption := FormatDateTime('t', StringToDateTime(
           arrFilteredEntries[j].GetPath('start_time').AsString)) +
-          ' ‒ ' + FormatDateTime('t',
-          StringToDateTime(arrFilteredEntries[j].GetPath('end_time').AsString));
+          ' ‒ ' + FormatDateTime('t', StringToDateTime(
+          arrFilteredEntries[j].GetPath('end_time').AsString));
         l.OnMouseEnter := @OnMouseEnterTimeLabel;
         l.OnMouseLeave := @OnMouseLeaveTimeLabel;
         l.Parent := e;
@@ -301,10 +297,13 @@ begin
         l.Font.Color := clGray;
         l.Font.Size := -12;
         l.Alignment := taRightJustify;
-        l.Caption := SecondsToString(arrEntries[j].GetPath('duration').AsInteger);
+        sec := SecondsBetween(StringToDateTime(
+          arrFilteredEntries[j].GetPath('start_time').AsString),
+          StringToDateTime(arrFilteredEntries[j].GetPath('end_time').AsString));
+        l.Caption := SecondsToString(sec);
         l.Parent := e;
         // sum of all time entries
-        sum := sum + arrEntries[j].GetPath('duration').AsInteger;
+        sum := sum + sec;
       end;
       // sum of all time entries
       lt.Caption := SecondsToString(sum);
@@ -320,7 +319,7 @@ begin
     if (IsSameDate(t, now)) then
     begin
       l.Caption := 'TODAY';
-      l.Font.Color := RGBToColor(255, 152, 0)
+      l.Font.Color := RGBToColor(255, 152, 0);
     end
     else if (IsSameDate(t, yesterday)) then
     begin
