@@ -127,7 +127,7 @@ end;
 
 procedure TTaskList.RefreshItems;
 var
-  i, j, k, sum, sec: integer;
+  i, j, k, sum, sec, sumDay: integer;
   d, p, pc, e: TPanel;
   l, lt: TLabel;
   arr, arrEntries, arrFilteredEntries: TJSONArray;
@@ -162,6 +162,8 @@ begin
 
   for k := 0 to sl.Count - 1 do
   begin
+    sumDay := 0;
+
     // time to compare
     t := ScanDateTime('dd mm yyyy', sl[k]);
 
@@ -200,7 +202,7 @@ begin
         arrFilteredEntries.Free;
         Continue;
       end;
-      // container
+      // task container
       p := TPanel.Create(d);
       p.BevelOuter := bvNone;
       p.BorderSpacing.Left := 40;
@@ -219,7 +221,7 @@ begin
       pc.Caption := '';
       pc.OnClick := @OnClickItem;
       pc.Parent := p;
-      // title
+      // project title
       l := TLabel.Create(pc);
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
@@ -228,7 +230,7 @@ begin
       l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger);
       l.OnClick := @OnClickItemParent;
       l.Parent := pc;
-      // arrow
+      // task right arrow
       l := TLabel.Create(pc);
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
@@ -240,7 +242,7 @@ begin
       l.Caption := '˅';
       l.OnClick := @OnClickItemParent;
       l.Parent := pc;
-      // name
+      // task name
       l := TLabel.Create(p);
       l.Cursor := crHandPoint;
       l.Font.Color := clBlack;
@@ -314,6 +316,7 @@ begin
       end;
       // sum of all time entries
       lt.Caption := SecondsToString(sum);
+      sumDay := sumDay + sum;
       // free filtered entries
       arrFilteredEntries.Clear;
       arrFilteredEntries.Free;
@@ -324,7 +327,7 @@ begin
     pc.BevelOuter := bvNone;
     pc.Align := alTop;
     pc.AutoSize := True;
-    pc.ChildSizing.ControlsPerLine := 3;
+    pc.ChildSizing.ControlsPerLine := 4;
     pc.ChildSizing.Layout := cclLeftToRightThenTopToBottom;
     pc.ChildSizing.HorizontalSpacing := 5;
     pc.Parent := p;
@@ -372,6 +375,19 @@ begin
     l.Caption := '˄';
     l.OnClick := @DayClickParent;
     l.Parent := pc;
+    // total time container
+    p := TPanel.Create(pc);
+    p.BevelOuter := bvNone;
+    p.Align := alRight;
+    p.AutoSize := True;
+    p.Parent := pc;
+    // total time of day
+    lt := TLabel.Create(p);
+    lt.Font.Height := -24;
+    lt.Align := alTop;
+    lt.Font.Color := clBlack;
+    lt.Caption := SecondsToString(sumDay);
+    lt.Parent := p;
   end;
   sl.Free;
 end;
