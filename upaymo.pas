@@ -26,6 +26,7 @@ type
     FRunningTimer: TJSONObject;
     FTaskLists: TJSONObject;
     FTasks: TJSONObject;
+    FCompany: TJSONObject;
     procedure SetFAPIKey(AValue: string);
     procedure SetFLoggedIn(AValue: boolean);
   public
@@ -33,6 +34,7 @@ type
     function TasksArray: TJSONArray;
     function TaskListsArray: TJSONArray;
     function MyData: TJSONData;
+    function CompanyData: TJSONData;
     function RunningTimerData: TJSONData;
     function GetProjectName(ProjectID: integer): string;
   public
@@ -46,6 +48,7 @@ type
     function GetTaskLists(): TPaymoResponseStatus;
     function GetMe(): TPaymoResponseStatus;
     function GetRunningTimer(): TPaymoResponseStatus;
+    function GetCompany(): TPaymoResponseStatus;
     function Post(Endpoint: string; sJSON: TJSONStringType;
       var Response: string): TPaymoResponseStatus;
     function CreateTask(Name, Description: string;
@@ -96,6 +99,11 @@ begin
   Result := arr[0];
 end;
 
+function TPaymo.CompanyData: TJSONData;
+begin
+  FCompany.Find('company', Result);
+end;
+
 function TPaymo.RunningTimerData: TJSONData;
 var
   arr: TJSONArray;
@@ -130,6 +138,8 @@ begin
     FTaskLists.Free;
   if Assigned(FRunningTimer) then
     FRunningTimer.Free;
+  if Assigned(FCompany) then
+    FCompany.Free;
   inherited Destroy;
 end;
 
@@ -240,6 +250,21 @@ begin
       if Assigned(FRunningTimer) then
         FRunningTimer.Free;
       FRunningTimer := TJSONObject(GetJSON(response));
+    end;
+  end;
+end;
+
+function TPaymo.GetCompany(): TPaymoResponseStatus;
+var
+  response: string;
+begin
+  Result := Get('company', response);
+  case Result of
+    prOK:
+    begin
+      if Assigned(FCompany) then
+        FCompany.Free;
+      FCompany := TJSONObject(GetJSON(response));
     end;
   end;
 end;

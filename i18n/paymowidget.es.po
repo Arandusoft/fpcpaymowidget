@@ -27,21 +27,49 @@ msgstr "API Key"
 msgid "Generate API Key to Login"
 msgstr "Generar API KEY para Iniciar"
 
+#: tfrmmain.btnabout.caption
+msgctxt "tfrmmain.btnabout.caption"
+msgid "About"
+msgstr "Acerca de"
+
+#: tfrmmain.btnopenpaymoapp.caption
+msgid "Open Paymo App"
+msgstr "Abrir Paymo App"
+
+#: tfrmmain.btnquit.caption
+msgctxt "tfrmmain.btnquit.caption"
+msgid "Quit"
+msgstr "Salir"
+
 #: tfrmmain.caption
 msgid "FPC Paymo Widget"
 msgstr "FPC Paymo Widget"
 
 #: tfrmmain.miabout.caption
+msgctxt "tfrmmain.miabout.caption"
 msgid "About"
 msgstr "Acerca de"
 
 #: tfrmmain.miquit.caption
+msgctxt "tfrmmain.miquit.caption"
 msgid "Quit"
 msgstr "Salir"
 
 #: tfrmmain.mishow.caption
 msgid "Show"
 msgstr "Mostrar"
+
+#: tfrmmain.pnlmenucompany.caption
+msgid "Company"
+msgstr "Empresa"
+
+#: tfrmmain.pnlmenuuser.caption
+msgid "User Name"
+msgstr "Nombre de Usuario"
+
+#: tfrmmain.pnltop.caption
+msgid "Timesheet"
+msgstr "Horas trabajadas"
 
 #: uresourcestring.rserrorcantlogin
 msgid "Can't login."
@@ -62,4 +90,3 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
-

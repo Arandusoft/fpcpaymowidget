@@ -4,9 +4,12 @@ object frmMain: TfrmMain
   Top = 128
   Width = 360
   Caption = 'FPC Paymo Widget'
+  ClientHeight = 540
+  ClientWidth = 360
   Color = clWhite
   Constraints.MinHeight = 540
   Constraints.MinWidth = 360
+  OnClick = FormClick
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -15,16 +18,234 @@ object frmMain: TfrmMain
   Position = poScreenCenter
   ShowInTaskBar = stNever
   LCLVersion = '1.9.0.0'
+  object pnlTop: TPanel
+    Left = 0
+    Height = 50
+    Top = 0
+    Width = 360
+    Align = alTop
+    BevelOuter = bvNone
+    Caption = 'Timesheet'
+    ClientHeight = 50
+    ClientWidth = 360
+    Color = 12111890
+    Constraints.MinHeight = 50
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans ExtraBold'
+    ParentColor = False
+    ParentFont = False
+    TabOrder = 0
+    object btnMenu: TColorSpeedButton
+      Cursor = crHandPoint
+      Left = 17
+      Height = 16
+      Top = 17
+      Width = 16
+      Font.Color = clBlack
+      OnClick = btnMenuClick
+      OnPaint = btnMenuPaint
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 12111890
+      StateNormal.BorderColor = 11382189
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 12111890
+      StateHover.BorderColor = 14120960
+      StateHover.BorderWidth = 0
+      StateActive.Color = 12111890
+      StateActive.BorderColor = 10048512
+      StateActive.BorderWidth = 0
+      StateDisabled.Color = 12111890
+      StateDisabled.BorderColor = clBlack
+      StateDisabled.BorderWidth = 0
+    end
+  end
+  object pnlMenu: TPanel
+    Left = 8
+    Height = 474
+    Top = 72
+    Width = 270
+    BevelOuter = bvNone
+    ClientHeight = 474
+    ClientWidth = 270
+    Color = 2365715
+    Constraints.MinWidth = 270
+    ParentColor = False
+    TabOrder = 1
+    Visible = False
+    object pnlMenuUser: TLabel
+      Left = 80
+      Height = 21
+      Top = 40
+      Width = 190
+      Align = alTop
+      BorderSpacing.Left = 80
+      BorderSpacing.Top = 40
+      Caption = 'User Name'
+      Font.Color = clWhite
+      Font.Height = -16
+      Font.Name = 'Nunito Sans ExtraBold'
+      ParentColor = False
+      ParentFont = False
+    end
+    object pnlMenuCompany: TLabel
+      Left = 80
+      Height = 19
+      Top = 61
+      Width = 190
+      Align = alTop
+      BorderSpacing.Left = 80
+      BorderSpacing.Bottom = 20
+      Caption = 'Company'
+      Font.Color = 10260359
+      Font.Height = -14
+      Font.Name = 'Nunito Sans'
+      ParentColor = False
+      ParentFont = False
+    end
+    object btnAbout: TColorSpeedButton
+      Cursor = crHandPoint
+      Left = 0
+      Height = 40
+      Top = 151
+      Width = 270
+      Align = alTop
+      AutoSize = True
+      Constraints.MinHeight = 40
+      Caption = 'About'
+      Font.Color = 10260359
+      Font.Height = -14
+      Font.Name = 'Nunito Sans'
+      OnClick = miAboutClick
+      OnMouseEnter = btnOpenPaymoAppMouseEnter
+      OnMouseLeave = btnOpenPaymoAppMouseLeave
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 2365715
+      StateNormal.BorderColor = 2365715
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 2102801
+      StateHover.BorderColor = 2102801
+      StateHover.BorderWidth = 0
+      StateActive.Color = 5131537
+      StateActive.BorderColor = 5131537
+      StateActive.BorderWidth = 1
+      StateDisabled.Color = 2365715
+      StateDisabled.BorderColor = 2365715
+      StateDisabled.BorderWidth = 0
+    end
+    object btnQuit: TColorSpeedButton
+      Cursor = crHandPoint
+      Left = 0
+      Height = 40
+      Top = 202
+      Width = 270
+      Align = alTop
+      AutoSize = True
+      Constraints.MinHeight = 40
+      Caption = 'Quit'
+      Font.Color = 10260359
+      Font.Height = -14
+      Font.Name = 'Nunito Sans'
+      OnClick = miQuitClick
+      OnMouseEnter = btnOpenPaymoAppMouseEnter
+      OnMouseLeave = btnOpenPaymoAppMouseLeave
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 2365715
+      StateNormal.BorderColor = 2365715
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 2102801
+      StateHover.BorderColor = 2102801
+      StateHover.BorderWidth = 0
+      StateActive.Color = 5131537
+      StateActive.BorderColor = 5131537
+      StateActive.BorderWidth = 1
+      StateDisabled.Color = 2365715
+      StateDisabled.BorderColor = 2365715
+      StateDisabled.BorderWidth = 0
+    end
+    object pnlSpacer1: TPanel
+      Left = 30
+      Height = 1
+      Top = 196
+      Width = 210
+      Align = alTop
+      BorderSpacing.Left = 30
+      BorderSpacing.Top = 5
+      BorderSpacing.Right = 30
+      BorderSpacing.Bottom = 5
+      BevelOuter = bvNone
+      Color = 3418661
+      ParentColor = False
+      TabOrder = 0
+    end
+    object btnOpenPaymoApp: TColorSpeedButton
+      Cursor = crHandPoint
+      Left = 0
+      Height = 40
+      Top = 100
+      Width = 270
+      Align = alTop
+      AutoSize = True
+      Constraints.MinHeight = 40
+      Caption = 'Open Paymo App'
+      Font.Color = 10260359
+      Font.Height = -14
+      Font.Name = 'Nunito Sans'
+      OnClick = btnOpenPaymoAppClick
+      OnMouseEnter = btnOpenPaymoAppMouseEnter
+      OnMouseLeave = btnOpenPaymoAppMouseLeave
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 2365715
+      StateNormal.BorderColor = 2365715
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 2102801
+      StateHover.BorderColor = 2102801
+      StateHover.BorderWidth = 0
+      StateActive.Color = 5131537
+      StateActive.BorderColor = 5131537
+      StateActive.BorderWidth = 1
+      StateDisabled.Color = 2365715
+      StateDisabled.BorderColor = 2365715
+      StateDisabled.BorderWidth = 0
+    end
+    object pnlSpacer2: TPanel
+      Left = 30
+      Height = 1
+      Top = 145
+      Width = 210
+      Align = alTop
+      BorderSpacing.Left = 30
+      BorderSpacing.Top = 5
+      BorderSpacing.Right = 30
+      BorderSpacing.Bottom = 5
+      BevelOuter = bvNone
+      Color = 3418661
+      ParentColor = False
+      TabOrder = 1
+    end
+  end
   object tiTray: TTrayIcon
     PopUpMenu = pmTray
     Hint = 'FPC Paymo Widget'
     OnClick = tiTrayClick
-    Left = 8
-    Top = 8
+    Left = 40
+    Top = 272
   end
   object pmTray: TPopupMenu
-    Left = 64
-    Top = 8
+    Left = 96
+    Top = 272
     object miShow: TMenuItem
       Caption = 'Show'
       OnClick = tiTrayClick
@@ -39,8 +260,8 @@ object frmMain: TfrmMain
     end
   end
   object ilTrayAnimWin: TImageList
-    Left = 152
-    Top = 8
+    Left = 184
+    Top = 272
     Bitmap = {
       4C69020000001000000010000000000000000000000000000000000000000000
       00008080801BFFFFFF4BFFFFFF6600000000FFFFFFD0FFFFFF97808080370000
@@ -134,8 +355,8 @@ object frmMain: TfrmMain
     }
   end
   object ilTrayAnimMac: TImageList
-    Left = 152
-    Top = 72
+    Left = 184
+    Top = 336
     Bitmap = {
       4C69020000001000000010000000000000000000000000000000000000000000
       00000003001B0107004B0107006600000000010700D001070097000300370000
@@ -229,8 +450,8 @@ object frmMain: TfrmMain
     }
   end
   object ilTrayNormalWin: TImageList
-    Left = 248
-    Top = 8
+    Left = 280
+    Top = 272
     Bitmap = {
       4C69010000001000000010000000000000000000000000000000000000000000
       0000FFFFFF1BFFFFFF4BFFFFFF6600000000FFFFFF68FFFFFF4BFFFFFF1C0000
@@ -285,8 +506,8 @@ object frmMain: TfrmMain
     }
   end
   object ilTrayNormalMac: TImageList
-    Left = 248
-    Top = 72
+    Left = 280
+    Top = 336
     Bitmap = {
       4C69010000001000000010000000000000000000000000000000000000000000
       00000003001B0107004B0107006600000000010700670107004B0003001B0000
@@ -341,8 +562,8 @@ object frmMain: TfrmMain
     }
   end
   object ilTrayOfflineWin: TImageList
-    Left = 248
-    Top = 144
+    Left = 280
+    Top = 408
     Bitmap = {
       4C69010000001000000010000000000000000000000000000000000000000000
       0000FFFFFF1BFFFFFF4BFFFFFF6600000000FFFFFF68FFFFFF4BFFFFFF1C0000
@@ -399,8 +620,8 @@ object frmMain: TfrmMain
     }
   end
   object ilTrayOfflineMac: TImageList
-    Left = 248
-    Top = 208
+    Left = 280
+    Top = 472
     Bitmap = {
       4C69010000001000000010000000000000000000000000000000000000000000
       00000107001B0107004B0107006600000000010700680107004B0107001C0000

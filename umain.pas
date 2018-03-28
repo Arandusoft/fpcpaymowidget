@@ -7,13 +7,17 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
   ExtCtrls, Menus, upaymo, fpjson, uresourcestring, Types, utasklist,
-  DefaultTranslator;
+  ColorSpeedButton, DefaultTranslator, LCLIntF;
 
 type
 
   { TfrmMain }
 
   TfrmMain = class(TForm)
+    btnAbout: TColorSpeedButton;
+    btnOpenPaymoApp: TColorSpeedButton;
+    btnMenu: TColorSpeedButton;
+    btnQuit: TColorSpeedButton;
     ilTrayAnimWin: TImageList;
     ilTrayAnimMac: TImageList;
     ilTrayOfflineMac: TImageList;
@@ -23,8 +27,20 @@ type
     miShow: TMenuItem;
     miAbout: TMenuItem;
     miQuit: TMenuItem;
+    pnlSpacer1: TPanel;
+    pnlMenu: TPanel;
+    pnlMenuCompany: TLabel;
+    pnlMenuUser: TLabel;
+    pnlSpacer2: TPanel;
+    pnlTop: TPanel;
     pmTray: TPopupMenu;
     tiTray: TTrayIcon;
+    procedure btnMenuClick(Sender: TObject);
+    procedure btnMenuPaint(Sender: TObject);
+    procedure btnOpenPaymoAppClick(Sender: TObject);
+    procedure btnOpenPaymoAppMouseEnter(Sender: TObject);
+    procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
+    procedure FormClick(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -33,6 +49,7 @@ type
     procedure miAboutClick(Sender: TObject);
     procedure miQuitClick(Sender: TObject);
     procedure tiTrayClick(Sender: TObject);
+    procedure hideMenu(Sender: TObject);
   private
     Tasks: TTaskList;
   public
@@ -57,13 +74,19 @@ uses
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   DoubleBuffered := True;
+  pnlMenu.Left := 0;
+  pnlMenu.Top := 0;
   Paymo := TPaymo.Create;
   Paymo.LoadSettings;
   Login;
   if Paymo.LoggedIn then
   begin
     Paymo.GetMe();
-    //ShowMessage(Paymo.MyData.FormatJSON());
+    Paymo.GetCompany();
+    pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
+    //ShowMessage(Paymo.CompanyData.FormatJSON());
+    pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
+
     Paymo.GetTasks();
     Paymo.GetTaskLists();
     Paymo.GetRunningTimer();
@@ -87,6 +110,49 @@ begin
   Self.ShowInTaskBar := stNever;
 end;
 
+procedure TfrmMain.btnMenuPaint(Sender: TObject);
+var
+  c: TColorSpeedButton;
+  h: integer;
+begin
+  c := TColorSpeedButton(Sender);
+  h := c.Height div 2;
+  c.Canvas.Pen.Color := clWhite;
+  c.Canvas.Line(0, 0, c.Width, 0);
+  c.Canvas.Line(0, h, c.Width, h);
+  c.Canvas.Line(0, c.Height-1, c.Width, c.Height-1);
+end;
+
+procedure TfrmMain.btnMenuClick(Sender: TObject);
+begin
+  pnlMenu.Visible := True;
+  // change style to disabled
+  //pnlTop.Color := RGBToColor(8, 94, 83);
+  pnlTop.Enabled := False;
+  //Tasks.Color := RGBToColor(117, 117, 117);
+  Tasks.Enabled := False;
+end;
+
+procedure TfrmMain.btnOpenPaymoAppClick(Sender: TObject);
+begin
+  OpenURL('https://app.paymoapp.com/');
+end;
+
+procedure TfrmMain.btnOpenPaymoAppMouseEnter(Sender: TObject);
+begin
+  TControl(Sender).Font.Color := RGBToColor(32, 201, 103);
+end;
+
+procedure TfrmMain.btnOpenPaymoAppMouseLeave(Sender: TObject);
+begin
+  TControl(Sender).Font.Color := RGBToColor(135, 143, 156);
+end;
+
+procedure TfrmMain.FormClick(Sender: TObject);
+begin
+  hideMenu(Self);
+end;
+
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
   Paymo.Free;
@@ -94,7 +160,7 @@ end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
 begin
-
+  pnlMenu.Height := Height;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
@@ -126,6 +192,16 @@ procedure TfrmMain.tiTrayClick(Sender: TObject);
 begin
   Self.ShowInTaskBar := stDefault;
   Self.Show;
+end;
+
+procedure TfrmMain.hideMenu(Sender: TObject);
+begin
+  pnlMenu.Visible := False;
+  // change style back to enabled
+  //pnlTop.Color := RGBToColor(18, 208, 184);
+  pnlTop.Enabled := True;
+  //Tasks.Color := clWhite;
+  Tasks.Enabled := True;
 end;
 
 procedure TfrmMain.Login;

@@ -17,20 +17,48 @@ msgstr ""
 msgid "Generate API Key to Login"
 msgstr ""
 
+#: tfrmmain.btnabout.caption
+msgctxt "tfrmmain.btnabout.caption"
+msgid "About"
+msgstr ""
+
+#: tfrmmain.btnopenpaymoapp.caption
+msgid "Open Paymo App"
+msgstr ""
+
+#: tfrmmain.btnquit.caption
+msgctxt "tfrmmain.btnquit.caption"
+msgid "Quit"
+msgstr ""
+
 #: tfrmmain.caption
 msgid "FPC Paymo Widget"
 msgstr ""
 
 #: tfrmmain.miabout.caption
+msgctxt "tfrmmain.miabout.caption"
 msgid "About"
 msgstr ""
 
 #: tfrmmain.miquit.caption
+msgctxt "tfrmmain.miquit.caption"
 msgid "Quit"
 msgstr ""
 
 #: tfrmmain.mishow.caption
 msgid "Show"
+msgstr ""
+
+#: tfrmmain.pnlmenucompany.caption
+msgid "Company"
+msgstr ""
+
+#: tfrmmain.pnlmenuuser.caption
+msgid "User Name"
+msgstr ""
+
+#: tfrmmain.pnltop.caption
+msgid "Timesheet"
 msgstr ""
 
 #: uresourcestring.rserrorcantlogin
