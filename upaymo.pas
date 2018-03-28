@@ -23,24 +23,17 @@ type
     FLoggedIn: boolean;
     FMe: TJSONObject;
     FProjects: TJSONObject;
+    FRunningTimer: TJSONObject;
     FTaskLists: TJSONObject;
     FTasks: TJSONObject;
     procedure SetFAPIKey(AValue: string);
     procedure SetFLoggedIn(AValue: boolean);
-    procedure SetFMe(AValue: TJSONObject);
-    procedure SetFProjects(AValue: TJSONObject);
-    procedure SetFTaskLists(AValue: TJSONObject);
-    procedure SetFTasks(AValue: TJSONObject);
-  protected
-    property Projects: TJSONObject read FProjects write SetFProjects;
-    property Tasks: TJSONObject read FTasks write SetFTasks;
-    property TaskLists: TJSONObject read FTaskLists write SetFTaskLists;
-    property Me: TJSONObject read FMe write SetFMe;
   public
     function ProjectsArray: TJSONArray;
     function TasksArray: TJSONArray;
     function TaskListsArray: TJSONArray;
-    function MyData: TJSONArray;
+    function MyData: TJSONData;
+    function RunningTimerData: TJSONData;
     function GetProjectName(ProjectID: integer): string;
   public
     destructor Destroy; override;
@@ -52,9 +45,11 @@ type
     function GetProjects(): TPaymoResponseStatus;
     function GetTaskLists(): TPaymoResponseStatus;
     function GetMe(): TPaymoResponseStatus;
+    function GetRunningTimer(): TPaymoResponseStatus;
     function Post(Endpoint: string; sJSON: TJSONStringType;
       var Response: string): TPaymoResponseStatus;
-    function CreateTask(Name, Description: string; TaskListID: integer): TPaymoResponseStatus;
+    function CreateTask(Name, Description: string;
+      TaskListID: integer): TPaymoResponseStatus;
   public
     procedure LoadSettings;
     procedure SaveSettings;
@@ -78,33 +73,6 @@ begin
   FLoggedIn := AValue;
 end;
 
-procedure TPaymo.SetFMe(AValue: TJSONObject);
-begin
-  if FMe = AValue then
-    Exit;
-  FMe := AValue;
-end;
-
-procedure TPaymo.SetFProjects(AValue: TJSONObject);
-begin
-  if FProjects = AValue then
-    Exit;
-  FProjects := AValue;
-end;
-
-procedure TPaymo.SetFTaskLists(AValue: TJSONObject);
-begin
-  if FTaskLists=AValue then Exit;
-  FTaskLists:=AValue;
-end;
-
-procedure TPaymo.SetFTasks(AValue: TJSONObject);
-begin
-  if FTasks = AValue then
-    Exit;
-  FTasks := AValue;
-end;
-
 function TPaymo.ProjectsArray: TJSONArray;
 begin
   FProjects.Find('projects', Result);
@@ -120,9 +88,20 @@ begin
   FTaskLists.Find('tasklists', Result);
 end;
 
-function TPaymo.MyData: TJSONArray;
+function TPaymo.MyData: TJSONData;
+var
+  arr: TJSONArray;
 begin
-  FMe.Find('users', Result);
+  FMe.Find('users', arr);
+  Result := arr[0];
+end;
+
+function TPaymo.RunningTimerData: TJSONData;
+var
+  arr: TJSONArray;
+begin
+  FRunningTimer.Find('entries', arr);
+  Result := arr[0];
 end;
 
 function TPaymo.GetProjectName(ProjectID: integer): string;
@@ -149,6 +128,8 @@ begin
     FMe.Free;
   if Assigned(FTaskLists) then
     FTaskLists.Free;
+  if Assigned(FRunningTimer) then
+    FRunningTimer.Free;
   inherited Destroy;
 end;
 
@@ -248,6 +229,21 @@ begin
   end;
 end;
 
+function TPaymo.GetRunningTimer(): TPaymoResponseStatus;
+var
+  response: string;
+begin
+  Result := Get('entries?where=user_id=' + MyData.GetPath('id').AsString + '%20and%20end_time=null', response);
+  case Result of
+    prOK:
+    begin
+      if Assigned(FRunningTimer) then
+        FRunningTimer.Free;
+      FRunningTimer := TJSONObject(GetJSON(response));
+    end;
+  end;
+end;
+
 function TPaymo.Post(Endpoint: string; sJSON: TJSONStringType;
   var Response: string): TPaymoResponseStatus;
 var
@@ -282,7 +278,8 @@ begin
   end;
 end;
 
-function TPaymo.CreateTask(Name, Description: string; TaskListID: integer): TPaymoResponseStatus;
+function TPaymo.CreateTask(Name, Description: string;
+  TaskListID: integer): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
@@ -290,7 +287,7 @@ var
   jArr: TJSONArray;
 begin
   // logged in user
-  jArr := TJSONArray.Create([MyData[0].GetPath('id').AsInteger]);
+  jArr := TJSONArray.Create([MyData.GetPath('id').AsInteger]);
   jObj := TJSONObject.Create;
   jObj.Add('name', Name);
   jObj.Add('description', Description);

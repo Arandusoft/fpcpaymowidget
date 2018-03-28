@@ -50,9 +50,11 @@ begin
     //ShowMessage(Paymo.MyData.FormatJSON());
     Paymo.GetTasks();
     Paymo.GetTaskLists();
+    Paymo.GetRunningTimer();
+
     //Paymo.CreateTask('"Hola" Mundo', 'From @FPC', Paymo.TaskListsArray[0].GetPath('id').AsInteger);
-    //ShowMessage(Paymo.MyData[0].FindPath('id').AsString);
-    //ShowMessage(Paymo.TasksArray.FormatJSON());
+    //ShowMessage(Paymo.MyData.FindPath('id').AsString);
+    //ShowMessage(Paymo.RunningTimerData.FormatJSON());
     Tasks := TTaskList.Create(Self);
     Tasks.PaymoInstance := Paymo;
     Tasks.Parent := Self;

@@ -16,7 +16,9 @@ type
   private
     FItems: TJSONArray;
     FPaymo: TPaymo;
-
+    procedure OnClickPlay(Sender: TObject);
+    procedure OnEnterPlay(Sender: TObject);
+    procedure OnLeavePlay(Sender: TObject);
     procedure OnMouseEnterTimeLabel(Sender: TObject);
     procedure OnMouseLeaveTimeLabel(Sender: TObject);
     procedure SetFItems(AValue: TJSONArray);
@@ -51,6 +53,26 @@ end;
 procedure TTaskList.OnMouseEnterTimeLabel(Sender: TObject);
 begin
   TLabel(Sender).Font.Color := RGBToColor(57, 202, 84);
+end;
+
+procedure TTaskList.OnClickPlay(Sender: TObject);
+begin
+  if TControl(Sender).Tag <> 0 then
+  begin
+    // add time entry
+  end
+  else
+    OnClickItem(Sender);
+end;
+
+procedure TTaskList.OnEnterPlay(Sender: TObject);
+begin
+  TControl(Sender).Font.Color := RGBToColor(57, 202, 84);
+end;
+
+procedure TTaskList.OnLeavePlay(Sender: TObject);
+begin
+  TControl(Sender).Font.Color := RGBToColor(221, 221, 221);
 end;
 
 procedure TTaskList.DayClickParent(Sender: TObject);
@@ -128,7 +150,7 @@ end;
 procedure TTaskList.RefreshItems;
 var
   i, j, k, sum, sec, sumDay: integer;
-  d, p, pc, e: TPanel;
+  d, p, pc, e, play: TPanel;
   l, lt: TLabel;
   arr, arrEntries, arrFilteredEntries: TJSONArray;
   sl: TStringList;
@@ -150,7 +172,7 @@ begin
     begin
       // hide time entries of other users
       if arrEntries[j].GetPath('user_id').AsInteger <>
-        PaymoInstance.MyData[0].GetPath('id').AsInteger then
+        PaymoInstance.MyData.GetPath('id').AsInteger then
         Continue;
       // add only new items
       tempstr := FormatDateTime('yyyy mm dd',
@@ -188,7 +210,7 @@ begin
       begin
         // hide time entries of other users
         if arrEntries[j].GetPath('user_id').AsInteger <>
-          PaymoInstance.MyData[0].GetPath('id').AsInteger then
+          PaymoInstance.MyData.GetPath('id').AsInteger then
           Continue;
         // show only items that match time
         if not IsSameDate(StringToDateTime(arrEntries[j].GetPath('start_time').AsString),
@@ -207,8 +229,8 @@ begin
       // task container
       p := TPanel.Create(d);
       p.BevelOuter := bvNone;
-      p.BorderSpacing.Left := 40;
-      p.BorderSpacing.Right := 40;
+      p.BorderSpacing.Left := 30;
+      p.BorderSpacing.Right := 30;
       p.BorderSpacing.Bottom := 20;
       p.Align := alTop;
       p.AutoSize := True;
@@ -225,6 +247,7 @@ begin
       pc.Parent := p;
       // project title
       l := TLabel.Create(pc);
+      l.BorderSpacing.Left := 32;
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
       l.Font.Size := -12;
@@ -244,6 +267,30 @@ begin
       l.Caption := '˅';
       l.OnClick := @OnClickItemParent;
       l.Parent := pc;
+      // play button
+      play := TPanel.Create(p);
+      play.BevelOuter := bvNone;
+      play.Font.Color := RGBToColor(221, 221, 221);
+      play.Align := alLeft;
+      play.Width := 32;
+      play.Font.Size := -16;
+      play.Caption := '▶';
+      play.Cursor := crHandPoint;
+      play.OnClick := @OnClickPlay;
+      if not arr[i].GetPath('complete').AsBoolean then
+      begin
+        play.OnMouseEnter := @OnEnterPlay;
+        play.OnMouseLeave := @OnLeavePlay;
+        // task id
+        play.Tag := arr[i].GetPath('id').AsInteger;
+      end
+      else
+      begin
+        play.ShowHint := True;
+        play.Hint := 'Task is complete';
+        play.Tag := 0;
+      end;
+      play.Parent := p;
       // task name
       l := TLabel.Create(p);
       l.Cursor := crHandPoint;
@@ -275,6 +322,7 @@ begin
       lt.Parent := pc;
       // time entries container
       e := TAnimatedPanel.Create(p);
+      e.BorderSpacing.Left := 30;
       e.BevelOuter := bvNone;
       e.Align := alBottom;
       e.Height := 0;
