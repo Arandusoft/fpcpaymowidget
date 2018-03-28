@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, ExtCtrls, fpjson, StdCtrls, Graphics, Forms,
-  upaymo, Dialogs, DateUtils, uanimatedpanel, LazUTF8, Math;
+  upaymo, Dialogs, DateUtils, uanimatedpanel, LazUTF8, Math, uresourcestring;
 
 type
 
@@ -247,7 +247,7 @@ begin
       pc.Parent := p;
       // project title
       l := TLabel.Create(pc);
-      l.BorderSpacing.Left := 32;
+      l.BorderSpacing.Left := 30;
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
       l.Font.Size := -12;
@@ -272,7 +272,7 @@ begin
       play.BevelOuter := bvNone;
       play.Font.Color := RGBToColor(221, 221, 221);
       play.Align := alLeft;
-      play.Width := 32;
+      play.Width := 30;
       play.Font.Size := -16;
       play.Caption := '▶';
       play.Cursor := crHandPoint;
@@ -392,12 +392,12 @@ begin
     l.Parent := pc;
     if (IsSameDate(t, now)) then
     begin
-      l.Caption := 'TODAY';
+      l.Caption := rsToday;
       l.Font.Color := RGBToColor(255, 152, 0);
     end
     else if (IsSameDate(t, yesterday)) then
     begin
-      l.Caption := 'YESTERDAY';
+      l.Caption := rsYesterday;
       l.Font.Color := RGBToColor(99, 213, 120);
     end
     else

@@ -7,10 +7,34 @@ object frmMain: TfrmMain
   Color = clWhite
   Constraints.MinHeight = 540
   Constraints.MinWidth = 360
+  OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
   Position = poScreenCenter
+  ShowInTaskBar = stNever
   LCLVersion = '1.9.0.0'
+  object tiTray: TTrayIcon
+    PopUpMenu = pmTray
+    OnClick = tiTrayClick
+    Left = 8
+    Top = 8
+  end
+  object pmTray: TPopupMenu
+    Left = 64
+    Top = 8
+    object miShow: TMenuItem
+      Caption = 'Show'
+      OnClick = tiTrayClick
+    end
+    object miAbout: TMenuItem
+      Caption = 'About'
+      OnClick = miAboutClick
+    end
+    object miQuit: TMenuItem
+      Caption = 'Quit'
+      OnClick = miQuitClick
+    end
+  end
 end

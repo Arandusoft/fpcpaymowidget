@@ -14,3 +14,4 @@ debug
 *.compiled
 *Thumbs.db
 bin
+/*.lrj

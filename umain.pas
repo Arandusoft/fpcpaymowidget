@@ -6,17 +6,27 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
-  ExtCtrls, upaymo, fpjson, uresourcestring, Types, utasklist;
+  ExtCtrls, Menus, upaymo, fpjson, uresourcestring, Types, utasklist,
+  DefaultTranslator;
 
 type
 
   { TfrmMain }
 
   TfrmMain = class(TForm)
+    miShow: TMenuItem;
+    miAbout: TMenuItem;
+    miQuit: TMenuItem;
+    pmTray: TPopupMenu;
+    tiTray: TTrayIcon;
+    procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure miAboutClick(Sender: TObject);
+    procedure miQuitClick(Sender: TObject);
+    procedure tiTrayClick(Sender: TObject);
   private
     Tasks: TTaskList;
   public
@@ -62,6 +72,15 @@ begin
   end;
 end;
 
+procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
+begin
+  if Sender is TTrayIcon then
+    Exit;
+  CanClose := False;
+  Self.Hide;
+  Self.ShowInTaskBar := stNever;
+end;
+
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
   Paymo.Free;
@@ -74,7 +93,25 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
+  tiTray.Show;
   ListTasks();
+end;
+
+procedure TfrmMain.miAboutClick(Sender: TObject);
+begin
+  ShowMessage('Copyright © 2018 Arandusoft');
+end;
+
+procedure TfrmMain.miQuitClick(Sender: TObject);
+begin
+  Self.OnCloseQuery := nil;
+  Close;
+end;
+
+procedure TfrmMain.tiTrayClick(Sender: TObject);
+begin
+  Self.ShowInTaskBar := stDefault;
+  Self.Show;
 end;
 
 procedure TfrmMain.Login;

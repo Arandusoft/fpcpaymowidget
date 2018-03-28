@@ -16,6 +16,10 @@
         <TextDesc Value="FPC Paymo Widget"/>
       </XPManifest>
     </General>
+    <i18n>
+      <EnableI18N Value="True"/>
+      <OutDir Value="i18n"/>
+    </i18n>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>

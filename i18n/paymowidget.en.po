@@ -1,0 +1,55 @@
+msgid ""
+msgstr "Content-Type: text/plain; charset=UTF-8"
+
+#: tfrmlogin.btnlogin.caption
+msgid "Login"
+msgstr ""
+
+#: tfrmlogin.caption
+msgid "FPC Paymo Widget - Login"
+msgstr ""
+
+#: tfrmlogin.edtapikey.editlabel.caption
+msgid "API Key"
+msgstr ""
+
+#: tfrmlogin.lblgenerateapikey.caption
+msgid "Generate API Key to Login"
+msgstr ""
+
+#: tfrmmain.caption
+msgid "FPC Paymo Widget"
+msgstr ""
+
+#: tfrmmain.miabout.caption
+msgid "About"
+msgstr ""
+
+#: tfrmmain.miquit.caption
+msgid "Quit"
+msgstr ""
+
+#: tfrmmain.mishow.caption
+msgid "Show"
+msgstr ""
+
+#: uresourcestring.rserrorcantlogin
+msgid "Can't login."
+msgstr ""
+
+#: uresourcestring.rserrorcantlogintrygeneratinganewapikey
+msgid "Error: Can't login. Try generating a new API Key."
+msgstr ""
+
+#: uresourcestring.rstoday
+msgid "TODAY"
+msgstr ""
+
+#: uresourcestring.rstoomanyrequeststryagainsoon
+msgid "Too many Requests. Try again soon."
+msgstr ""
+
+#: uresourcestring.rsyesterday
+msgid "YESTERDAY"
+msgstr ""
+
