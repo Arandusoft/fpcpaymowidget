@@ -153,19 +153,21 @@ begin
         PaymoInstance.MyData[0].GetPath('id').AsInteger then
         Continue;
       // add only new items
-      tempstr := FormatDateTime('dd mm yyyy',
+      tempstr := FormatDateTime('yyyy mm dd',
         StringToDateTime(arrEntries[j].GetPath('start_time').AsString));
       if (sl.IndexOf(tempstr) = -1) then
         sl.Add(tempstr);
     end;
   end;
 
+  sl.Sort;
+
   for k := 0 to sl.Count - 1 do
   begin
     sumDay := 0;
 
     // time to compare
-    t := ScanDateTime('dd mm yyyy', sl[k]);
+    t := ScanDateTime('yyyy mm dd', sl[k]);
 
     // day panel
     d := TAnimatedPanel.Create(Self);
