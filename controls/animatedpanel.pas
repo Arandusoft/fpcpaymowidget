@@ -33,6 +33,7 @@ type
     function easeInOutQuad(t: double): double;
   public
     constructor Create(AOwner: TComponent); override;
+    destructor Destroy; override;
     procedure Animate();
     property Timer: TTimer read FTimer write SetFTimer;
   published
@@ -190,6 +191,16 @@ begin
   FTimer.OnTimer := @OnTimer;
   FTimer.OnStartTimer := @OnStartTimer;
   FTimer.OnStopTimer := @OnStopTimer;
+end;
+
+destructor TAnimatedPanel.Destroy;
+begin
+  if Assigned(FTimer) then
+  begin
+    FTimer.Enabled := False;
+    FTimer.Free;
+  end;
+  inherited Destroy;
 end;
 
 end.

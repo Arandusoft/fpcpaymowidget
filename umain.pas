@@ -190,11 +190,13 @@ end;
 procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   tiTray.Hide;
+  wcThreadDownloader.FinishAllTasks();
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
-  Paymo.Free;
+  if Assigned(Paymo) then
+    Paymo.Free;
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
