@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
   ExtCtrls, Menus, upaymo, fpjson, uresourcestring, Types, utasklist,
-  AnimatedPanel, ColorSpeedButton, DefaultTranslator, LCLIntF;
+  AnimatedPanel, ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread;
 
 type
 
@@ -34,12 +34,25 @@ type
     pnlSpacer2: TPanel;
     pnlTop: TPanel;
     pmTray: TPopupMenu;
+    DownloadCompany: TTask;
+    DownloadProjects: TTask;
+    DownloadTasks: TTask;
+    DownloadTaskLists: TTask;
     tiTray: TTrayIcon;
+    wcThreadDownloader: TWCThread;
     procedure btnMenuClick(Sender: TObject);
     procedure btnMenuPaint(Sender: TObject);
     procedure btnOpenPaymoAppClick(Sender: TObject);
     procedure btnOpenPaymoAppMouseEnter(Sender: TObject);
     procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
+    procedure DownloadCompanyExecute(const Sender: TTask; const Msg: word;
+      var Param: variant);
+    procedure DownloadMeExecute(const Sender: TTask; const Msg: word;
+      var Param: variant);
+    procedure DownloadProjectsExecute(const Sender: TTask; const Msg: word;
+      var Param: variant);
+    procedure DownloadTasksExecute(const Sender: TTask; const Msg: word;
+      var Param: variant);
     procedure FormClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -49,8 +62,11 @@ type
     procedure FormShow(Sender: TObject);
     procedure miAboutClick(Sender: TObject);
     procedure miQuitClick(Sender: TObject);
+    procedure DownloadTaskListsExecute(const Sender: TTask; const Msg: word;
+      var Param: variant);
     procedure tiTrayClick(Sender: TObject);
     procedure hideMenu(Sender: TObject);
+    procedure wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
   private
     Tasks: TTaskList;
   public
@@ -82,23 +98,10 @@ begin
   Login;
   if Paymo.LoggedIn then
   begin
-    Paymo.GetMe();
-    Paymo.GetCompany();
-    pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
-    //ShowMessage(Paymo.CompanyData.FormatJSON());
-    pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
-
-    Paymo.GetTasks();
-    Paymo.GetTaskLists();
-    Paymo.GetRunningTimer();
-
-    //Paymo.CreateTask('"Hola" Mundo', 'From @FPC', Paymo.TaskListsArray[0].GetPath('id').AsInteger);
-    //ShowMessage(Paymo.MyData.FindPath('id').AsString);
-    //ShowMessage(Paymo.RunningTimerData.FormatJSON());
-    Tasks := TTaskList.Create(Self);
-    Tasks.PaymoInstance := Paymo;
-    Tasks.Parent := Self;
-    Tasks.Align := alClient;
+    DownloadCompany.Start;
+    DownloadProjects.Start;
+    DownloadTasks.Start;
+    DownloadTaskLists.Start;
   end;
 end;
 
@@ -121,13 +124,14 @@ begin
   c.Canvas.Pen.Color := clWhite;
   c.Canvas.Line(0, 0, c.Width, 0);
   c.Canvas.Line(0, h, c.Width, h);
-  c.Canvas.Line(0, c.Height-1, c.Width, c.Height-1);
+  c.Canvas.Line(0, c.Height - 1, c.Width, c.Height - 1);
 end;
 
 procedure TfrmMain.btnMenuClick(Sender: TObject);
 begin
   pnlMenu.Visible := True;
   pnlMenu.Width := 0;
+  pnlMenu.Height := Height;
   pnlMenu.Animate();
   // change style to disabled
   pnlTop.Enabled := False;
@@ -147,6 +151,30 @@ end;
 procedure TfrmMain.btnOpenPaymoAppMouseLeave(Sender: TObject);
 begin
   TControl(Sender).Font.Color := RGBToColor(135, 143, 156);
+end;
+
+procedure TfrmMain.DownloadCompanyExecute(const Sender: TTask;
+  const Msg: word; var Param: variant);
+begin
+  Paymo.GetCompany();
+end;
+
+procedure TfrmMain.DownloadMeExecute(const Sender: TTask; const Msg: word;
+  var Param: variant);
+begin
+  Paymo.GetMe();
+end;
+
+procedure TfrmMain.DownloadProjectsExecute(const Sender: TTask;
+  const Msg: word; var Param: variant);
+begin
+  Paymo.GetProjects();
+end;
+
+procedure TfrmMain.DownloadTasksExecute(const Sender: TTask; const Msg: word;
+  var Param: variant);
+begin
+  Paymo.GetTasks();
 end;
 
 procedure TfrmMain.FormClick(Sender: TObject);
@@ -180,7 +208,6 @@ begin
   tiTray.Icons := ilTrayNormalMac;
   tiTray.Animate := True;
   {$ENDIF}
-  ListTasks();
 end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);
@@ -192,6 +219,12 @@ procedure TfrmMain.miQuitClick(Sender: TObject);
 begin
   Self.OnCloseQuery := nil;
   Close;
+end;
+
+procedure TfrmMain.DownloadTaskListsExecute(const Sender: TTask;
+  const Msg: word; var Param: variant);
+begin
+  Paymo.GetTaskLists();
 end;
 
 procedure TfrmMain.tiTrayClick(Sender: TObject);
@@ -206,6 +239,22 @@ begin
   // change style back to enabled
   pnlTop.Enabled := True;
   Tasks.Enabled := True;
+end;
+
+procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
+begin
+  if not Assigned(Tasks) then
+  begin
+    Paymo.GetRunningTimer();
+    pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
+    pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
+    btnMenu.Enabled := True;
+    Tasks := TTaskList.Create(Self);
+    Tasks.PaymoInstance := Paymo;
+    Tasks.Parent := Self;
+    Tasks.Align := alClient;
+    ListTasks();
+  end;
 end;
 
 procedure TfrmMain.Login;

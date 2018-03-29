@@ -145,7 +145,7 @@ end;
 
 function TPaymo.Login: TPaymoResponseStatus;
 begin
-  Result := GetProjects();
+  Result := GetMe();
   case Result of
     prOK: FLoggedIn := True;
     prTRYAGAIN: FLoggedIn := False;

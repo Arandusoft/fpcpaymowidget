@@ -43,6 +43,7 @@ object frmMain: TfrmMain
       Height = 16
       Top = 17
       Width = 16
+      Enabled = False
       Font.Color = clBlack
       OnClick = btnMenuClick
       OnPaint = btnMenuPaint
@@ -680,5 +681,22 @@ object frmMain: TfrmMain
       F7E9B6156D7FE1D779D83928DEDF1D86BF6998DF66D69F82270751CF0B0C7F83
       E6B50D6BF4A3FE7E019F7A142E
     }
+  end
+  object wcThreadDownloader: TWCThread
+    OnAllTasksFinished = wcThreadDownloaderAllTasksFinished
+    Left = 280
+    Top = 176
+    object DownloadCompany: TTask
+      OnExecute = DownloadCompanyExecute
+    end
+    object DownloadProjects: TTask
+      OnExecute = DownloadProjectsExecute
+    end
+    object DownloadTasks: TTask
+      OnExecute = DownloadTasksExecute
+    end
+    object DownloadTaskLists: TTask
+      OnExecute = DownloadTaskListsExecute
+    end
   end
 end

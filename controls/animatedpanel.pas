@@ -37,7 +37,7 @@ type
     property Timer: TTimer read FTimer write SetFTimer;
   published
     property Style: TAnimatedPanelStyle read FStyle write SetFStyle;
-    property UseAutoSize: boolean read FUseAutoSize write SetFUseAutoSize default False;
+    property UseAutoSize: boolean read FUseAutoSize write SetFUseAutoSize;
     property AnimWidth: integer read FWidth write SetFWidth;
     property AnimHeight: integer read FHeight write SetFHeight;
   end;
