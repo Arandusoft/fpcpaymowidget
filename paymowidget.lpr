@@ -10,8 +10,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   upaymo,
   ulogin,
   uresourcestring,
-  utasklist,
-  uanimatedpanel { you can add units after this };
+  utasklist;
 
 {$R *.res}
 

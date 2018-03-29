@@ -10,6 +10,7 @@ object frmMain: TfrmMain
   Constraints.MinHeight = 540
   Constraints.MinWidth = 360
   OnClick = FormClick
+  OnClose = FormClose
   OnCloseQuery = FormCloseQuery
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -63,7 +64,7 @@ object frmMain: TfrmMain
       StateDisabled.BorderWidth = 0
     end
   end
-  object pnlMenu: TPanel
+  object pnlMenu: TAnimatedPanel
     Left = 8
     Height = 474
     Top = 72
@@ -72,10 +73,12 @@ object frmMain: TfrmMain
     ClientHeight = 474
     ClientWidth = 270
     Color = 2365715
-    Constraints.MinWidth = 270
     ParentColor = False
     TabOrder = 1
     Visible = False
+    Style = apsLeftRight
+    AnimWidth = 270
+    AnimHeight = 0
     object pnlMenuUser: TLabel
       Left = 80
       Height = 21

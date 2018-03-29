@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
   ExtCtrls, Menus, upaymo, fpjson, uresourcestring, Types, utasklist,
-  ColorSpeedButton, DefaultTranslator, LCLIntF;
+  AnimatedPanel, ColorSpeedButton, DefaultTranslator, LCLIntF;
 
 type
 
@@ -15,8 +15,8 @@ type
 
   TfrmMain = class(TForm)
     btnAbout: TColorSpeedButton;
-    btnOpenPaymoApp: TColorSpeedButton;
     btnMenu: TColorSpeedButton;
+    btnOpenPaymoApp: TColorSpeedButton;
     btnQuit: TColorSpeedButton;
     ilTrayAnimWin: TImageList;
     ilTrayAnimMac: TImageList;
@@ -27,10 +27,10 @@ type
     miShow: TMenuItem;
     miAbout: TMenuItem;
     miQuit: TMenuItem;
-    pnlSpacer1: TPanel;
-    pnlMenu: TPanel;
+    pnlMenu: TAnimatedPanel;
     pnlMenuCompany: TLabel;
     pnlMenuUser: TLabel;
+    pnlSpacer1: TPanel;
     pnlSpacer2: TPanel;
     pnlTop: TPanel;
     pmTray: TPopupMenu;
@@ -41,6 +41,7 @@ type
     procedure btnOpenPaymoAppMouseEnter(Sender: TObject);
     procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
     procedure FormClick(Sender: TObject);
+    procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
@@ -126,10 +127,10 @@ end;
 procedure TfrmMain.btnMenuClick(Sender: TObject);
 begin
   pnlMenu.Visible := True;
+  pnlMenu.Width := 0;
+  pnlMenu.Animate();
   // change style to disabled
-  //pnlTop.Color := RGBToColor(8, 94, 83);
   pnlTop.Enabled := False;
-  //Tasks.Color := RGBToColor(117, 117, 117);
   Tasks.Enabled := False;
 end;
 
@@ -151,6 +152,11 @@ end;
 procedure TfrmMain.FormClick(Sender: TObject);
 begin
   hideMenu(Self);
+end;
+
+procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
+begin
+  tiTray.Hide;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
@@ -179,7 +185,7 @@ end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);
 begin
-  ShowMessage('Copyright © 2018 Arandusoft');
+  ShowMessage('Copyright © 2018 Arandú Software');
 end;
 
 procedure TfrmMain.miQuitClick(Sender: TObject);
@@ -196,11 +202,9 @@ end;
 
 procedure TfrmMain.hideMenu(Sender: TObject);
 begin
-  pnlMenu.Visible := False;
+  pnlMenu.Animate();
   // change style back to enabled
-  //pnlTop.Color := RGBToColor(18, 208, 184);
   pnlTop.Enabled := True;
-  //Tasks.Color := clWhite;
   Tasks.Enabled := True;
 end;
 

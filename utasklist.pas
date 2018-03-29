@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Controls, ExtCtrls, fpjson, StdCtrls, Graphics, Forms,
-  upaymo, Dialogs, DateUtils, uanimatedpanel, LazUTF8, Math, uresourcestring;
+  upaymo, Dialogs, DateUtils, AnimatedPanel, LazUTF8, Math, uresourcestring;
 
 const
   FONTNAME = 'Nunito Sans';
@@ -156,7 +156,8 @@ end;
 procedure TTaskList.RefreshItems;
 var
   i, j, k, sum, sec, sumDay: integer;
-  d, p, pc, e, play: TPanel;
+  d, e: TAnimatedPanel;
+  p, pc, play: TPanel;
   l, lt: TLabel;
   arr, arrEntries, arrFilteredEntries: TJSONArray;
   sl: TStringList;
@@ -199,6 +200,8 @@ begin
 
     // day panel
     d := TAnimatedPanel.Create(Self);
+    d.Style := apsTopBottom;
+    d.UseAutoSize := True;
     d.Font.Name := FONTNAME;
     d.BevelOuter := bvNone;
     d.Align := alTop;
@@ -336,6 +339,8 @@ begin
       lt.Parent := pc;
       // time entries container
       e := TAnimatedPanel.Create(p);
+      e.Style := apsTopBottom;
+      e.UseAutoSize := True;
       e.Font.Name := FONTNAME;
       e.BorderSpacing.Left := 30;
       e.BevelOuter := bvNone;
