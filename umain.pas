@@ -101,6 +101,17 @@ begin
   Paymo := TPaymo.Create;
   Paymo.LoadSettings;
   Login;
+  if Paymo.LoggedIn then
+  begin
+    try
+      DownloadCompany.Start;
+      DownloadProjects.Start;
+      DownloadTasks.Start;
+      DownloadTaskLists.Start;
+      DownloadRunningTimer.Start;
+    except
+    end;
+  end;
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -219,14 +230,6 @@ begin
   tiTray.Icons := ilTrayNormalMac;
   tiTray.Animate := True;
   {$ENDIF}
-  if Paymo.LoggedIn then
-  begin
-    DownloadCompany.Start;
-    DownloadProjects.Start;
-    DownloadTasks.Start;
-    DownloadTaskLists.Start;
-    DownloadRunningTimer.Start;
-  end;
 end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);
@@ -263,6 +266,7 @@ end;
 
 procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
 begin
+  ShowMessage('ok');
   if not Assigned(Tasks) then
   begin
     pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
