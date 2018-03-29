@@ -32,6 +32,10 @@ msgctxt "tfrmmain.btnabout.caption"
 msgid "About"
 msgstr "Acerca de"
 
+#: tfrmmain.btnmenuexit.caption
+msgid "←"
+msgstr ""
+
 #: tfrmmain.btnopenpaymoapp.caption
 msgid "Open Paymo App"
 msgstr "Abrir Paymo App"
@@ -90,3 +94,4 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
+

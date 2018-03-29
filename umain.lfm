@@ -78,6 +78,7 @@ object frmMain: TfrmMain
     TabOrder = 1
     Visible = False
     Style = apsLeftRight
+    UseAutoSize = False
     AnimWidth = 270
     AnimHeight = 0
     object pnlMenuUser: TLabel
@@ -238,6 +239,39 @@ object frmMain: TfrmMain
       Color = 3418661
       ParentColor = False
       TabOrder = 1
+    end
+    object btnMenuExit: TColorSpeedButton
+      Cursor = crHandPoint
+      Left = 232
+      Height = 45
+      Top = 0
+      Width = 31
+      AutoSize = True
+      Constraints.MinHeight = 40
+      Caption = '←'
+      Font.Color = 10260359
+      Font.Height = -30
+      Font.Name = 'Nunito Sans'
+      Font.Style = [fsBold]
+      OnClick = hideMenu
+      OnMouseEnter = btnOpenPaymoAppMouseEnter
+      OnMouseLeave = btnOpenPaymoAppMouseLeave
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 2365715
+      StateNormal.BorderColor = 2365715
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 2365715
+      StateHover.BorderColor = 2365715
+      StateHover.BorderWidth = 0
+      StateActive.Color = 2365715
+      StateActive.BorderColor = 2365715
+      StateActive.BorderWidth = 1
+      StateDisabled.Color = 2365715
+      StateDisabled.BorderColor = 2365715
+      StateDisabled.BorderWidth = 0
     end
   end
   object tiTray: TTrayIcon

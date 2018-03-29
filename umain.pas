@@ -17,6 +17,7 @@ type
     btnAbout: TColorSpeedButton;
     btnMenu: TColorSpeedButton;
     btnOpenPaymoApp: TColorSpeedButton;
+    btnMenuExit: TColorSpeedButton;
     btnQuit: TColorSpeedButton;
     ilTrayAnimWin: TImageList;
     ilTrayAnimMac: TImageList;

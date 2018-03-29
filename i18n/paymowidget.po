@@ -22,6 +22,10 @@ msgctxt "tfrmmain.btnabout.caption"
 msgid "About"
 msgstr ""
 
+#: tfrmmain.btnmenuexit.caption
+msgid "←"
+msgstr ""
+
 #: tfrmmain.btnopenpaymoapp.caption
 msgid "Open Paymo App"
 msgstr ""
