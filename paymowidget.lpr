@@ -10,7 +10,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   upaymo,
   ulogin,
   uresourcestring,
-  utasklist;
+  utasklist, utimeentry;
 
 {$R *.res}
 
@@ -20,5 +20,6 @@ begin
   Application.Scaled := True;
   Application.Initialize;
   Application.CreateForm(TfrmMain, frmMain);
+  Application.CreateForm(TfrmTimeEntry, frmTimeEntry);
   Application.Run;
 end.

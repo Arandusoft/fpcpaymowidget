@@ -75,6 +75,56 @@ msgstr "Nombre de Usuario"
 msgid "Timesheet"
 msgstr "Horas trabajadas"
 
+#: tfrmtimeentry.caption
+msgid "Edit Time Entry"
+msgstr ""
+
+#: tfrmtimeentry.dlgdate.cancelcaption
+msgid "Cancel"
+msgstr ""
+
+#: tfrmtimeentry.dlgdate.okcaption
+msgid "&OK"
+msgstr ""
+
+#: tfrmtimeentry.lbl_date.caption
+msgid "Date"
+msgstr ""
+
+#: tfrmtimeentry.time_end_hh.text
+msgctxt "tfrmtimeentry.time_end_hh.text"
+msgid "00"
+msgstr ""
+
+#: tfrmtimeentry.time_end_mm.text
+msgctxt "tfrmtimeentry.time_end_mm.text"
+msgid "00"
+msgstr ""
+
+#: tfrmtimeentry.time_end_separator.caption
+msgctxt "tfrmtimeentry.time_end_separator.caption"
+msgid ":"
+msgstr ""
+
+#: tfrmtimeentry.time_start_hh.text
+msgctxt "tfrmtimeentry.time_start_hh.text"
+msgid "00"
+msgstr ""
+
+#: tfrmtimeentry.time_start_mm.text
+msgctxt "tfrmtimeentry.time_start_mm.text"
+msgid "00"
+msgstr ""
+
+#: tfrmtimeentry.time_start_separator.caption
+msgctxt "tfrmtimeentry.time_start_separator.caption"
+msgid ":"
+msgstr ""
+
+#: tfrmtimeentry.time_start_separator1.caption
+msgid "‒"
+msgstr ""
+
 #: uresourcestring.rserrorcantlogin
 msgid "Can't login."
 msgstr "No se puede iniciar sesión."

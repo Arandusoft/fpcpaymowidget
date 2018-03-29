@@ -84,9 +84,8 @@ var
   frmMain: TfrmMain;
 
 implementation
-
 uses
-  ulogin;
+  utimeentry, ulogin;
 
 {$R *.lfm}
 
@@ -194,9 +193,9 @@ end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
+  wcThreadDownloader.FinishAllTasks();
   if Assigned(Paymo) then
     Paymo.Free;
-  wcThreadDownloader.FinishAllTasks();
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
@@ -206,6 +205,7 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
+  //frmTimeEntry.Show;
   tiTray.Show;
   {$IFDEF WINDOWS}
   tiTray.Icons := ilTrayNormalWin;
@@ -221,6 +221,7 @@ begin
     DownloadProjects.Start;
     DownloadTasks.Start;
     DownloadTaskLists.Start;
+    DownloadRunningTimer.Start;
   end;
 end;
 
@@ -259,7 +260,6 @@ procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
 begin
   if not Assigned(Tasks) then
   begin
-    DownloadRunningTimer.Start;
     pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
     pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
     btnMenu.Enabled := True;

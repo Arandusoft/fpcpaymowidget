@@ -1,0 +1,140 @@
+object frmTimeEntry: TfrmTimeEntry
+  Left = 361
+  Height = 240
+  Top = 132
+  Width = 320
+  Caption = 'Edit Time Entry'
+  ClientHeight = 240
+  ClientWidth = 320
+  Color = 12111890
+  LCLVersion = '1.9.0.0'
+  object time_start_hh: TEdit
+    Left = 56
+    Height = 21
+    Top = 120
+    Width = 32
+    Alignment = taCenter
+    AutoSize = False
+    BorderStyle = bsNone
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans'
+    MaxLength = 2
+    NumbersOnly = True
+    ParentColor = True
+    ParentFont = False
+    TabOrder = 0
+    Text = '00'
+  end
+  object time_start_mm: TEdit
+    Left = 96
+    Height = 21
+    Top = 120
+    Width = 32
+    Alignment = taCenter
+    AutoSize = False
+    BorderStyle = bsNone
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans'
+    MaxLength = 2
+    NumbersOnly = True
+    ParentColor = True
+    ParentFont = False
+    TabOrder = 1
+    Text = '00'
+  end
+  object time_start_separator: TLabel
+    Left = 90
+    Height = 21
+    Top = 120
+    Width = 4
+    Caption = ':'
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object time_end_hh: TEdit
+    Left = 192
+    Height = 21
+    Top = 120
+    Width = 32
+    Alignment = taCenter
+    AutoSize = False
+    BorderStyle = bsNone
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans'
+    MaxLength = 2
+    NumbersOnly = True
+    ParentColor = True
+    ParentFont = False
+    TabOrder = 2
+    Text = '00'
+  end
+  object time_end_mm: TEdit
+    Left = 232
+    Height = 21
+    Top = 120
+    Width = 32
+    Alignment = taCenter
+    AutoSize = False
+    BorderStyle = bsNone
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans'
+    MaxLength = 2
+    NumbersOnly = True
+    ParentColor = True
+    ParentFont = False
+    TabOrder = 3
+    Text = '00'
+  end
+  object time_end_separator: TLabel
+    Left = 226
+    Height = 21
+    Top = 120
+    Width = 4
+    Caption = ':'
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object time_start_separator1: TLabel
+    Left = 152
+    Height = 21
+    Top = 120
+    Width = 10
+    Caption = '‒'
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object lbl_date: TLabel
+    Left = 61
+    Height = 21
+    Top = 80
+    Width = 33
+    Caption = 'Date'
+    Font.Color = clWhite
+    Font.Height = -16
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+    OnClick = lbl_dateClick
+  end
+  object dlgDate: TCalendarDialog
+    DialogPosition = poOwnerFormCenter
+    Date = 43188
+    OKCaption = '&OK'
+    CancelCaption = 'Cancel'
+    Left = 136
+    Top = 168
+  end
+end

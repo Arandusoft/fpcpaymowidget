@@ -23,6 +23,7 @@ type
     FItems: TJSONArray;
     FPaymo: TPaymo;
     procedure OnClickPlay(Sender: TObject);
+    procedure OnClickTimeEntry(Sender: TObject);
     procedure OnEnterPlay(Sender: TObject);
     procedure OnLeavePlay(Sender: TObject);
     procedure OnMouseEnterTimeLabel(Sender: TObject);
@@ -45,6 +46,8 @@ type
   end;
 
 implementation
+uses
+  utimeentry;
 
 { TTaskList }
 
@@ -69,6 +72,13 @@ begin
   end
   else
     OnClickItem(Sender);
+end;
+
+procedure TTaskList.OnClickTimeEntry(Sender: TObject);
+begin
+  // show edit time entry
+  frmTimeEntry.Caption := 'Entry ' + TControl(Sender).Tag.ToString;
+  frmTimeEntry.Show;
 end;
 
 procedure TTaskList.OnEnterPlay(Sender: TObject);
@@ -371,6 +381,8 @@ begin
           arrFilteredEntries[j].GetPath('end_time').AsString));
         l.OnMouseEnter := @OnMouseEnterTimeLabel;
         l.OnMouseLeave := @OnMouseLeaveTimeLabel;
+        l.Tag := arrFilteredEntries[j].GetPath('id').AsInteger;
+        l.OnClick := @OnClickTimeEntry;
         l.Parent := e;
         // entry time label
         l := TLabel.Create(e);
