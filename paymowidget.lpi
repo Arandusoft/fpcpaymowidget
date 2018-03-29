@@ -26,7 +26,7 @@
       <MajorVersionNr Value="1"/>
       <StringTable CompanyName="Arandusoft"/>
     </VersionInfo>
-    <BuildModes Count="8">
+    <BuildModes Count="9">
       <Item1 Name="Debug" Default="True"/>
       <Item2 Name="Release">
         <CompilerOptions>
@@ -187,8 +187,7 @@
         </CompilerOptions>
       </Item6>
       <Item7 Name="Release-macos32">
-        <MacroValues Count="2">
-          <Macro1 Name="LCLWidgetType" Value="cocoa"/>
+        <MacroValues Count="1">
           <Macro2 Name="LCLWidgetType" Value="carbon"/>
         </MacroValues>
         <CompilerOptions>
@@ -223,6 +222,9 @@
         </CompilerOptions>
       </Item7>
       <Item8 Name="Release-macos64">
+        <MacroValues Count="1">
+          <Macro1 Name="LCLWidgetType" Value="cocoa"/>
+        </MacroValues>
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -244,6 +246,7 @@
           <Linking>
             <Debugging>
               <GenerateDebugInfo Value="False"/>
+              <StripSymbols Value="True"/>
             </Debugging>
             <LinkSmart Value="True"/>
             <Options>
@@ -254,9 +257,46 @@
           </Linking>
         </CompilerOptions>
       </Item8>
-      <SharedMatrixOptions Count="2">
-        <Item1 ID="049651846518" Modes="Release-macos32" Type="IDEMacro" MacroName="LCLWidgetType" Value="cocoa"/>
+      <Item9 Name="Release-macos64QT">
+        <MacroValues Count="1">
+          <Macro3 Name="LCLWidgetType" Value="qt5"/>
+        </MacroValues>
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="bin\$(TargetCPU)-$(TargetOS)\paymowidget"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="darwin"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+              <StripSymbols Value="True"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item9>
+      <SharedMatrixOptions Count="3">
+        <Item1 ID="049651846518" Modes="Release-macos64" Type="IDEMacro" MacroName="LCLWidgetType" Value="cocoa"/>
         <Item2 ID="809623305238" Modes="Release-macos32" Type="IDEMacro" MacroName="LCLWidgetType" Value="carbon"/>
+        <Item3 ID="676783289146" Modes="Release-macos64QT" Type="IDEMacro" MacroName="LCLWidgetType" Value="qt5"/>
       </SharedMatrixOptions>
     </BuildModes>
     <PublishOptions>
