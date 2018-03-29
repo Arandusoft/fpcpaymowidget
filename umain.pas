@@ -252,9 +252,9 @@ begin
     btnMenu.Enabled := True;
     Tasks := TTaskList.Create(Self);
     Tasks.PaymoInstance := Paymo;
-    Tasks.Parent := Self;
     Tasks.Align := alClient;
     ListTasks();
+    Tasks.Parent := Self;
   end;
 end;
 
