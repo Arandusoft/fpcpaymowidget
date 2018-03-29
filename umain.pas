@@ -111,8 +111,12 @@ begin
   if Sender is TTrayIcon then
     Exit;
   CanClose := False;
+  {$IFDEF LINUX}
+  Application.Minimize;
+  {$ELSE}
   Self.Hide;
   Self.ShowInTaskBar := stNever;
+  {$ENDIF}
 end;
 
 procedure TfrmMain.btnMenuPaint(Sender: TObject);
