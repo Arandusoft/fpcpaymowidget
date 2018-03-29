@@ -732,5 +732,8 @@ object frmMain: TfrmMain
     object DownloadTaskLists: TTask
       OnExecute = DownloadTaskListsExecute
     end
+    object DownloadRunningTimer: TTask
+      OnExecute = DownloadRunningTimerExecute
+    end
   end
 end

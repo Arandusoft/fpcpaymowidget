@@ -39,6 +39,7 @@ type
     DownloadProjects: TTask;
     DownloadTasks: TTask;
     DownloadTaskLists: TTask;
+    DownloadRunningTimer: TTask;
     tiTray: TTrayIcon;
     wcThreadDownloader: TWCThread;
     procedure btnMenuClick(Sender: TObject);
@@ -52,6 +53,8 @@ type
       var Param: variant);
     procedure DownloadProjectsExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
+    procedure DownloadRunningTimerExecute(const Sender: TTask; const Msg: Word;
+      var Param: Variant);
     procedure DownloadTasksExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure FormClick(Sender: TObject);
@@ -101,8 +104,6 @@ end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
 begin
-  if Sender is TTrayIcon then
-    Exit;
   CanClose := False;
   {$IFDEF LINUX}
   Application.Minimize;
@@ -169,6 +170,12 @@ begin
   Paymo.GetProjects();
 end;
 
+procedure TfrmMain.DownloadRunningTimerExecute(const Sender: TTask;
+  const Msg: Word; var Param: Variant);
+begin
+  Paymo.GetRunningTimer();
+end;
+
 procedure TfrmMain.DownloadTasksExecute(const Sender: TTask; const Msg: word;
   var Param: variant);
 begin
@@ -183,13 +190,13 @@ end;
 procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
   tiTray.Hide;
-  wcThreadDownloader.FinishAllTasks();
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
 begin
   if Assigned(Paymo) then
     Paymo.Free;
+  wcThreadDownloader.FinishAllTasks();
 end;
 
 procedure TfrmMain.FormResize(Sender: TObject);
@@ -252,7 +259,7 @@ procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
 begin
   if not Assigned(Tasks) then
   begin
-    Paymo.GetRunningTimer();
+    DownloadRunningTimer.Start;
     pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
     pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
     btnMenu.Enabled := True;
