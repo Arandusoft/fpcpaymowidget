@@ -197,6 +197,7 @@ destructor TAnimatedPanel.Destroy;
 begin
   if Assigned(FTimer) then
   begin
+    FShow := False;
     FTimer.Enabled := False;
     FTimer.Free;
   end;

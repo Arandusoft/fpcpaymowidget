@@ -97,13 +97,6 @@ begin
   Paymo := TPaymo.Create;
   Paymo.LoadSettings;
   Login;
-  if Paymo.LoggedIn then
-  begin
-    DownloadCompany.Start;
-    DownloadProjects.Start;
-    DownloadTasks.Start;
-    DownloadTaskLists.Start;
-  end;
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -215,6 +208,13 @@ begin
   tiTray.Icons := ilTrayNormalMac;
   tiTray.Animate := True;
   {$ENDIF}
+  if Paymo.LoggedIn then
+  begin
+    DownloadCompany.Start;
+    DownloadProjects.Start;
+    DownloadTasks.Start;
+    DownloadTaskLists.Start;
+  end;
 end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);

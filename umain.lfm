@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = -605
+  Left = 344
   Height = 540
-  Top = 308
+  Top = 150
   Width = 360
   Caption = 'FPC Paymo Widget'
   ClientHeight = 540
@@ -83,7 +83,7 @@ object frmMain: TfrmMain
     AnimHeight = 0
     object pnlMenuUser: TLabel
       Left = 80
-      Height = 19
+      Height = 21
       Top = 40
       Width = 190
       Align = alTop
@@ -98,8 +98,8 @@ object frmMain: TfrmMain
     end
     object pnlMenuCompany: TLabel
       Left = 80
-      Height = 17
-      Top = 59
+      Height = 19
+      Top = 61
       Width = 190
       Align = alTop
       BorderSpacing.Left = 80
@@ -115,7 +115,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 147
+      Top = 151
       Width = 270
       Align = alTop
       AutoSize = True
@@ -148,7 +148,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 198
+      Top = 202
       Width = 270
       Align = alTop
       AutoSize = True
@@ -180,7 +180,7 @@ object frmMain: TfrmMain
     object pnlSpacer1: TPanel
       Left = 30
       Height = 1
-      Top = 192
+      Top = 196
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -196,7 +196,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 96
+      Top = 100
       Width = 270
       Align = alTop
       AutoSize = True
@@ -228,7 +228,7 @@ object frmMain: TfrmMain
     object pnlSpacer2: TPanel
       Left = 30
       Height = 1
-      Top = 141
+      Top = 145
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -243,9 +243,9 @@ object frmMain: TfrmMain
     object btnMenuExit: TColorSpeedButton
       Cursor = crHandPoint
       Left = 232
-      Height = 40
+      Height = 45
       Top = 0
-      Width = 34
+      Width = 31
       AutoSize = True
       Constraints.MinHeight = 40
       Caption = '←'
