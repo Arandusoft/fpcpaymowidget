@@ -37,6 +37,7 @@ type
     function CompanyData: TJSONData;
     function RunningTimerData: TJSONData;
     function GetProjectName(ProjectID: integer): string;
+    function GetTimeEntry(EntryID: integer): TJSONData;
   public
     destructor Destroy; override;
     property APIKey: string read FAPIKey write SetFAPIKey;
@@ -123,6 +124,24 @@ begin
   begin
     if ProjectID = arr[i].GetPath('id').AsInteger then
       exit(arr[i].GetPath('name').AsString);
+  end;
+end;
+
+function TPaymo.GetTimeEntry(EntryID: integer): TJSONData;
+var
+  arr, arrEntries: TJSONArray;
+  i, j: integer;
+begin
+  Result := nil;
+  arr := TasksArray;
+  for i:=0 to arr.Count-1 do
+  begin
+    arrEntries := TJSONArray(arr[i].GetPath('entries'));
+    for j:=0 to arrEntries.Count-1 do
+    begin
+      if arrEntries[j].GetPath('id').AsInteger = EntryID then
+        exit(arrEntries[j]);
+    end;
   end;
 end;
 

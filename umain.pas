@@ -7,7 +7,8 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
   ExtCtrls, Menus, upaymo, fpjson, uresourcestring, Types, utasklist,
-  AnimatedPanel, ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread;
+  AnimatedPanel, ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread,
+  LMessages;
 
 type
 
@@ -73,6 +74,7 @@ type
     procedure wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
   private
     Tasks: TTaskList;
+    procedure WMMove(var Message: TLMMove); message LM_MOVE;
   public
     Paymo: TPaymo;
     procedure Login;
@@ -133,7 +135,8 @@ begin
   pnlMenu.Animate();
   // change style to disabled
   pnlTop.Enabled := False;
-  Tasks.Enabled := False;
+  if Assigned(Tasks) then
+    Tasks.Enabled := False;
 end;
 
 procedure TfrmMain.btnOpenPaymoAppClick(Sender: TObject);
@@ -201,6 +204,7 @@ end;
 procedure TfrmMain.FormResize(Sender: TObject);
 begin
   pnlMenu.Height := Height;
+  frmTimeEntry.Height := frmMain.Height;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
@@ -253,7 +257,8 @@ begin
   pnlMenu.Animate();
   // change style back to enabled
   pnlTop.Enabled := True;
-  Tasks.Enabled := True;
+  if Assigned(Tasks) then
+    Tasks.Enabled := True;
 end;
 
 procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
@@ -269,6 +274,19 @@ begin
     ListTasks();
     Tasks.Parent := Self;
   end;
+end;
+
+procedure TfrmMain.WMMove(var Message: TLMMove);
+var
+  l, t: integer;
+begin
+  inherited WMMove(Message);
+  l := Self.Left - frmTimeEntry.Width;
+  t  := Self.Top;
+  if frmTimeEntry.Left <> l then
+    frmTimeEntry.Left := l;
+  if frmTimeEntry.Top <> t then
+    frmTimeEntry.Top := t;
 end;
 
 procedure TfrmMain.Login;

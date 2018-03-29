@@ -31,14 +31,14 @@ type
     procedure SetFItems(AValue: TJSONArray);
     procedure SetFPaymo(AValue: TPaymo);
   protected
-    function SecondsToString(Seconds: integer): string;
-    function StringToDateTime(DateTime: string): TDateTime;
-    function IsSameDate(Date1, Date2: TDateTime): boolean;
     procedure OnClickItem(Sender: TObject);
     procedure OnClickItemParent(Sender: TObject);
     procedure DayClick(Sender: TObject);
     procedure DayClickParent(Sender: TObject);
   public
+    class function SecondsToString(Seconds: integer): string;
+    class function StringToDateTime(DateTime: string): TDateTime;
+    class function IsSameDate(Date1, Date2: TDateTime): boolean;
     constructor Create(AOwner: TComponent); override;
   public
     property PaymoInstance: TPaymo read FPaymo write SetFPaymo;
@@ -75,10 +75,19 @@ begin
 end;
 
 procedure TTaskList.OnClickTimeEntry(Sender: TObject);
+var
+  data: TJSONData;
 begin
   // show edit time entry
-  frmTimeEntry.Caption := 'Entry ' + TControl(Sender).Tag.ToString;
-  frmTimeEntry.Show;
+  data := PaymoInstance.GetTimeEntry(TControl(Sender).Tag);
+  if data <> nil then
+  begin
+    frmTimeEntry.PaymoInstance := PaymoInstance;
+    frmTimeEntry.Data := data;
+    //frmTimeEntry.Caption := 'Entry ' + TControl(Sender).Tag.ToString;
+    frmTimeEntry.ShowData;
+    frmTimeEntry.Show;
+  end;
 end;
 
 procedure TTaskList.OnEnterPlay(Sender: TObject);
@@ -123,7 +132,7 @@ begin
   FPaymo := AValue;
 end;
 
-function TTaskList.SecondsToString(Seconds: integer): string;
+class function TTaskList.SecondsToString(Seconds: integer): string;
 var
   hh, mins, ss: DWord;
 begin
@@ -132,13 +141,13 @@ begin
   Result := Format('%.2d:%.2d', [hh, mins]);
 end;
 
-function TTaskList.StringToDateTime(DateTime: string): TDateTime;
+class function TTaskList.StringToDateTime(DateTime: string): TDateTime;
 begin
   Result := ScanDateTime('yyyy-mm-dd"T"hh:nn:ss', Copy(DateTime, 1, 19));
   Result := UniversalTimeToLocal(Result);
 end;
 
-function TTaskList.IsSameDate(Date1, Date2: TDateTime): boolean;
+class function TTaskList.IsSameDate(Date1, Date2: TDateTime): boolean;
 var
   y1, m1, d1, y2, m2, d2: word;
 begin
