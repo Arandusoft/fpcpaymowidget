@@ -101,17 +101,22 @@ begin
     if FShow then
     begin
       Height := round(FHeight * temp);
-      if Height = FHeight then
+      if Height >= FHeight then
+      begin
+        Height := FHeight;
         Timer.Enabled := False;
+      end;
     end
     else
     begin
-      Height := FHeight - round(FHeight * temp);
-      if Height <= Constraints.MinHeight then
+      temp := FHeight - round(FHeight * temp);
+      if temp <= Constraints.MinHeight then
       begin
         Height := Constraints.MinHeight;
         Timer.Enabled := False;
-      end;
+      end
+      else
+        Height := trunc(temp);
     end;
   end;
 
@@ -120,17 +125,22 @@ begin
     if FShow then
     begin
       Width := round(FWidth * temp);
-      if Width = FWidth then
+      if Width >= FWidth then
+      begin
+        Width := FWidth;
         Timer.Enabled := False;
+      end;
     end
     else
     begin
-      Width := FWidth - round(FWidth * temp);
-      if Width <= Constraints.MinWidth then
+      temp := FWidth - round(FWidth * temp);
+      if temp <= Constraints.MinWidth then
       begin
         Width := Constraints.MinWidth;
         Timer.Enabled := False;
-      end;
+      end
+      else
+        Width := trunc(temp);
     end;
   end;
 end;

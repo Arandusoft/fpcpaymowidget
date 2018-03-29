@@ -111,8 +111,12 @@ begin
   if Sender is TTrayIcon then
     Exit;
   CanClose := False;
+  {$IFDEF LINUX}
+  Application.Minimize;
+  {$ELSE}
   Self.Hide;
   Self.ShowInTaskBar := stNever;
+  {$ENDIF}
 end;
 
 procedure TfrmMain.btnMenuPaint(Sender: TObject);
@@ -252,9 +256,9 @@ begin
     btnMenu.Enabled := True;
     Tasks := TTaskList.Create(Self);
     Tasks.PaymoInstance := Paymo;
-    Tasks.Parent := Self;
     Tasks.Align := alClient;
     ListTasks();
+    Tasks.Parent := Self;
   end;
 end;
 
