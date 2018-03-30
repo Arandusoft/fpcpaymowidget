@@ -28,6 +28,7 @@ var
   frmLogin: TfrmLogin;
 
 implementation
+
 uses
   umain;
 
@@ -44,11 +45,10 @@ procedure TfrmLogin.btnLoginClick(Sender: TObject);
 begin
   frmMain.Paymo.APIKey := edtAPIKey.Text;
   case frmMain.Paymo.Login of
-    prOK: ModalResult := mrOK;
+    prOK: ModalResult := mrOk;
     prTRYAGAIN: ShowMessage(rsTooManyRequestsTryAgainSoon);
     prERROR: ShowMessage(rsErrorCantLogin);
   end;
 end;
 
 end.
-

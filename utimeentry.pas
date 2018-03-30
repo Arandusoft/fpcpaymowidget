@@ -52,6 +52,7 @@ var
   frmTimeEntry: TfrmTimeEntry;
 
 implementation
+
 uses
   umain;
 
@@ -97,12 +98,12 @@ begin
   cbProjects.Clear;
   projects := PaymoInstance.ProjectsArray;
 
-  if data <> nil then
-    id := data.GetPath('project_id').AsInteger
+  if Data <> nil then
+    id := Data.GetPath('project_id').AsInteger
   else
     id := 0;
 
-  for i:=0 to projects.Count-1 do
+  for i := 0 to projects.Count - 1 do
   begin
     cbProjects.AddItem(projects[i].GetPath('name').AsString, projects[i]);
     if id = projects[i].GetPath('id').AsInteger then
@@ -121,13 +122,13 @@ begin
 
   proj_id := TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsInteger;
 
-  for i:=0 to tasklists.Count-1 do
+  for i := 0 to tasklists.Count - 1 do
   begin
     if (proj_id = tasklists[i].GetPath('project_id').AsInteger) then
     begin
-    cbProjectTaskLists.AddItem(tasklists[i].GetPath('name').AsString, tasklists[i]);
-    if TaskListID = tasklists[i].GetPath('id').AsInteger then
-      cbProjectTaskLists.ItemIndex := cbProjectTaskLists.Items.Count-1;
+      cbProjectTaskLists.AddItem(tasklists[i].GetPath('name').AsString, tasklists[i]);
+      if TaskListID = tasklists[i].GetPath('id').AsInteger then
+        cbProjectTaskLists.ItemIndex := cbProjectTaskLists.Items.Count - 1;
     end;
   end;
 
@@ -144,21 +145,22 @@ begin
   tasks := PaymoInstance.TasksArray;
   proj_id := TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsInteger;
 
-  if (data <> nil) and (FromData) then
+  if (Data <> nil) and (FromData) then
   begin
-    task_id := data.GetPath('task_id').AsInteger;
-    proj_id := data.GetPath('project_id').AsInteger;
+    task_id := Data.GetPath('task_id').AsInteger;
+    proj_id := Data.GetPath('project_id').AsInteger;
   end
   else
     task_id := 0;
 
-  for i:=0 to tasks.Count-1 do
+  for i := 0 to tasks.Count - 1 do
   begin
-    if (proj_id = tasks[i].GetPath('project_id').AsInteger) {and (not tasks[i].GetPath('complete').AsBoolean)} then
+    if (proj_id = tasks[i].GetPath('project_id').AsInteger)
+    {and (not tasks[i].GetPath('complete').AsBoolean)} then
       cbProjectTasks.AddItem(tasks[i].GetPath('name').AsString, tasks[i]);
     if task_id = tasks[i].GetPath('id').AsInteger then
     begin
-      cbProjectTasks.ItemIndex := cbProjectTasks.Items.Count-1;
+      cbProjectTasks.ItemIndex := cbProjectTasks.Items.Count - 1;
       Data_TaskListID := tasks[i].GetPath('tasklist_id').AsInteger;
     end;
   end;
@@ -171,13 +173,13 @@ procedure TfrmTimeEntry.FillDateAndTime;
 var
   tempTime: TDateTime;
 begin
-  if data <> nil then
+  if Data <> nil then
   begin
-    tempTime := TTaskList.StringToDateTime(data.GetPath('start_time').AsString);
+    tempTime := TTaskList.StringToDateTime(Data.GetPath('start_time').AsString);
     dlgDate.Date := tempTime;
     time_start_hh.Caption := FormatDateTime('hh', tempTime);
     time_start_mm.Caption := FormatDateTime('nn', tempTime);
-    tempTime := TTaskList.StringToDateTime(data.GetPath('end_time').AsString);
+    tempTime := TTaskList.StringToDateTime(Data.GetPath('end_time').AsString);
     time_end_hh.Caption := FormatDateTime('hh', tempTime);
     time_end_mm.Caption := FormatDateTime('nn', tempTime);
   end
@@ -233,7 +235,8 @@ var
   s_hh, s_mm: string;
 begin
   // required fields
-  canSave := (time_start_hh.Text <> '') and (time_start_mm.Text <> '') and (time_end_hh.Text <> '') and (time_end_mm.Text <> '');
+  canSave := (time_start_hh.Text <> '') and (time_start_mm.Text <> '') and
+    (time_end_hh.Text <> '') and (time_end_mm.Text <> '');
   if not CanSave then
   begin
     ShowMessage(rsPleaseFillAllTimeFields);
@@ -243,27 +246,33 @@ begin
   s_hh := time_start_hh.Text;
   s_mm := time_start_mm.Text;
   t_start := dlgDate.Date;
-  ReplaceTime(t_start, EncodeTime(s_hh.ToInteger,s_mm.ToInteger,0,0));
+  ReplaceTime(t_start, EncodeTime(s_hh.ToInteger, s_mm.ToInteger, 0, 0));
   // end time
   s_hh := time_end_hh.Text;
   s_mm := time_end_mm.Text;
   t_end := dlgDate.Date;
-  ReplaceTime(t_end, EncodeTime(s_hh.ToInteger,s_mm.ToInteger,0,0));
+  ReplaceTime(t_end, EncodeTime(s_hh.ToInteger, s_mm.ToInteger, 0, 0));
   // required time between
-  if SecondsBetween(t_start, t_end) < 60 then
+  if SecondsBetween(t_start, t_end) < 59 then
   begin
     ShowMessage(rsThereMustBeAtLeastAMinuteOfDifferenceBetweenStartAndEndTime);
     exit();
   end;
-  case PaymoInstance.UpdateTimeEntry(data.GetPath('id').AsString, t_end, TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsString, TJSONData(cbProjectTasks.Items.Objects[cbProjectTasks.ItemIndex]).GetPath('id').AsString, TJSONData(cbProjectTaskLists.Items.Objects[cbProjectTaskLists.ItemIndex]).GetPath('id').AsString) of
-    prOK: begin
+  case PaymoInstance.UpdateTimeEntry(Data.GetPath('id').AsString,
+      t_end, TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsString,
+      TJSONData(cbProjectTasks.Items.Objects[cbProjectTasks.ItemIndex]).GetPath('id').AsString, TJSONData(
+      cbProjectTaskLists.Items.Objects[cbProjectTaskLists.ItemIndex]).GetPath(
+      'id').AsString) of
+    prOK:
+    begin
       Self.Close;
       Application.ProcessMessages;
       // Sync for now, ToDo: change to async with tasks
       PaymoInstance.GetTasks();
       frmMain.DownloadTasksFinish(nil, 0, 0);
     end;
-    prTRYAGAIN, prERROR: begin
+    prTRYAGAIN, prERROR:
+    begin
       ShowMessage(rsErrorCantUpdateTimeEntry);
     end;
   end;
@@ -271,19 +280,20 @@ end;
 
 procedure TfrmTimeEntry.btnDeleteEntryClick(Sender: TObject);
 begin
-  case PaymoInstance.DeleteTimeEntry(data.GetPath('id').AsString) of
-    prOK: begin
+  case PaymoInstance.DeleteTimeEntry(Data.GetPath('id').AsString) of
+    prOK:
+    begin
       Self.Close;
       Application.ProcessMessages;
       // Sync for now, ToDo: change to async with tasks
       PaymoInstance.GetTasks();
       frmMain.DownloadTasksFinish(nil, 0, 0);
     end;
-    prTRYAGAIN, prERROR: begin
+    prTRYAGAIN, prERROR:
+    begin
       ShowMessage(rsErrorCantDeleteTimeEntry);
     end;
   end;
 end;
 
 end.
-

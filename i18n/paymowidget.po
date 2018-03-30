@@ -156,7 +156,7 @@ msgid "Error: Can't start timer."
 msgstr ""
 
 #: uresourcestring.rserrorcantstarttimertrystoppingcurrenttimerfirst
-msgid "Error: Can't start time. Try stopping current timer first."
+msgid "Error: Can't start timer. Try stopping current timer first."
 msgstr ""
 
 #: uresourcestring.rserrorcantstoptimer

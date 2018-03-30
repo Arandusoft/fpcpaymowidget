@@ -56,10 +56,12 @@ type
     function Delete(Endpoint: string; var Response: string): TPaymoResponseStatus;
     function CreateTask(Name, Description: string;
       TaskListID: integer): TPaymoResponseStatus;
-    function StopRunningTimer(start_time, end_time: TDateTime; Description: string): TPaymoResponseStatus;
+    function StopRunningTimer(start_time, end_time: TDateTime;
+      Description: string): TPaymoResponseStatus;
     function StartRunningTimer(task_id: integer): TPaymoResponseStatus;
     function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
-    function UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime; project_id, task_id, tasklist_id: String): TPaymoResponseStatus;
+    function UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime;
+      project_id, task_id, tasklist_id: string): TPaymoResponseStatus;
   public
     procedure LoadSettings;
     procedure SaveSettings;
@@ -348,8 +350,7 @@ begin
   end;
 end;
 
-function TPaymo.Delete(Endpoint: string; var Response: string
-  ): TPaymoResponseStatus;
+function TPaymo.Delete(Endpoint: string; var Response: string): TPaymoResponseStatus;
 var
   client: TFPHTTPClient;
 begin
@@ -401,7 +402,8 @@ begin
   end;
 end;
 
-function TPaymo.StopRunningTimer(start_time, end_time: TDateTime; Description: string): TPaymoResponseStatus;
+function TPaymo.StopRunningTimer(start_time, end_time: TDateTime;
+  Description: string): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
@@ -412,11 +414,13 @@ begin
   if SecondsBetween(start_time, end_time) >= 60 then
   begin
     jObj := TJSONObject.Create;
-    jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"', LocalTimeToUniversal(end_time)));
+    jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
+      LocalTimeToUniversal(end_time)));
     jObj.Add('description', Description);
     sJSON := jObj.FormatJSON();
     jObj.Free;
-    Result := Post('entries/' + RunningTimerData.GetPath('id').AsString, sJSON, response);
+    Result := Post('entries/' + RunningTimerData.GetPath('id').AsString,
+      sJSON, response);
   end
   // less than a minute = DELETE
   else
@@ -432,7 +436,8 @@ var
   jObj: TJSONObject;
 begin
   jObj := TJSONObject.Create;
-  jObj.Add('start_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"', LocalTimeToUniversal(now)));
+  jObj.Add('start_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
+    LocalTimeToUniversal(now)));
   jObj.Add('user_id', MyData.GetPath('id').AsInteger);
   jObj.Add('task_id', task_id);
   //jObj.Add('description', '');
@@ -448,14 +453,16 @@ begin
   Result := Delete('entries/' + TimeEntryID, response);
 end;
 
-function TPaymo.UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime; project_id, task_id, tasklist_id: String): TPaymoResponseStatus;
+function TPaymo.UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime;
+  project_id, task_id, tasklist_id: string): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
   jObj: TJSONObject;
 begin
   jObj := TJSONObject.Create;
-  jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"', LocalTimeToUniversal(end_time)));
+  jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
+    LocalTimeToUniversal(end_time)));
   jObj.Add('project_id', project_id);
   jObj.Add('task_id', task_id);
   sJSON := jObj.FormatJSON();
