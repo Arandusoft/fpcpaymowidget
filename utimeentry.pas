@@ -15,6 +15,7 @@ type
   TfrmTimeEntry = class(TForm)
     cbProjectTasks: TComboBox;
     cbProjects: TComboBox;
+    cbProjectTaskLists: TComboBox;
     dlgDate: TCalendarDialog;
     time_start_hh: TEdit;
     time_end_hh: TEdit;
@@ -24,11 +25,14 @@ type
     time_end_separator: TLabel;
     time_start_separator1: TLabel;
     lbl_date: TLabel;
+    procedure cbProjectsChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbl_dateClick(Sender: TObject);
   private
+    Data_TaskListID: integer;
     procedure FillProjectsCombo;
-    procedure FillProjectTasks;
+    procedure FillProjectTaskLists(TaskListID: integer = 0);
+    procedure FillProjectTasks(FromData: boolean);
     procedure FillDateAndTime;
     procedure WMMove(var Message: TLMMove); message LM_MOVE;
   public
@@ -77,7 +81,32 @@ begin
   end;
 end;
 
-procedure TfrmTimeEntry.FillProjectTasks;
+procedure TfrmTimeEntry.FillProjectTaskLists(TaskListID: integer = 0);
+var
+  i: integer;
+  tasklists: TJSONArray;
+  proj_id: integer;
+begin
+  cbProjectTaskLists.Clear;
+  tasklists := PaymoInstance.TaskListsArray;
+
+  proj_id := TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsInteger;
+
+  for i:=0 to tasklists.Count-1 do
+  begin
+    if (proj_id = tasklists[i].GetPath('project_id').AsInteger) then
+    begin
+    cbProjectTaskLists.AddItem(tasklists[i].GetPath('name').AsString, tasklists[i]);
+    if TaskListID = tasklists[i].GetPath('id').AsInteger then
+      cbProjectTaskLists.ItemIndex := cbProjectTaskLists.Items.Count-1;
+    end;
+  end;
+
+  if TaskListID = 0 then
+    cbProjectTaskLists.ItemIndex := 0;
+end;
+
+procedure TfrmTimeEntry.FillProjectTasks(FromData: boolean);
 var
   i, proj_id, task_id: integer;
   tasks: TJSONArray;
@@ -86,7 +115,7 @@ begin
   tasks := PaymoInstance.TasksArray;
   proj_id := TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsInteger;
 
-  if data <> nil then
+  if (data <> nil) and (FromData) then
   begin
     task_id := data.GetPath('task_id').AsInteger;
     proj_id := data.GetPath('project_id').AsInteger;
@@ -99,8 +128,14 @@ begin
     if (proj_id = tasks[i].GetPath('project_id').AsInteger) {and (not tasks[i].GetPath('complete').AsBoolean)} then
       cbProjectTasks.AddItem(tasks[i].GetPath('name').AsString, tasks[i]);
     if task_id = tasks[i].GetPath('id').AsInteger then
+    begin
       cbProjectTasks.ItemIndex := cbProjectTasks.Items.Count-1;
+      Data_TaskListID := tasks[i].GetPath('tasklist_id').AsInteger;
+    end;
   end;
+
+  if not FromData then
+    cbProjectTasks.ItemIndex := 0;
 end;
 
 procedure TfrmTimeEntry.FillDateAndTime;
@@ -144,14 +179,22 @@ end;
 
 procedure TfrmTimeEntry.ShowData;
 begin
+  Data_TaskListID := 0;
   FillProjectsCombo;
-  FillProjectTasks;
+  FillProjectTasks(True);
+  FillProjectTaskLists(Data_TaskListID);
   FillDateAndTime;
 end;
 
 procedure TfrmTimeEntry.FormShow(Sender: TObject);
 begin
 
+end;
+
+procedure TfrmTimeEntry.cbProjectsChange(Sender: TObject);
+begin
+  FillProjectTasks(False);
+  FillProjectTaskLists();
 end;
 
 end.

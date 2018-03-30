@@ -13,7 +13,7 @@ object frmTimeEntry: TfrmTimeEntry
   object time_start_hh: TEdit
     Left = 56
     Height = 21
-    Top = 144
+    Top = 176
     Width = 32
     Alignment = taCenter
     AutoSize = False
@@ -31,7 +31,7 @@ object frmTimeEntry: TfrmTimeEntry
   object time_start_mm: TEdit
     Left = 96
     Height = 21
-    Top = 144
+    Top = 176
     Width = 32
     Alignment = taCenter
     AutoSize = False
@@ -49,7 +49,7 @@ object frmTimeEntry: TfrmTimeEntry
   object time_start_separator: TLabel
     Left = 90
     Height = 21
-    Top = 144
+    Top = 176
     Width = 4
     Caption = ':'
     Font.Color = clWhite
@@ -61,7 +61,7 @@ object frmTimeEntry: TfrmTimeEntry
   object time_end_hh: TEdit
     Left = 192
     Height = 21
-    Top = 144
+    Top = 176
     Width = 32
     Alignment = taCenter
     AutoSize = False
@@ -79,7 +79,7 @@ object frmTimeEntry: TfrmTimeEntry
   object time_end_mm: TEdit
     Left = 232
     Height = 21
-    Top = 144
+    Top = 176
     Width = 32
     Alignment = taCenter
     AutoSize = False
@@ -97,7 +97,7 @@ object frmTimeEntry: TfrmTimeEntry
   object time_end_separator: TLabel
     Left = 226
     Height = 21
-    Top = 144
+    Top = 176
     Width = 4
     Caption = ':'
     Font.Color = clWhite
@@ -109,7 +109,7 @@ object frmTimeEntry: TfrmTimeEntry
   object time_start_separator1: TLabel
     Left = 152
     Height = 21
-    Top = 144
+    Top = 176
     Width = 10
     Caption = '‒'
     Font.Color = clWhite
@@ -122,7 +122,7 @@ object frmTimeEntry: TfrmTimeEntry
     Cursor = crIBeam
     Left = 61
     Height = 21
-    Top = 104
+    Top = 136
     Width = 33
     Caption = 'Date'
     Font.Color = clWhite
@@ -135,7 +135,7 @@ object frmTimeEntry: TfrmTimeEntry
   object cbProjectTasks: TComboBox
     Left = 16
     Height = 23
-    Top = 48
+    Top = 80
     Width = 289
     ItemHeight = 15
     Style = csDropDownList
@@ -147,8 +147,18 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 16
     Width = 289
     ItemHeight = 15
+    OnChange = cbProjectsChange
     Style = csDropDownList
     TabOrder = 5
+  end
+  object cbProjectTaskLists: TComboBox
+    Left = 16
+    Height = 23
+    Top = 48
+    Width = 289
+    ItemHeight = 15
+    Style = csDropDownList
+    TabOrder = 6
   end
   object dlgDate: TCalendarDialog
     DialogPosition = poOwnerFormCenter
@@ -156,6 +166,6 @@ object frmTimeEntry: TfrmTimeEntry
     OKCaption = '&OK'
     CancelCaption = 'Cancel'
     Left = 136
-    Top = 168
+    Top = 200
   end
 end
