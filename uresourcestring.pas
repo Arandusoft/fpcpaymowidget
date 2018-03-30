@@ -17,6 +17,7 @@ resourcestring
   rsPleaseFillAllTimeFields = 'Please fill all time fields.';
   rsThereMustBeAtLeastAMinuteOfDifferenceBetweenStartAndEndTime = 'There must be at least a minute of difference between start and end time.';
   rsErrorCantDeleteTimeEntry = 'Error: Can''t delete time entry.';
+  rsErrorCantUpdateTimeEntry = 'Error: Can''t update time entry.';
 
 implementation
 

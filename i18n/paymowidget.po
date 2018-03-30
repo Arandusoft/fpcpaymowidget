@@ -155,6 +155,10 @@ msgstr ""
 msgid "Error: Can't stop timer."
 msgstr ""
 
+#: uresourcestring.rserrorcantupdatetimeentry
+msgid "Error: Can't update time entry."
+msgstr ""
+
 #: uresourcestring.rspleasefillalltimefields
 msgid "Please fill all time fields."
 msgstr ""

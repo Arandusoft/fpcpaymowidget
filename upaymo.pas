@@ -58,6 +58,7 @@ type
       TaskListID: integer): TPaymoResponseStatus;
     function StopRunningTimer(start_time, end_time: TDateTime; Description: string): TPaymoResponseStatus;
     function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
+    function UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime; project_id, task_id, tasklist_id: String): TPaymoResponseStatus;
   public
     procedure LoadSettings;
     procedure SaveSettings;
@@ -428,6 +429,27 @@ var
   response: string;
 begin
   Result := Delete('entries/' + TimeEntryID, response);
+end;
+
+function TPaymo.UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime; project_id, task_id, tasklist_id: String): TPaymoResponseStatus;
+var
+  response: string;
+  sJSON: TJSONStringType;
+  jObj: TJSONObject;
+begin
+  jObj := TJSONObject.Create;
+  jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"', LocalTimeToUniversal(end_time)));
+  jObj.Add('project_id', project_id);
+  jObj.Add('task_id', task_id);
+  sJSON := jObj.FormatJSON();
+  jObj.Free;
+  Result := Post('entries/' + TimeEntryID, sJSON, response);
+
+  jObj := TJSONObject.Create;
+  jObj.Add('tasklist_id', tasklist_id);
+  sJSON := jObj.FormatJSON();
+  jObj.Free;
+  Result := Post('tasks/' + task_id, sJSON, response);
 end;
 
 procedure TPaymo.LoadSettings;

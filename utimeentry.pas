@@ -255,6 +255,18 @@ begin
     ShowMessage(rsThereMustBeAtLeastAMinuteOfDifferenceBetweenStartAndEndTime);
     exit();
   end;
+  case PaymoInstance.UpdateTimeEntry(data.GetPath('id').AsString, t_end, TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsString, TJSONData(cbProjectTasks.Items.Objects[cbProjectTasks.ItemIndex]).GetPath('id').AsString, TJSONData(cbProjectTaskLists.Items.Objects[cbProjectTaskLists.ItemIndex]).GetPath('id').AsString) of
+    prOK: begin
+      Self.Close;
+      Application.ProcessMessages;
+      // Sync for now, ToDo: change to async with tasks
+      PaymoInstance.GetTasks();
+      frmMain.DownloadTasksFinish(nil, 0, 0);
+    end;
+    prTRYAGAIN, prERROR: begin
+      ShowMessage(rsErrorCantUpdateTimeEntry);
+    end;
+  end;
 end;
 
 procedure TfrmTimeEntry.btnDeleteEntryClick(Sender: TObject);
