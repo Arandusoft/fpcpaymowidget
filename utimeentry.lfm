@@ -1,7 +1,7 @@
 object frmTimeEntry: TfrmTimeEntry
-  Left = 370
+  Left = 372
   Height = 632
-  Top = 218
+  Top = 175
   Width = 333
   BorderIcons = [biSystemMenu]
   Caption = 'Edit Time Entry'
@@ -12,7 +12,7 @@ object frmTimeEntry: TfrmTimeEntry
   object pnlGroup: TPanel
     Left = 16
     Height = 136
-    Top = 232
+    Top = 256
     Width = 289
     BevelOuter = bvNone
     ClientHeight = 136
@@ -148,7 +148,7 @@ object frmTimeEntry: TfrmTimeEntry
   object btnSaveEntry: TColorSpeedButton
     Left = 56
     Height = 40
-    Top = 400
+    Top = 424
     Width = 208
     Caption = 'Save Entry'
     Font.Color = 3883776
@@ -176,7 +176,7 @@ object frmTimeEntry: TfrmTimeEntry
   object btnDeleteEntry: TColorSpeedButton
     Left = 56
     Height = 40
-    Top = 456
+    Top = 480
     Width = 208
     Caption = 'Delete Entry'
     Font.Color = 3883776
@@ -204,7 +204,7 @@ object frmTimeEntry: TfrmTimeEntry
   object memoDescription: TMemo
     Left = 24
     Height = 144
-    Top = 248
+    Top = 272
     Width = 289
     Font.Height = -14
     Font.Name = 'Nunito Sans'
@@ -215,7 +215,7 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription: TLabel
     Left = 16
     Height = 16
-    Top = 224
+    Top = 248
     Width = 133
     Caption = 'New task description:'
     Font.Color = 3883776
@@ -239,7 +239,6 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 23
     Top = 72
     Width = 233
-    OnChange = editSearchTaskListsChange
     OnEnter = editSearchTaskListsEnter
     OnExit = editSearchTaskListsExit
     TabOrder = 3
@@ -249,8 +248,8 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 23
     Top = 129
     Width = 233
-    OnChange = editSearchTasksChange
     OnEnter = editSearchTasksEnter
+    OnExit = editSearchTasksExit
     TabOrder = 4
   end
   object lblDescription1: TLabel
@@ -292,7 +291,7 @@ object frmTimeEntry: TfrmTimeEntry
   object btnExistingTask: TColorSpeedButton
     Left = 160
     Height = 40
-    Top = 200
+    Top = 224
     Width = 153
     Caption = 'Use Existing Task'
     Font.Color = 3883776
@@ -324,6 +323,8 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 30
     Width = 233
     ItemHeight = 0
+    OnExit = editSearchProjectExit
+    OnSelectionChange = lbProjectsSelectionChange
     TabOrder = 5
     Visible = False
   end
@@ -333,6 +334,7 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 94
     Width = 233
     ItemHeight = 0
+    OnSelectionChange = lbProjectTaskListsSelectionChange
     TabOrder = 6
     Visible = False
   end
@@ -342,6 +344,7 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 152
     Width = 233
     ItemHeight = 0
+    OnSelectionChange = lbProjectTasksSelectionChange
     TabOrder = 7
     Visible = False
   end
@@ -351,6 +354,6 @@ object frmTimeEntry: TfrmTimeEntry
     OKCaption = '&OK'
     CancelCaption = 'Cancel'
     Left = 136
-    Top = 256
+    Top = 280
   end
 end

@@ -42,16 +42,17 @@ type
     procedure btnExistingTaskClick(Sender: TObject);
     procedure btnSaveEntryClick(Sender: TObject);
     procedure btnStartTimer(Sender: TObject);
-    procedure cbProjectsChange(Sender: TObject);
     procedure editSearchProjectEnter(Sender: TObject);
     procedure editSearchProjectExit(Sender: TObject);
-    procedure editSearchTaskListsChange(Sender: TObject);
     procedure editSearchTaskListsEnter(Sender: TObject);
     procedure editSearchTaskListsExit(Sender: TObject);
-    procedure editSearchTasksChange(Sender: TObject);
     procedure editSearchProjectChange(Sender: TObject);
     procedure editSearchTasksEnter(Sender: TObject);
+    procedure editSearchTasksExit(Sender: TObject);
     procedure lbl_dateClick(Sender: TObject);
+    procedure lbProjectsSelectionChange(Sender: TObject; User: boolean);
+    procedure lbProjectTaskListsSelectionChange(Sender: TObject; User: boolean);
+    procedure lbProjectTasksSelectionChange(Sender: TObject; User: boolean);
     procedure time_end_hhChange(Sender: TObject);
     procedure time_end_mmChange(Sender: TObject);
   private
@@ -84,6 +85,41 @@ begin
   if dlgDate.Execute then
   begin
     lbl_date.Caption := FormatDateTime('ddddd', dlgDate.Date);
+  end;
+end;
+
+procedure TfrmTimeEntry.lbProjectsSelectionChange(Sender: TObject; User: boolean
+  );
+begin
+  if (editSearchProject.Focused) or (lbProjects.Focused) then
+  begin
+     FillProjectTasks(False);
+     FillProjectTaskLists();
+  end;
+end;
+
+procedure TfrmTimeEntry.lbProjectTaskListsSelectionChange(Sender: TObject;
+  User: boolean);
+begin
+  if (editSearchTaskLists.Focused) or (lbProjectTaskLists.Focused) then
+  begin
+    try
+       lbProjectTaskLists.Enabled:=false;
+       FillProjectTaskLists();
+       FillProjectTasks(False);
+    finally
+      lbProjectTaskLists.Enabled:=true;
+    end;
+
+  end;
+end;
+
+procedure TfrmTimeEntry.lbProjectTasksSelectionChange(Sender: TObject;
+  User: boolean);
+begin
+  if (editSearchTasks.Focused) or (lbProjectTasks.Focused) then
+  begin
+     FillProjectTasks(False);
   end;
 end;
 
@@ -137,7 +173,7 @@ begin
   end;
 
   if (lbProjects.ItemIndex = -1) and (lbProjects.Items.Count>0) then
-    lbProjects.ItemIndex := 0;
+      lbProjects.ItemIndex := 0;
 end;
 
 procedure TfrmTimeEntry.FillProjectTaskLists(TaskListID: integer = 0);
@@ -299,12 +335,6 @@ begin
   FillDateAndTime;
 end;
 
-procedure TfrmTimeEntry.cbProjectsChange(Sender: TObject);
-begin
-  FillProjectTasks(False);
-  FillProjectTaskLists();
-end;
-
 procedure TfrmTimeEntry.editSearchProjectEnter(Sender: TObject);
 begin
   lbProjects.Visible:=true;
@@ -313,13 +343,9 @@ end;
 
 procedure TfrmTimeEntry.editSearchProjectExit(Sender: TObject);
 begin
-  lbProjects.Visible:=false;;
-end;
-
-procedure TfrmTimeEntry.editSearchTaskListsChange(Sender: TObject);
-begin
-  FillProjectTaskLists();
-  FillProjectTasks(False);
+  lbProjects.Visible:=false;
+  if lbProjects.ItemIndex>-1 then
+      editSearchProject.Text:=lbProjects.Items[lbProjects.ItemIndex];
 end;
 
 procedure TfrmTimeEntry.editSearchTaskListsEnter(Sender: TObject);
@@ -331,11 +357,8 @@ end;
 procedure TfrmTimeEntry.editSearchTaskListsExit(Sender: TObject);
 begin
   lbProjectTaskLists.Visible:=false;
-end;
-
-procedure TfrmTimeEntry.editSearchTasksChange(Sender: TObject);
-begin
-  FillProjectTasks(False);
+  if lbProjectTaskLists.ItemIndex>-1 then
+      editSearchTaskLists.Text:=lbProjectTaskLists.Items[lbProjectTaskLists.ItemIndex];
 end;
 
 procedure TfrmTimeEntry.editSearchProjectChange(Sender: TObject);
@@ -349,6 +372,13 @@ procedure TfrmTimeEntry.editSearchTasksEnter(Sender: TObject);
 begin
   lbProjectTasks.Visible:=true;
   lbProjectTasks.Height:=editSearchTasks.Height*4;
+end;
+
+procedure TfrmTimeEntry.editSearchTasksExit(Sender: TObject);
+begin
+  lbProjectTasks.Visible:=false;
+  if lbProjectTasks.ItemIndex>-1 then
+      editSearchTasks.Text:=lbProjectTasks.Items[lbProjectTasks.ItemIndex];
 end;
 
 procedure TfrmTimeEntry.btnSaveEntryClick(Sender: TObject);
@@ -495,7 +525,7 @@ end;
 procedure TfrmTimeEntry.btnExistingTaskClick(Sender: TObject);
 begin
   btnExistingTask.Visible := False;
-  lbProjectTasks.Visible := True;
+  //lbProjectTasks.Visible := True;
   editSearchTasks.Visible := True;
   lblDescription3.Visible := True;
   lblDescription.Visible := False;
