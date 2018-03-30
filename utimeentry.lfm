@@ -1,7 +1,7 @@
 object frmTimeEntry: TfrmTimeEntry
-  Left = 361
+  Left = 259
   Height = 240
-  Top = 132
+  Top = 276
   Width = 320
   BorderIcons = [biSystemMenu]
   Caption = 'Edit Time Entry'

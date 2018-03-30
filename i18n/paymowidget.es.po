@@ -49,6 +49,22 @@ msgstr "Salir"
 msgid "FPC Paymo Widget"
 msgstr "FPC Paymo Widget"
 
+#: tfrmmain.lblproject.caption
+msgid "Project"
+msgstr ""
+
+#: tfrmmain.lblstop.caption
+msgid "⏹"
+msgstr ""
+
+#: tfrmmain.lbltask.caption
+msgid "Task"
+msgstr ""
+
+#: tfrmmain.lbltime.caption
+msgid "00:00:00"
+msgstr ""
+
 #: tfrmmain.miabout.caption
 msgctxt "tfrmmain.miabout.caption"
 msgid "About"

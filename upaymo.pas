@@ -37,6 +37,7 @@ type
     function CompanyData: TJSONData;
     function RunningTimerData: TJSONData;
     function GetProjectName(ProjectID: integer): string;
+    function GetTaskName(TaskID: integer): string;
     function GetTimeEntry(EntryID: integer): TJSONData;
   public
     destructor Destroy; override;
@@ -109,8 +110,13 @@ function TPaymo.RunningTimerData: TJSONData;
 var
   arr: TJSONArray;
 begin
+  if not Assigned(FRunningTimer) then
+    exit(nil);
   FRunningTimer.Find('entries', arr);
-  Result := arr[0];
+  if (arr <> nil) and (arr.Count > 0) then
+    Result := arr[0]
+  else
+    Result := nil;
 end;
 
 function TPaymo.GetProjectName(ProjectID: integer): string;
@@ -127,6 +133,20 @@ begin
   end;
 end;
 
+function TPaymo.GetTaskName(TaskID: integer): string;
+var
+  i: integer;
+  arr: TJSONArray;
+begin
+  Result := '';
+  arr := TasksArray;
+  for i := 0 to arr.Count - 1 do
+  begin
+    if TaskID = arr[i].GetPath('id').AsInteger then
+      exit(arr[i].GetPath('name').AsString);
+  end;
+end;
+
 function TPaymo.GetTimeEntry(EntryID: integer): TJSONData;
 var
   arr, arrEntries: TJSONArray;
@@ -134,10 +154,10 @@ var
 begin
   Result := nil;
   arr := TasksArray;
-  for i:=0 to arr.Count-1 do
+  for i := 0 to arr.Count - 1 do
   begin
     arrEntries := TJSONArray(arr[i].GetPath('entries'));
-    for j:=0 to arrEntries.Count-1 do
+    for j := 0 to arrEntries.Count - 1 do
     begin
       if arrEntries[j].GetPath('id').AsInteger = EntryID then
         exit(arrEntries[j]);
@@ -262,7 +282,8 @@ function TPaymo.GetRunningTimer(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('entries?where=user_id=' + MyData.GetPath('id').AsString + '%20and%20end_time=null', response);
+  Result := Get('entries?where=user_id=' + MyData.GetPath('id').AsString +
+    '%20and%20end_time=null', response);
   case Result of
     prOK:
     begin

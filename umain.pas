@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
   ExtCtrls, Menus, upaymo, fpjson, uresourcestring, Types, utasklist,
   AnimatedPanel, ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread,
-  LMessages;
+  LMessages, DateUtils;
 
 type
 
@@ -26,6 +26,9 @@ type
     ilTrayNormalWin: TImageList;
     ilTrayNormalMac: TImageList;
     ilTrayOfflineWin: TImageList;
+    lblTime: TLabel;
+    lblStop: TLabel;
+    lblProject: TLabel;
     miShow: TMenuItem;
     miAbout: TMenuItem;
     miQuit: TMenuItem;
@@ -41,6 +44,9 @@ type
     DownloadTasks: TTask;
     DownloadTaskLists: TTask;
     DownloadRunningTimer: TTask;
+    pnlTime: TPanel;
+    lblTask: TLabel;
+    timerEntry: TTimer;
     tiTray: TTrayIcon;
     wcThreadDownloader: TWCThread;
     procedure btnMenuClick(Sender: TObject);
@@ -50,14 +56,24 @@ type
     procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
     procedure DownloadCompanyExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
+    procedure DownloadCompanyFinish(const Sender: TTask; const Msg: Word;
+      const Param: Variant);
     procedure DownloadMeExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure DownloadProjectsExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
+    procedure DownloadProjectsFinish(const Sender: TTask; const Msg: Word;
+      const Param: Variant);
     procedure DownloadRunningTimerExecute(const Sender: TTask; const Msg: Word;
       var Param: Variant);
+    procedure DownloadRunningTimerFinish(const Sender: TTask; const Msg: Word;
+      const Param: Variant);
+    procedure DownloadTaskListsFinish(const Sender: TTask; const Msg: Word;
+      const Param: Variant);
     procedure DownloadTasksExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
+    procedure DownloadTasksFinish(const Sender: TTask; const Msg: Word;
+      const Param: Variant);
     procedure FormClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -69,17 +85,20 @@ type
     procedure miQuitClick(Sender: TObject);
     procedure DownloadTaskListsExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
+    procedure timerEntryTimer(Sender: TObject);
     procedure tiTrayClick(Sender: TObject);
     procedure hideMenu(Sender: TObject);
-    procedure wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
   private
     Tasks: TTaskList;
     procedure WMMove(var Message: TLMMove); message LM_MOVE;
   public
     Paymo: TPaymo;
+    start_time: TDateTime;
     procedure Login;
     procedure ListProjects();
     procedure ListTasks();
+    procedure ListTimeEntry();
+    procedure RefreshTimeEntry();
   end;
 
 var
@@ -107,8 +126,8 @@ begin
       DownloadCompany.Start;
       DownloadProjects.Start;
       DownloadTasks.Start;
-      DownloadTaskLists.Start;
       DownloadRunningTimer.Start;
+      DownloadTaskLists.Start;
     except
     end;
   end;
@@ -171,6 +190,13 @@ begin
   Paymo.GetCompany();
 end;
 
+procedure TfrmMain.DownloadCompanyFinish(const Sender: TTask; const Msg: Word;
+  const Param: Variant);
+begin
+  pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
+  pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
+end;
+
 procedure TfrmMain.DownloadMeExecute(const Sender: TTask; const Msg: word;
   var Param: variant);
 begin
@@ -183,16 +209,48 @@ begin
   Paymo.GetProjects();
 end;
 
+procedure TfrmMain.DownloadProjectsFinish(const Sender: TTask; const Msg: Word;
+  const Param: Variant);
+begin
+  //ShowMessage('Projects OK');
+end;
+
 procedure TfrmMain.DownloadRunningTimerExecute(const Sender: TTask;
   const Msg: Word; var Param: Variant);
 begin
   Paymo.GetRunningTimer();
 end;
 
+procedure TfrmMain.DownloadRunningTimerFinish(const Sender: TTask;
+  const Msg: Word; const Param: Variant);
+begin
+  ListTimeEntry();
+end;
+
+procedure TfrmMain.DownloadTaskListsFinish(const Sender: TTask;
+  const Msg: Word; const Param: Variant);
+begin
+  //ShowMessage('TaskLists OK');
+end;
+
 procedure TfrmMain.DownloadTasksExecute(const Sender: TTask; const Msg: word;
   var Param: variant);
 begin
   Paymo.GetTasks();
+end;
+
+procedure TfrmMain.DownloadTasksFinish(const Sender: TTask; const Msg: Word;
+  const Param: Variant);
+begin
+  if not Assigned(Tasks) then
+  begin
+    btnMenu.Enabled := True;
+    Tasks := TTaskList.Create(Self);
+    Tasks.PaymoInstance := Paymo;
+    Tasks.Align := alClient;
+    ListTasks();
+    Tasks.Parent := Self;
+  end;
 end;
 
 procedure TfrmMain.FormClick(Sender: TObject);
@@ -249,6 +307,11 @@ begin
   Paymo.GetTaskLists();
 end;
 
+procedure TfrmMain.timerEntryTimer(Sender: TObject);
+begin
+  RefreshTimeEntry();
+end;
+
 procedure TfrmMain.tiTrayClick(Sender: TObject);
 begin
   Self.ShowInTaskBar := stDefault;
@@ -262,22 +325,6 @@ begin
   pnlTop.Enabled := True;
   if Assigned(Tasks) then
     Tasks.Enabled := True;
-end;
-
-procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
-begin
-  ShowMessage('ok');
-  if not Assigned(Tasks) then
-  begin
-    pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
-    pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
-    btnMenu.Enabled := True;
-    Tasks := TTaskList.Create(Self);
-    Tasks.PaymoInstance := Paymo;
-    Tasks.Align := alClient;
-    ListTasks();
-    Tasks.Parent := Self;
-  end;
 end;
 
 procedure TfrmMain.WMMove(var Message: TLMMove);
@@ -349,6 +396,25 @@ end;
 procedure TfrmMain.ListTasks();
 begin
   Tasks.RefreshItems;
+end;
+
+procedure TfrmMain.ListTimeEntry();
+begin
+  if (Paymo.RunningTimerData <> nil) then
+  begin
+    lblProject.Caption := Paymo.GetProjectName(Paymo.RunningTimerData.GetPath('project_id').AsInteger);
+    lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath('task_id').AsInteger);
+    start_time := TTaskList.StringToDateTime(Paymo.RunningTimerData.GetPath('start_time').AsString);
+    pnlTime.Visible := True;
+  end;
+end;
+
+procedure TfrmMain.RefreshTimeEntry();
+begin
+  if (Paymo.RunningTimerData <> nil) then
+  begin
+    lblTime.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now));
+  end;
 end;
 
 end.

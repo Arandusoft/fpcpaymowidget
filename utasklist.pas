@@ -37,6 +37,7 @@ type
     procedure DayClickParent(Sender: TObject);
   public
     class function SecondsToString(Seconds: integer): string;
+    class function SecondsToHHMMSS(Seconds: integer): string;
     class function StringToDateTime(DateTime: string): TDateTime;
     class function IsSameDate(Date1, Date2: TDateTime): boolean;
     constructor Create(AOwner: TComponent); override;
@@ -139,6 +140,18 @@ begin
   DivMod(Seconds, SecsPerMin, mins, ss);
   DivMod(mins, MinsPerHour, hh, mins);
   Result := Format('%.2d:%.2d', [hh, mins]);
+end;
+
+class function TTaskList.SecondsToHHMMSS(Seconds: integer): string;
+var
+  hh, mins, ss: DWord;
+begin
+  DivMod(Seconds, SecsPerMin, mins, ss);
+  DivMod(mins, MinsPerHour, hh, mins);
+  if hh > 0 then
+    Result := Format('%.2d:%.2d:%.2d', [hh, mins, ss])
+  else
+    Result := Format('%.2d:%.2d', [mins, ss]);
 end;
 
 class function TTaskList.StringToDateTime(DateTime: string): TDateTime;
