@@ -15,7 +15,7 @@ resourcestring
   rsToday = 'TODAY';
   rsYesterday = 'YESTERDAY';
   rsErrorCantStopTimer = 'Error: Can''t stop timer.';
-  rsPleaseFillAllTimeFields = 'Please fill all time fields.';
+  rsPleaseFillAllFields = 'Please fill all fields.';
   rsThereMustBeAtLeastAMinuteOfDifferenceBetweenStartAndEndTime =
     'There must be at least a minute of difference between start and end time.';
   rsErrorCantDeleteTimeEntry = 'Error: Can''t delete time entry.';

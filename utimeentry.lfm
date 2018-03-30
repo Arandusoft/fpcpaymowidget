@@ -1,11 +1,11 @@
 object frmTimeEntry: TfrmTimeEntry
-  Left = 259
-  Height = 428
-  Top = 276
+  Left = 370
+  Height = 632
+  Top = 218
   Width = 320
   BorderIcons = [biSystemMenu]
   Caption = 'Edit Time Entry'
-  ClientHeight = 428
+  ClientHeight = 632
   ClientWidth = 320
   Color = 12111890
   OnShow = FormShow
@@ -13,7 +13,7 @@ object frmTimeEntry: TfrmTimeEntry
   object cbProjectTasks: TComboBox
     Left = 16
     Height = 23
-    Top = 80
+    Top = 168
     Width = 289
     ItemHeight = 15
     Style = csDropDownList
@@ -22,7 +22,7 @@ object frmTimeEntry: TfrmTimeEntry
   object cbProjects: TComboBox
     Left = 16
     Height = 23
-    Top = 16
+    Top = 40
     Width = 289
     ItemHeight = 15
     OnChange = cbProjectsChange
@@ -32,7 +32,7 @@ object frmTimeEntry: TfrmTimeEntry
   object cbProjectTaskLists: TComboBox
     Left = 16
     Height = 23
-    Top = 48
+    Top = 104
     Width = 289
     ItemHeight = 15
     Style = csDropDownList
@@ -41,7 +41,7 @@ object frmTimeEntry: TfrmTimeEntry
   object pnlGroup: TPanel
     Left = 16
     Height = 136
-    Top = 128
+    Top = 208
     Width = 289
     BevelOuter = bvNone
     ClientHeight = 136
@@ -51,7 +51,7 @@ object frmTimeEntry: TfrmTimeEntry
       Cursor = crIBeam
       Left = 45
       Height = 21
-      Top = 16
+      Top = 40
       Width = 33
       Caption = 'Date'
       Font.Color = clWhite
@@ -177,7 +177,7 @@ object frmTimeEntry: TfrmTimeEntry
   object btnSaveEntry: TColorSpeedButton
     Left = 56
     Height = 40
-    Top = 288
+    Top = 376
     Width = 208
     Caption = 'Save Entry'
     Font.Color = 3883776
@@ -205,7 +205,7 @@ object frmTimeEntry: TfrmTimeEntry
   object btnDeleteEntry: TColorSpeedButton
     Left = 56
     Height = 40
-    Top = 344
+    Top = 432
     Width = 208
     Caption = 'Delete Entry'
     Font.Color = 3883776
@@ -233,7 +233,7 @@ object frmTimeEntry: TfrmTimeEntry
   object memoDescription: TMemo
     Left = 16
     Height = 144
-    Top = 112
+    Top = 224
     Width = 289
     Font.Height = -14
     Font.Name = 'Nunito Sans'
@@ -244,14 +244,103 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription: TLabel
     Left = 16
     Height = 19
-    Top = 84
-    Width = 104
-    Caption = 'Task description:'
+    Top = 200
+    Width = 135
+    Caption = 'New task description:'
     Font.Color = 3883776
     Font.Height = -14
     Font.Name = 'Nunito Sans'
     ParentColor = False
     ParentFont = False
+  end
+  object editSearchProject: TEdit
+    Left = 72
+    Height = 23
+    Top = 8
+    Width = 233
+    OnChange = editSearchProjectChange
+    TabOrder = 5
+  end
+  object editSearchTaskLists: TEdit
+    Left = 72
+    Height = 23
+    Top = 72
+    Width = 233
+    OnChange = editSearchTaskListsChange
+    TabOrder = 6
+  end
+  object editSearchTasks: TEdit
+    Left = 72
+    Height = 23
+    Top = 136
+    Width = 233
+    OnChange = editSearchTasksChange
+    TabOrder = 7
+  end
+  object lblDescription1: TLabel
+    Left = 16
+    Height = 19
+    Top = 8
+    Width = 46
+    Caption = 'Search:'
+    Font.Color = 3883776
+    Font.Height = -14
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object lblDescription2: TLabel
+    Left = 16
+    Height = 19
+    Top = 72
+    Width = 46
+    Caption = 'Search:'
+    Font.Color = 3883776
+    Font.Height = -14
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object lblDescription3: TLabel
+    Left = 16
+    Height = 19
+    Top = 136
+    Width = 46
+    Caption = 'Search:'
+    Font.Color = 3883776
+    Font.Height = -14
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object btnExistingTask: TColorSpeedButton
+    Left = 152
+    Height = 40
+    Top = 144
+    Width = 153
+    Caption = 'Use Existing Task'
+    Font.Color = 3883776
+    Font.Height = -14
+    Font.Name = 'Nunito Sans'
+    Font.Style = [fsBold]
+    Visible = False
+    OnClick = btnExistingTaskClick
+    ParentFont = False
+    Toggle = False
+    Pressed = False
+    PopupMode = False
+    StateNormal.Color = clWhite
+    StateNormal.BorderColor = 11382189
+    StateNormal.BorderWidth = 0
+    StateHover.Color = 16185824
+    StateHover.BorderColor = 14120960
+    StateHover.BorderWidth = 0
+    StateActive.Color = 15003043
+    StateActive.BorderColor = 10048512
+    StateActive.BorderWidth = 0
+    StateDisabled.Color = 12566463
+    StateDisabled.BorderColor = clBlack
+    StateDisabled.BorderWidth = 1
   end
   object dlgDate: TCalendarDialog
     DialogPosition = poOwnerFormCenter
@@ -259,6 +348,6 @@ object frmTimeEntry: TfrmTimeEntry
     OKCaption = '&OK'
     CancelCaption = 'Cancel'
     Left = 136
-    Top = 136
+    Top = 232
   end
 end

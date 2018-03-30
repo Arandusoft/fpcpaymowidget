@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 386
+  Left = 695
   Height = 540
-  Top = 139
+  Top = 269
   Width = 360
   Caption = 'FPC Paymo Widget'
   ClientHeight = 540

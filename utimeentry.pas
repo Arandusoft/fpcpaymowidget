@@ -7,18 +7,25 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtDlgs,
   DateUtils, upaymo, fpjson, utasklist, ColorSpeedButton, LMessages, ExtCtrls,
-  uresourcestring;
+  uresourcestring, LazUTF8;
 
 type
 
   { TfrmTimeEntry }
 
   TfrmTimeEntry = class(TForm)
+    btnExistingTask: TColorSpeedButton;
+    editSearchProject: TEdit;
     cbProjectTasks: TComboBox;
     cbProjects: TComboBox;
     cbProjectTaskLists: TComboBox;
     dlgDate: TCalendarDialog;
+    editSearchTaskLists: TEdit;
+    editSearchTasks: TEdit;
     lblDescription: TLabel;
+    lblDescription1: TLabel;
+    lblDescription2: TLabel;
+    lblDescription3: TLabel;
     lbl_date: TLabel;
     memoDescription: TMemo;
     pnlGroup: TPanel;
@@ -32,9 +39,13 @@ type
     btnDeleteEntry: TColorSpeedButton;
     btnSaveEntry: TColorSpeedButton;
     procedure btnDeleteEntryClick(Sender: TObject);
+    procedure btnExistingTaskClick(Sender: TObject);
     procedure btnSaveEntryClick(Sender: TObject);
     procedure btnStartTimer(Sender: TObject);
     procedure cbProjectsChange(Sender: TObject);
+    procedure editSearchTaskListsChange(Sender: TObject);
+    procedure editSearchTasksChange(Sender: TObject);
+    procedure editSearchProjectChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbl_dateClick(Sender: TObject);
     procedure time_end_hhChange(Sender: TObject);
@@ -98,6 +109,8 @@ procedure TfrmTimeEntry.FillProjectsCombo;
 var
   i, id: integer;
   projects: TJSONArray;
+  pass1: boolean;
+  search: string;
 begin
   cbProjects.Clear;
   projects := PaymoInstance.ProjectsArray;
@@ -107,9 +120,14 @@ begin
   else
     id := 0;
 
+  pass1 := UTF8Length(editSearchProject.Text) = 0;
+  search := UTF8LowerCase(editSearchProject.Text);
   for i := 0 to projects.Count - 1 do
   begin
-    cbProjects.AddItem(projects[i].GetPath('name').AsString, projects[i]);
+    if (pass1) or (UTF8Pos(search,
+      UTF8LowerCase(projects[i].GetPath('name').AsString)) <>
+      0) then
+      cbProjects.AddItem(projects[i].GetPath('name').AsString, projects[i]);
     if id = projects[i].GetPath('id').AsInteger then
       cbProjects.ItemIndex := i;
   end;
@@ -123,15 +141,22 @@ var
   i: integer;
   tasklists: TJSONArray;
   proj_id: integer;
+  pass1: boolean;
+  search: string;
 begin
   cbProjectTaskLists.Clear;
+  if cbProjects.Items.Count = 0 then
+    exit;
   tasklists := PaymoInstance.TaskListsArray;
 
   proj_id := TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsInteger;
-
+  pass1 := UTF8Length(editSearchTaskLists.Text) = 0;
+  search := UTF8LowerCase(editSearchTaskLists.Text);
   for i := 0 to tasklists.Count - 1 do
   begin
-    if (proj_id = tasklists[i].GetPath('project_id').AsInteger) then
+    if (proj_id = tasklists[i].GetPath('project_id').AsInteger) and
+      ((pass1) or (UTF8Pos(search, UTF8LowerCase(tasklists[i].GetPath('name').AsString)) <>
+      0)) then
     begin
       cbProjectTaskLists.AddItem(tasklists[i].GetPath('name').AsString, tasklists[i]);
       if TaskListID = tasklists[i].GetPath('id').AsInteger then
@@ -147,8 +172,12 @@ procedure TfrmTimeEntry.FillProjectTasks(FromData: boolean);
 var
   i, proj_id, task_id: integer;
   tasks: TJSONArray;
+  pass1: boolean;
+  search: string;
 begin
   cbProjectTasks.Clear;
+  if cbProjects.Items.Count = 0 then
+    exit;
   tasks := PaymoInstance.TasksArray;
   proj_id := TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsInteger;
 
@@ -160,9 +189,13 @@ begin
   else
     task_id := 0;
 
+  pass1 := UTF8Length(editSearchTasks.Text) = 0;
+  search := UTF8LowerCase(editSearchTasks.Text);
   for i := 0 to tasks.Count - 1 do
   begin
-    if (proj_id = tasks[i].GetPath('project_id').AsInteger)
+    if (proj_id = tasks[i].GetPath('project_id').AsInteger) and
+      ((pass1) or (UTF8Pos(search, UTF8LowerCase(tasks[i].GetPath('name').AsString)) <>
+      0))
     {and (not tasks[i].GetPath('complete').AsBoolean)} then
       cbProjectTasks.AddItem(tasks[i].GetPath('name').AsString, tasks[i]);
     if task_id = tasks[i].GetPath('id').AsInteger then
@@ -219,6 +252,10 @@ procedure TfrmTimeEntry.ShowData;
 begin
   Data_TaskListID := 0;
 
+  editSearchProject.Text := '';
+  editSearchTaskLists.Text := '';
+  editSearchTasks.Text := '';
+
   // show / hide depending if is a new task or edit time entry
   if Data = nil then
   begin
@@ -232,6 +269,9 @@ begin
     lblDescription.Visible := True;
     if memoDescription.CanSetFocus then
       memoDescription.SetFocus;
+    lblDescription3.Visible := False;
+    editSearchTasks.Visible := False;
+    btnExistingTask.Visible := True;
   end
   else
   begin
@@ -242,6 +282,11 @@ begin
     btnSaveEntry.OnClick := @btnSaveEntryClick;
     memoDescription.Visible := False;
     lblDescription.Visible := False;
+    lblDescription3.Visible := True;
+    editSearchTasks.Visible := True;
+    if editSearchProject.CanSetFocus then
+      editSearchProject.SetFocus;
+    btnExistingTask.Visible := False;
   end;
 
   FillProjectsCombo;
@@ -261,6 +306,24 @@ begin
   FillProjectTaskLists();
 end;
 
+procedure TfrmTimeEntry.editSearchTaskListsChange(Sender: TObject);
+begin
+  FillProjectTaskLists();
+  FillProjectTasks(False);
+end;
+
+procedure TfrmTimeEntry.editSearchTasksChange(Sender: TObject);
+begin
+  FillProjectTasks(False);
+end;
+
+procedure TfrmTimeEntry.editSearchProjectChange(Sender: TObject);
+begin
+  FillProjectsCombo;
+  FillProjectTasks(False);
+  FillProjectTaskLists();
+end;
+
 procedure TfrmTimeEntry.btnSaveEntryClick(Sender: TObject);
 var
   canSave: boolean;
@@ -269,10 +332,12 @@ var
 begin
   // required fields
   canSave := (time_start_hh.Text <> '') and (time_start_mm.Text <> '') and
-    (time_end_hh.Text <> '') and (time_end_mm.Text <> '');
+    (time_end_hh.Text <> '') and (time_end_mm.Text <> '') and
+    (cbProjects.ItemIndex >= 0) and (cbProjectTaskLists.ItemIndex >= 0) and
+    (cbProjectTasks.ItemIndex >= 0);
   if not CanSave then
   begin
-    ShowMessage(rsPleaseFillAllTimeFields);
+    ShowMessage(rsPleaseFillAllFields);
     exit();
   end;
   // start time
@@ -315,14 +380,46 @@ procedure TfrmTimeEntry.btnStartTimer(Sender: TObject);
 var
   task: TJSONData;
   r: TPaymoResponseStatus;
+  canSave: boolean;
 begin
-  if memoDescription.Lines.Text = '' then
+  if memoDescription.Visible then
   begin
-    ShowMessage(rsPleaseEnterTaskDescription);
-    exit();
+    // required fields
+    canSave := (cbProjects.ItemIndex >= 0) and (cbProjectTaskLists.ItemIndex >= 0);
+    if not CanSave then
+    begin
+      ShowMessage(rsPleaseFillAllFields);
+      exit();
+    end;
+    if memoDescription.Lines.Text = '' then
+    begin
+      ShowMessage(rsPleaseEnterTaskDescription);
+      exit();
+    end;
+  end
+  else
+  begin
+    // required fields
+    canSave := (cbProjects.ItemIndex >= 0) and (cbProjectTaskLists.ItemIndex >= 0) and
+      (cbProjectTasks.ItemIndex >= 0);
+    if not CanSave then
+    begin
+      ShowMessage(rsPleaseFillAllFields);
+      exit();
+    end;
   end;
-  r := PaymoInstance.CreateTask(memoDescription.Lines.Text, '',
-    TJSONData(cbProjectTaskLists.Items.Objects[cbProjectTaskLists.ItemIndex]).GetPath('id').AsInteger, task);
+
+  if memoDescription.Visible then
+  begin
+    r := PaymoInstance.CreateTask(memoDescription.Lines.Text, '',
+      TJSONData(cbProjectTaskLists.Items.Objects[cbProjectTaskLists.ItemIndex]).GetPath('id').AsInteger, task);
+  end
+  else
+  begin
+    r := prOK;
+    task := TJSONData(cbProjectTasks.Items.Objects[cbProjectTasks.ItemIndex]);
+  end;
+
   if (r = prOK) then
   begin
     case PaymoInstance.StartRunningTimer(task.GetPath('id').AsInteger) of
@@ -366,6 +463,16 @@ begin
       ShowMessage(rsErrorCantDeleteTimeEntry);
     end;
   end;
+end;
+
+procedure TfrmTimeEntry.btnExistingTaskClick(Sender: TObject);
+begin
+  btnExistingTask.Visible := False;
+  cbProjectTasks.Visible := True;
+  editSearchTasks.Visible := True;
+  lblDescription3.Visible := True;
+  lblDescription.Visible := False;
+  memoDescription.Visible := False;
 end;
 
 end.

@@ -85,6 +85,10 @@ msgstr ""
 msgid "Delete Entry"
 msgstr ""
 
+#: tfrmtimeentry.btnexistingtask.caption
+msgid "Use Existing Task"
+msgstr ""
+
 #: tfrmtimeentry.btnsaveentry.caption
 msgctxt "tfrmtimeentry.btnsaveentry.caption"
 msgid "Save Entry"
@@ -103,7 +107,22 @@ msgid "&OK"
 msgstr ""
 
 #: tfrmtimeentry.lbldescription.caption
-msgid "Task description:"
+msgid "New task description:"
+msgstr ""
+
+#: tfrmtimeentry.lbldescription1.caption
+msgctxt "tfrmtimeentry.lbldescription1.caption"
+msgid "Search:"
+msgstr ""
+
+#: tfrmtimeentry.lbldescription2.caption
+msgctxt "tfrmtimeentry.lbldescription2.caption"
+msgid "Search:"
+msgstr ""
+
+#: tfrmtimeentry.lbldescription3.caption
+msgctxt "tfrmtimeentry.lbldescription3.caption"
+msgid "Search:"
 msgstr ""
 
 #: tfrmtimeentry.lbl_date.caption
@@ -180,8 +199,8 @@ msgstr ""
 msgid "Please enter task description."
 msgstr ""
 
-#: uresourcestring.rspleasefillalltimefields
-msgid "Please fill all time fields."
+#: uresourcestring.rspleasefillallfields
+msgid "Please fill all fields."
 msgstr ""
 
 #: uresourcestring.rssaveentry
