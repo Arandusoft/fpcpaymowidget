@@ -81,6 +81,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure lblStopClick(Sender: TObject);
     procedure miAboutClick(Sender: TObject);
     procedure miQuitClick(Sender: TObject);
     procedure DownloadTaskListsExecute(const Sender: TTask; const Msg: word;
@@ -290,6 +291,22 @@ begin
   {$ENDIF}
 end;
 
+procedure TfrmMain.lblStopClick(Sender: TObject);
+begin
+  if (Paymo.RunningTimerData <> nil) then
+  begin
+    case Paymo.StopRunningTimer(start_time, now, '') of
+      prOK: begin
+        pnlTime.Visible := False;
+        DownloadRunningTimer.Start;
+      end;
+      prTRYAGAIN, prERROR: begin
+        ShowMessage(rsErrorCantStopTimer);
+      end;
+    end;
+  end;
+end;
+
 procedure TfrmMain.miAboutClick(Sender: TObject);
 begin
   ShowMessage('Copyright © 2018 Arandú Software');
@@ -406,7 +423,9 @@ begin
     lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath('task_id').AsInteger);
     start_time := TTaskList.StringToDateTime(Paymo.RunningTimerData.GetPath('start_time').AsString);
     pnlTime.Visible := True;
-  end;
+  end
+  else
+    pnlTime.Visible := False;
 end;
 
 procedure TfrmMain.RefreshTimeEntry();

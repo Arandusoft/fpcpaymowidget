@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 498
+  Left = 126
   Height = 540
-  Top = 121
+  Top = 140
   Width = 360
   Caption = 'FPC Paymo Widget'
   ClientHeight = 540
@@ -342,6 +342,7 @@ object frmMain: TfrmMain
       Font.Name = 'Nunito Sans Light'
       ParentColor = False
       ParentFont = False
+      OnClick = lblStopClick
     end
   end
   object tiTray: TTrayIcon

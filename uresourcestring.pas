@@ -13,6 +13,7 @@ resourcestring
   rsErrorCantLogin = 'Can''t login.';
   rsToday = 'TODAY';
   rsYesterday = 'YESTERDAY';
+  rsErrorCantStopTimer = 'Error: Can''t stop timer.';
 
 implementation
 

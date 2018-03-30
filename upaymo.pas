@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, fphttpclient, jsonConf, fpjson, jsonparser,
-  Dialogs;
+  Dialogs, DateUtils;
 
 const
   PAYMOAPIBASEURL = 'https://app.paymoapp.com/api/';
@@ -53,8 +53,10 @@ type
     function GetCompany(): TPaymoResponseStatus;
     function Post(Endpoint: string; sJSON: TJSONStringType;
       var Response: string): TPaymoResponseStatus;
+    function Delete(Endpoint: string; var Response: string): TPaymoResponseStatus;
     function CreateTask(Name, Description: string;
       TaskListID: integer): TPaymoResponseStatus;
+    function StopRunningTimer(start_time, end_time: TDateTime; Description: string): TPaymoResponseStatus;
   public
     procedure LoadSettings;
     procedure SaveSettings;
@@ -343,6 +345,33 @@ begin
   end;
 end;
 
+function TPaymo.Delete(Endpoint: string; var Response: string
+  ): TPaymoResponseStatus;
+var
+  client: TFPHTTPClient;
+begin
+  Result := prERROR;
+  try
+    client := TFPHttpClient.Create(nil);
+    client.AddHeader('Accept', 'application/json');
+    client.UserName := FAPIKey;
+    client.Password := '';
+    try
+      Response := client.Delete(PAYMOAPIBASEURL + Endpoint);
+      if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
+        Result := prOK
+      else if (client.ResponseStatusCode = 429) then
+        Result := prTRYAGAIN
+      else
+        Result := prERROR;
+    except
+      Result := prERROR;
+    end;
+  finally
+    client.Free;
+  end;
+end;
+
 function TPaymo.CreateTask(Name, Description: string;
   TaskListID: integer): TPaymoResponseStatus;
 var
@@ -366,6 +395,30 @@ begin
     begin
       ShowMessage(response);
     end;
+  end;
+end;
+
+function TPaymo.StopRunningTimer(start_time, end_time: TDateTime; Description: string): TPaymoResponseStatus;
+var
+  response: string;
+  sJSON: TJSONStringType;
+  jObj: TJSONObject;
+begin
+  // https://github.com/paymoapp/api/blob/master/sections/entries.md#stopping-a-timer
+  // more than a minute = POST
+  if SecondsBetween(start_time, end_time) >= 60 then
+  begin
+    jObj := TJSONObject.Create;
+    jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"', LocalTimeToUniversal(end_time)));
+    jObj.Add('description', Description);
+    sJSON := jObj.FormatJSON();
+    jObj.Free;
+    Result := Post('entries/' + RunningTimerData.GetPath('id').AsString, sJSON, response);
+  end
+  // less than a minute = DELETE
+  else
+  begin
+    Result := Delete('entries/' + RunningTimerData.GetPath('id').AsString, response);
   end;
 end;
 

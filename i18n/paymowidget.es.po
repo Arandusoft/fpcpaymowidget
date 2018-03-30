@@ -149,6 +149,10 @@ msgstr "No se puede iniciar sesión."
 msgid "Error: Can't login. Try generating a new API Key."
 msgstr "Error: No se puede iniciar sesión. Intenta generando una nueva API Key."
 
+#: uresourcestring.rserrorcantstoptimer
+msgid "Error: Can't stop timer."
+msgstr ""
+
 #: uresourcestring.rstoday
 msgid "TODAY"
 msgstr "HOY"
