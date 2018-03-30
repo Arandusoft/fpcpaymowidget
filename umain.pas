@@ -56,24 +56,24 @@ type
     procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
     procedure DownloadCompanyExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
-    procedure DownloadCompanyFinish(const Sender: TTask; const Msg: Word;
-      const Param: Variant);
+    procedure DownloadCompanyFinish(const Sender: TTask; const Msg: word;
+      const Param: variant);
     procedure DownloadMeExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure DownloadProjectsExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
-    procedure DownloadProjectsFinish(const Sender: TTask; const Msg: Word;
-      const Param: Variant);
-    procedure DownloadRunningTimerExecute(const Sender: TTask; const Msg: Word;
-      var Param: Variant);
-    procedure DownloadRunningTimerFinish(const Sender: TTask; const Msg: Word;
-      const Param: Variant);
-    procedure DownloadTaskListsFinish(const Sender: TTask; const Msg: Word;
-      const Param: Variant);
+    procedure DownloadProjectsFinish(const Sender: TTask; const Msg: word;
+      const Param: variant);
+    procedure DownloadRunningTimerExecute(const Sender: TTask;
+      const Msg: word; var Param: variant);
+    procedure DownloadRunningTimerFinish(const Sender: TTask;
+      const Msg: word; const Param: variant);
+    procedure DownloadTaskListsFinish(const Sender: TTask; const Msg: word;
+      const Param: variant);
     procedure DownloadTasksExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
-    procedure DownloadTasksFinish(const Sender: TTask; const Msg: Word;
-      const Param: Variant);
+    procedure DownloadTasksFinish(const Sender: TTask; const Msg: word;
+      const Param: variant);
     procedure FormClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -106,6 +106,7 @@ var
   frmMain: TfrmMain;
 
 implementation
+
 uses
   utimeentry, ulogin;
 
@@ -188,11 +189,12 @@ end;
 procedure TfrmMain.DownloadCompanyExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
-  Paymo.GetCompany();
+  if not Sender.Terminated then
+    Paymo.GetCompany();
 end;
 
-procedure TfrmMain.DownloadCompanyFinish(const Sender: TTask; const Msg: Word;
-  const Param: Variant);
+procedure TfrmMain.DownloadCompanyFinish(const Sender: TTask;
+  const Msg: word; const Param: variant);
 begin
   pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
   pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
@@ -207,29 +209,31 @@ end;
 procedure TfrmMain.DownloadProjectsExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
-  Paymo.GetProjects();
+  if not Sender.Terminated then
+    Paymo.GetProjects();
 end;
 
-procedure TfrmMain.DownloadProjectsFinish(const Sender: TTask; const Msg: Word;
-  const Param: Variant);
+procedure TfrmMain.DownloadProjectsFinish(const Sender: TTask;
+  const Msg: word; const Param: variant);
 begin
   //ShowMessage('Projects OK');
 end;
 
 procedure TfrmMain.DownloadRunningTimerExecute(const Sender: TTask;
-  const Msg: Word; var Param: Variant);
+  const Msg: word; var Param: variant);
 begin
-  Paymo.GetRunningTimer();
+  if not Sender.Terminated then
+    Paymo.GetRunningTimer();
 end;
 
 procedure TfrmMain.DownloadRunningTimerFinish(const Sender: TTask;
-  const Msg: Word; const Param: Variant);
+  const Msg: word; const Param: variant);
 begin
   ListTimeEntry();
 end;
 
 procedure TfrmMain.DownloadTaskListsFinish(const Sender: TTask;
-  const Msg: Word; const Param: Variant);
+  const Msg: word; const Param: variant);
 begin
   //ShowMessage('TaskLists OK');
 end;
@@ -237,21 +241,24 @@ end;
 procedure TfrmMain.DownloadTasksExecute(const Sender: TTask; const Msg: word;
   var Param: variant);
 begin
-  Paymo.GetTasks();
+  if not Sender.Terminated then
+    Paymo.GetTasks();
 end;
 
-procedure TfrmMain.DownloadTasksFinish(const Sender: TTask; const Msg: Word;
-  const Param: Variant);
+procedure TfrmMain.DownloadTasksFinish(const Sender: TTask; const Msg: word;
+  const Param: variant);
 begin
   if not Assigned(Tasks) then
   begin
-    btnMenu.Enabled := True;
     Tasks := TTaskList.Create(Self);
     Tasks.PaymoInstance := Paymo;
+    btnMenu.Enabled := True;
     Tasks.Align := alClient;
     ListTasks();
     Tasks.Parent := Self;
-  end;
+  end
+  else
+    ListTasks();
 end;
 
 procedure TfrmMain.FormClick(Sender: TObject);
@@ -296,11 +303,25 @@ begin
   if (Paymo.RunningTimerData <> nil) then
   begin
     case Paymo.StopRunningTimer(start_time, now, '') of
-      prOK: begin
-        pnlTime.Visible := False;
-        DownloadRunningTimer.Start;
+      prOK:
+      begin
+        try
+          pnlTime.Visible := False;
+          Self.Cursor := crHourGlass;
+          Application.ProcessMessages;
+          // Sync for now, ToDo: change to async with tasks
+          Paymo.GetRunningTimer();
+          DownloadRunningTimerFinish(nil, 0, 0);
+          Application.ProcessMessages;
+          // Sync for now, ToDo: change to async with tasks
+          Paymo.GetTasks();
+          DownloadTasksFinish(nil, 0, 0);
+        finally
+          Self.Cursor := crDefault;
+        end;
       end;
-      prTRYAGAIN, prERROR: begin
+      prTRYAGAIN, prERROR:
+      begin
         ShowMessage(rsErrorCantStopTimer);
       end;
     end;
@@ -321,7 +342,8 @@ end;
 procedure TfrmMain.DownloadTaskListsExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
-  Paymo.GetTaskLists();
+  if not Sender.Terminated then
+    Paymo.GetTaskLists();
 end;
 
 procedure TfrmMain.timerEntryTimer(Sender: TObject);
@@ -350,7 +372,7 @@ var
 begin
   inherited WMMove(Message);
   l := Self.Left - frmTimeEntry.Width;
-  t  := Self.Top;
+  t := Self.Top;
   if frmTimeEntry.Left <> l then
     frmTimeEntry.Left := l;
   if frmTimeEntry.Top <> t then
@@ -412,16 +434,21 @@ end;
 
 procedure TfrmMain.ListTasks();
 begin
+  Tasks.Visible := False;
   Tasks.RefreshItems;
+  Tasks.Visible := True;
 end;
 
 procedure TfrmMain.ListTimeEntry();
 begin
   if (Paymo.RunningTimerData <> nil) then
   begin
-    lblProject.Caption := Paymo.GetProjectName(Paymo.RunningTimerData.GetPath('project_id').AsInteger);
-    lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath('task_id').AsInteger);
-    start_time := TTaskList.StringToDateTime(Paymo.RunningTimerData.GetPath('start_time').AsString);
+    lblProject.Caption := Paymo.GetProjectName(
+      Paymo.RunningTimerData.GetPath('project_id').AsInteger);
+    lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath(
+      'task_id').AsInteger);
+    start_time := TTaskList.StringToDateTime(
+      Paymo.RunningTimerData.GetPath('start_time').AsString);
     pnlTime.Visible := True;
   end
   else
