@@ -112,17 +112,17 @@ msgstr ""
 
 #: tfrmtimeentry.lbldescription1.caption
 msgctxt "tfrmtimeentry.lbldescription1.caption"
-msgid "Search:"
+msgid "Project:"
 msgstr ""
 
 #: tfrmtimeentry.lbldescription2.caption
 msgctxt "tfrmtimeentry.lbldescription2.caption"
-msgid "Search:"
+msgid "Task List:"
 msgstr ""
 
 #: tfrmtimeentry.lbldescription3.caption
 msgctxt "tfrmtimeentry.lbldescription3.caption"
-msgid "Search:"
+msgid "Task:"
 msgstr ""
 
 #: tfrmtimeentry.lbl_date.caption
