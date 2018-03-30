@@ -57,6 +57,7 @@ type
     function CreateTask(Name, Description: string;
       TaskListID: integer): TPaymoResponseStatus;
     function StopRunningTimer(start_time, end_time: TDateTime; Description: string): TPaymoResponseStatus;
+    function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
   public
     procedure LoadSettings;
     procedure SaveSettings;
@@ -420,6 +421,13 @@ begin
   begin
     Result := Delete('entries/' + RunningTimerData.GetPath('id').AsString, response);
   end;
+end;
+
+function TPaymo.DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
+var
+  response: string;
+begin
+  Result := Delete('entries/' + TimeEntryID, response);
 end;
 
 procedure TPaymo.LoadSettings;

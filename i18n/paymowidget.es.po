@@ -91,6 +91,14 @@ msgstr "Nombre de Usuario"
 msgid "Timesheet"
 msgstr "Horas trabajadas"
 
+#: tfrmtimeentry.btndeleteentry.caption
+msgid "Delete Entry"
+msgstr ""
+
+#: tfrmtimeentry.btnsaveentry.caption
+msgid "Save Entry"
+msgstr ""
+
 #: tfrmtimeentry.caption
 msgid "Edit Time Entry"
 msgstr ""
@@ -141,6 +149,10 @@ msgstr ""
 msgid "‒"
 msgstr ""
 
+#: uresourcestring.rserrorcantdeletetimeentry
+msgid "Error: Can't delete time entry."
+msgstr ""
+
 #: uresourcestring.rserrorcantlogin
 msgid "Can't login."
 msgstr "No se puede iniciar sesión."
@@ -151,6 +163,14 @@ msgstr "Error: No se puede iniciar sesión. Intenta generando una nueva API Key.
 
 #: uresourcestring.rserrorcantstoptimer
 msgid "Error: Can't stop timer."
+msgstr ""
+
+#: uresourcestring.rspleasefillalltimefields
+msgid "Please fill all time fields."
+msgstr ""
+
+#: uresourcestring.rstheremustbeatleastaminuteofdifferencebetweenstartandendtime
+msgid "There must be at least a minute of difference between start and end time."
 msgstr ""
 
 #: uresourcestring.rstoday

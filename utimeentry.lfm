@@ -1,11 +1,11 @@
 object frmTimeEntry: TfrmTimeEntry
   Left = 259
-  Height = 240
+  Height = 428
   Top = 276
   Width = 320
   BorderIcons = [biSystemMenu]
   Caption = 'Edit Time Entry'
-  ClientHeight = 240
+  ClientHeight = 428
   ClientWidth = 320
   Color = 12111890
   OnShow = FormShow
@@ -23,6 +23,7 @@ object frmTimeEntry: TfrmTimeEntry
     Font.Name = 'Nunito Sans'
     MaxLength = 2
     NumbersOnly = True
+    OnChange = time_end_hhChange
     ParentColor = True
     ParentFont = False
     TabOrder = 0
@@ -41,6 +42,7 @@ object frmTimeEntry: TfrmTimeEntry
     Font.Name = 'Nunito Sans'
     MaxLength = 2
     NumbersOnly = True
+    OnChange = time_end_mmChange
     ParentColor = True
     ParentFont = False
     TabOrder = 1
@@ -71,6 +73,7 @@ object frmTimeEntry: TfrmTimeEntry
     Font.Name = 'Nunito Sans'
     MaxLength = 2
     NumbersOnly = True
+    OnChange = time_end_hhChange
     ParentColor = True
     ParentFont = False
     TabOrder = 2
@@ -89,6 +92,7 @@ object frmTimeEntry: TfrmTimeEntry
     Font.Name = 'Nunito Sans'
     MaxLength = 2
     NumbersOnly = True
+    OnChange = time_end_mmChange
     ParentColor = True
     ParentFont = False
     TabOrder = 3
@@ -159,6 +163,62 @@ object frmTimeEntry: TfrmTimeEntry
     ItemHeight = 15
     Style = csDropDownList
     TabOrder = 6
+  end
+  object btnSaveEntry: TColorSpeedButton
+    Left = 56
+    Height = 40
+    Top = 264
+    Width = 208
+    Caption = 'Save Entry'
+    Font.Color = 3883776
+    Font.Height = -14
+    Font.Name = 'Nunito Sans'
+    Font.Style = [fsBold]
+    OnClick = btnSaveEntryClick
+    ParentFont = False
+    Toggle = False
+    Pressed = False
+    PopupMode = False
+    StateNormal.Color = clWhite
+    StateNormal.BorderColor = 11382189
+    StateNormal.BorderWidth = 0
+    StateHover.Color = 16185824
+    StateHover.BorderColor = 14120960
+    StateHover.BorderWidth = 0
+    StateActive.Color = 15003043
+    StateActive.BorderColor = 10048512
+    StateActive.BorderWidth = 0
+    StateDisabled.Color = 12566463
+    StateDisabled.BorderColor = clBlack
+    StateDisabled.BorderWidth = 1
+  end
+  object btnDeleteEntry: TColorSpeedButton
+    Left = 56
+    Height = 40
+    Top = 320
+    Width = 208
+    Caption = 'Delete Entry'
+    Font.Color = 3883776
+    Font.Height = -14
+    Font.Name = 'Nunito Sans'
+    Font.Style = [fsBold]
+    OnClick = btnDeleteEntryClick
+    ParentFont = False
+    Toggle = False
+    Pressed = False
+    PopupMode = False
+    StateNormal.Color = 12111890
+    StateNormal.BorderColor = clWhite
+    StateNormal.BorderWidth = 1
+    StateHover.Color = 12967230
+    StateHover.BorderColor = clWhite
+    StateHover.BorderWidth = 1
+    StateActive.Color = 12769585
+    StateActive.BorderColor = clWhite
+    StateActive.BorderWidth = 1
+    StateDisabled.Color = 12566463
+    StateDisabled.BorderColor = clBlack
+    StateDisabled.BorderWidth = 1
   end
   object dlgDate: TCalendarDialog
     DialogPosition = poOwnerFormCenter

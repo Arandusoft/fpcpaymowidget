@@ -305,20 +305,15 @@ begin
     case Paymo.StopRunningTimer(start_time, now, '') of
       prOK:
       begin
-        try
-          pnlTime.Visible := False;
-          Self.Cursor := crHourGlass;
-          Application.ProcessMessages;
-          // Sync for now, ToDo: change to async with tasks
-          Paymo.GetRunningTimer();
-          DownloadRunningTimerFinish(nil, 0, 0);
-          Application.ProcessMessages;
-          // Sync for now, ToDo: change to async with tasks
-          Paymo.GetTasks();
-          DownloadTasksFinish(nil, 0, 0);
-        finally
-          Self.Cursor := crDefault;
-        end;
+        pnlTime.Visible := False;
+        Application.ProcessMessages;
+        // Sync for now, ToDo: change to async with tasks
+        Paymo.GetRunningTimer();
+        DownloadRunningTimerFinish(nil, 0, 0);
+        Application.ProcessMessages;
+        // Sync for now, ToDo: change to async with tasks
+        Paymo.GetTasks();
+        DownloadTasksFinish(nil, 0, 0);
       end;
       prTRYAGAIN, prERROR:
       begin
