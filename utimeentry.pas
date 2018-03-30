@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtDlgs,
-  DateUtils, upaymo, fpjson, utasklist, ColorSpeedButton, LMessages,
+  DateUtils, upaymo, fpjson, utasklist, ColorSpeedButton, LMessages, ExtCtrls,
   uresourcestring;
 
 type
@@ -14,22 +14,26 @@ type
   { TfrmTimeEntry }
 
   TfrmTimeEntry = class(TForm)
-    btnDeleteEntry: TColorSpeedButton;
     cbProjectTasks: TComboBox;
     cbProjects: TComboBox;
     cbProjectTaskLists: TComboBox;
-    btnSaveEntry: TColorSpeedButton;
     dlgDate: TCalendarDialog;
-    time_start_hh: TEdit;
-    time_end_hh: TEdit;
-    time_start_mm: TEdit;
-    time_end_mm: TEdit;
-    time_start_separator: TLabel;
-    time_end_separator: TLabel;
-    time_start_separator1: TLabel;
+    lblDescription: TLabel;
     lbl_date: TLabel;
+    memoDescription: TMemo;
+    pnlGroup: TPanel;
+    time_end_hh: TEdit;
+    time_end_mm: TEdit;
+    time_end_separator: TLabel;
+    time_start_hh: TEdit;
+    time_start_mm: TEdit;
+    time_start_separator: TLabel;
+    time_start_separator1: TLabel;
+    btnDeleteEntry: TColorSpeedButton;
+    btnSaveEntry: TColorSpeedButton;
     procedure btnDeleteEntryClick(Sender: TObject);
     procedure btnSaveEntryClick(Sender: TObject);
+    procedure btnStartTimer(Sender: TObject);
     procedure cbProjectsChange(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbl_dateClick(Sender: TObject);
@@ -109,6 +113,9 @@ begin
     if id = projects[i].GetPath('id').AsInteger then
       cbProjects.ItemIndex := i;
   end;
+
+  if cbProjects.ItemIndex = -1 then
+    cbProjects.ItemIndex := 0;
 end;
 
 procedure TfrmTimeEntry.FillProjectTaskLists(TaskListID: integer = 0);
@@ -211,6 +218,32 @@ end;
 procedure TfrmTimeEntry.ShowData;
 begin
   Data_TaskListID := 0;
+
+  // show / hide depending if is a new task or edit time entry
+  if Data = nil then
+  begin
+    cbProjectTasks.Visible := False;
+    btnDeleteEntry.Visible := False;
+    pnlGroup.Visible := False;
+    btnSaveEntry.Caption := rsStartTimer;
+    btnSaveEntry.OnClick := @btnStartTimer;
+    memoDescription.Visible := True;
+    memoDescription.Lines.Clear;
+    lblDescription.Visible := True;
+    if memoDescription.CanSetFocus then
+      memoDescription.SetFocus;
+  end
+  else
+  begin
+    cbProjectTasks.Visible := True;
+    btnDeleteEntry.Visible := True;
+    pnlGroup.Visible := True;
+    btnSaveEntry.Caption := rsSaveEntry;
+    btnSaveEntry.OnClick := @btnSaveEntryClick;
+    memoDescription.Visible := False;
+    lblDescription.Visible := False;
+  end;
+
   FillProjectsCombo;
   FillProjectTasks(True);
   FillProjectTaskLists(Data_TaskListID);
@@ -259,9 +292,9 @@ begin
     exit();
   end;
   case PaymoInstance.UpdateTimeEntry(Data.GetPath('id').AsString,
-      t_end, TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsString,
-      TJSONData(cbProjectTasks.Items.Objects[cbProjectTasks.ItemIndex]).GetPath('id').AsString, TJSONData(
-      cbProjectTaskLists.Items.Objects[cbProjectTaskLists.ItemIndex]).GetPath(
+      t_end, TJSONData(cbProjects.Items.Objects[cbProjects.ItemIndex]).GetPath('id').AsString, TJSONData(
+      cbProjectTasks.Items.Objects[cbProjectTasks.ItemIndex]).GetPath('id').AsString,
+      TJSONData(cbProjectTaskLists.Items.Objects[cbProjectTaskLists.ItemIndex]).GetPath(
       'id').AsString) of
     prOK:
     begin
@@ -276,6 +309,45 @@ begin
       ShowMessage(rsErrorCantUpdateTimeEntry);
     end;
   end;
+end;
+
+procedure TfrmTimeEntry.btnStartTimer(Sender: TObject);
+var
+  task: TJSONData;
+  r: TPaymoResponseStatus;
+begin
+  if memoDescription.Lines.Text = '' then
+  begin
+    ShowMessage(rsPleaseEnterTaskDescription);
+    exit();
+  end;
+  r := PaymoInstance.CreateTask(memoDescription.Lines.Text, '',
+    TJSONData(cbProjectTaskLists.Items.Objects[cbProjectTaskLists.ItemIndex]).GetPath('id').AsInteger, task);
+  if (r = prOK) then
+  begin
+    case PaymoInstance.StartRunningTimer(task.GetPath('id').AsInteger) of
+      prOK:
+      begin
+        case PaymoInstance.GetRunningTimer() of
+          prOK:
+          begin
+            Self.Close();
+            frmMain.DownloadRunningTimerFinish(nil, 0, 0);
+          end;
+          prTRYAGAIN, prERROR:
+          begin
+            ShowMessage(rsErrorCantStartTimer);
+          end;
+        end;
+      end;
+      prTRYAGAIN, prERROR:
+      begin
+        ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
+      end;
+    end;
+  end
+  else
+    ShowMessage(rsErrorCantCreateTask);
 end;
 
 procedure TfrmTimeEntry.btnDeleteEntryClick(Sender: TObject);

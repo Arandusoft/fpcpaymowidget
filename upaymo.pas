@@ -55,7 +55,7 @@ type
       var Response: string): TPaymoResponseStatus;
     function Delete(Endpoint: string; var Response: string): TPaymoResponseStatus;
     function CreateTask(Name, Description: string;
-      TaskListID: integer): TPaymoResponseStatus;
+      TaskListID: integer; var task: TJSONData): TPaymoResponseStatus;
     function StopRunningTimer(start_time, end_time: TDateTime;
       Description: string): TPaymoResponseStatus;
     function StartRunningTimer(task_id: integer): TPaymoResponseStatus;
@@ -377,7 +377,7 @@ begin
 end;
 
 function TPaymo.CreateTask(Name, Description: string;
-  TaskListID: integer): TPaymoResponseStatus;
+  TaskListID: integer; var task: TJSONData): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
@@ -397,7 +397,8 @@ begin
   case Result of
     prOK:
     begin
-      ShowMessage(response);
+      task := GetJSON(response).GetPath('tasks').Items[0];
+      TasksArray.Add(task);
     end;
   end;
 end;

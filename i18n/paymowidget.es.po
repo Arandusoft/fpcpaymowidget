@@ -96,6 +96,7 @@ msgid "Delete Entry"
 msgstr ""
 
 #: tfrmtimeentry.btnsaveentry.caption
+msgctxt "tfrmtimeentry.btnsaveentry.caption"
 msgid "Save Entry"
 msgstr ""
 
@@ -109,6 +110,10 @@ msgstr ""
 
 #: tfrmtimeentry.dlgdate.okcaption
 msgid "&OK"
+msgstr ""
+
+#: tfrmtimeentry.lbldescription.caption
+msgid "Task description:"
 msgstr ""
 
 #: tfrmtimeentry.lbl_date.caption
@@ -149,6 +154,10 @@ msgstr ""
 msgid "‒"
 msgstr ""
 
+#: uresourcestring.rserrorcantcreatetask
+msgid "Error: Can't create task."
+msgstr ""
+
 #: uresourcestring.rserrorcantdeletetimeentry
 msgid "Error: Can't delete time entry."
 msgstr ""
@@ -177,8 +186,21 @@ msgstr ""
 msgid "Error: Can't update time entry."
 msgstr ""
 
+#: uresourcestring.rspleaseentertaskdescription
+msgid "Please enter task description."
+msgstr ""
+
 #: uresourcestring.rspleasefillalltimefields
 msgid "Please fill all time fields."
+msgstr ""
+
+#: uresourcestring.rssaveentry
+msgctxt "uresourcestring.rssaveentry"
+msgid "Save Entry"
+msgstr ""
+
+#: uresourcestring.rsstarttimer
+msgid "Start Timer"
 msgstr ""
 
 #: uresourcestring.rstheremustbeatleastaminuteofdifferencebetweenstartandendtime

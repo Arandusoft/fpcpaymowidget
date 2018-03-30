@@ -23,6 +23,10 @@ resourcestring
   rsErrorCantStartTimer = 'Error: Can''t start timer.';
   rsErrorCantStartTimerTryStoppingCurrentTimerFirst =
     'Error: Can''t start timer. Try stopping current timer first.';
+  rsStartTimer = 'Start Timer';
+  rsSaveEntry = 'Save Entry';
+  rsErrorCantCreateTask = 'Error: Can''t create task.';
+  rsPleaseEnterTaskDescription = 'Please enter task description.';
 
 implementation
 

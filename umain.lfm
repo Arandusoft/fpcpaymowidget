@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 126
+  Left = 386
   Height = 540
-  Top = 140
+  Top = 139
   Width = 360
   Caption = 'FPC Paymo Widget'
   ClientHeight = 540
@@ -47,6 +47,33 @@ object frmMain: TfrmMain
       Font.Color = clBlack
       OnClick = btnMenuClick
       OnPaint = btnMenuPaint
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 12111890
+      StateNormal.BorderColor = 11382189
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 12111890
+      StateHover.BorderColor = 14120960
+      StateHover.BorderWidth = 0
+      StateActive.Color = 12111890
+      StateActive.BorderColor = 10048512
+      StateActive.BorderWidth = 0
+      StateDisabled.Color = 12111890
+      StateDisabled.BorderColor = clBlack
+      StateDisabled.BorderWidth = 0
+    end
+    object btnAddTask: TColorSpeedButton
+      Cursor = crHandPoint
+      Left = 326
+      Height = 17
+      Top = 17
+      Width = 17
+      Enabled = False
+      Font.Color = clWhite
+      OnClick = btnAddTaskClick
+      OnPaint = btnAddTaskPaint
       ParentFont = False
       Toggle = False
       Pressed = False

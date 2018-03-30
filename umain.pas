@@ -17,6 +17,7 @@ type
   TfrmMain = class(TForm)
     btnAbout: TColorSpeedButton;
     btnMenu: TColorSpeedButton;
+    btnAddTask: TColorSpeedButton;
     btnOpenPaymoApp: TColorSpeedButton;
     btnMenuExit: TColorSpeedButton;
     btnQuit: TColorSpeedButton;
@@ -49,6 +50,8 @@ type
     timerEntry: TTimer;
     tiTray: TTrayIcon;
     wcThreadDownloader: TWCThread;
+    procedure btnAddTaskClick(Sender: TObject);
+    procedure btnAddTaskPaint(Sender: TObject);
     procedure btnMenuClick(Sender: TObject);
     procedure btnMenuPaint(Sender: TObject);
     procedure btnOpenPaymoAppClick(Sender: TObject);
@@ -174,6 +177,26 @@ begin
     Tasks.Enabled := False;
 end;
 
+procedure TfrmMain.btnAddTaskPaint(Sender: TObject);
+var
+  c: TColorSpeedButton;
+  h: integer;
+begin
+  c := TColorSpeedButton(Sender);
+  h := c.Height div 2;
+  c.Canvas.Pen.Color := clWhite;
+  c.Canvas.Line(h, 0, h, c.Height);
+  c.Canvas.Line(0, h, c.Width, h);
+end;
+
+procedure TfrmMain.btnAddTaskClick(Sender: TObject);
+begin
+  frmTimeEntry.PaymoInstance := Paymo;
+  frmTimeEntry.Data := nil;
+  frmTimeEntry.ShowData;
+  frmTimeEntry.Show;
+end;
+
 procedure TfrmMain.btnOpenPaymoAppClick(Sender: TObject);
 begin
   OpenURL('https://app.paymoapp.com/');
@@ -256,6 +279,7 @@ begin
     Tasks := TTaskList.Create(Self);
     Tasks.PaymoInstance := Paymo;
     btnMenu.Enabled := True;
+    btnAddTask.Enabled := True;
     Tasks.Align := alClient;
     ListTasks();
     Tasks.Parent := Self;
