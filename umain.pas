@@ -95,11 +95,13 @@ type
   public
     Paymo: TPaymo;
     start_time: TDateTime;
+    stop_ok: boolean;
     procedure Login;
     procedure ListProjects();
     procedure ListTasks();
     procedure ListTimeEntry();
     procedure RefreshTimeEntry();
+    function StopTimeEntry(): boolean;
   end;
 
 var
@@ -167,6 +169,7 @@ begin
   pnlMenu.Animate();
   // change style to disabled
   pnlTop.Enabled := False;
+  pnlTime.Enabled := False;
   if Assigned(Tasks) then
     Tasks.Enabled := False;
 end;
@@ -305,6 +308,7 @@ begin
     case Paymo.StopRunningTimer(start_time, now, '') of
       prOK:
       begin
+        stop_ok := True;
         pnlTime.Visible := False;
         Application.ProcessMessages;
         // Sync for now, ToDo: change to async with tasks
@@ -317,6 +321,7 @@ begin
       end;
       prTRYAGAIN, prERROR:
       begin
+        stop_ok := False;
         ShowMessage(rsErrorCantStopTimer);
       end;
     end;
@@ -357,6 +362,7 @@ begin
   pnlMenu.Animate();
   // change style back to enabled
   pnlTop.Enabled := True;
+  pnlTime.Enabled := True;
   if Assigned(Tasks) then
     Tasks.Enabled := True;
 end;
@@ -456,6 +462,13 @@ begin
   begin
     lblTime.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now));
   end;
+end;
+
+function TfrmMain.StopTimeEntry(): boolean;
+begin
+  Result := True;
+  lblStopClick(nil);
+  Result := stop_ok;
 end;
 
 end.

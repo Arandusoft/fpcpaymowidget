@@ -18,6 +18,8 @@ resourcestring
   rsThereMustBeAtLeastAMinuteOfDifferenceBetweenStartAndEndTime = 'There must be at least a minute of difference between start and end time.';
   rsErrorCantDeleteTimeEntry = 'Error: Can''t delete time entry.';
   rsErrorCantUpdateTimeEntry = 'Error: Can''t update time entry.';
+  rsErrorCantStartTimer = 'Error: Can''t start timer.';
+  rsErrorCantStartTimerTryStoppingCurrentTimerFirst = 'Error: Can''t start timer. Try stopping current timer first.';
 
 implementation
 

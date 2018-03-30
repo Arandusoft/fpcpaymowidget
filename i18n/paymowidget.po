@@ -151,6 +151,14 @@ msgstr ""
 msgid "Error: Can't login. Try generating a new API Key."
 msgstr ""
 
+#: uresourcestring.rserrorcantstarttimer
+msgid "Error: Can't start timer."
+msgstr ""
+
+#: uresourcestring.rserrorcantstarttimertrystoppingcurrenttimerfirst
+msgid "Error: Can't start time. Try stopping current timer first."
+msgstr ""
+
 #: uresourcestring.rserrorcantstoptimer
 msgid "Error: Can't stop timer."
 msgstr ""

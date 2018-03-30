@@ -47,8 +47,9 @@ type
   end;
 
 implementation
+
 uses
-  utimeentry;
+  utimeentry, umain;
 
 { TTaskList }
 
@@ -67,9 +68,30 @@ end;
 
 procedure TTaskList.OnClickPlay(Sender: TObject);
 begin
+  // task id
   if TControl(Sender).Tag <> 0 then
   begin
-    // add time entry
+    // ToDo: stop current entry, then start new one (don't show error)
+    //if frmMain.StopTimeEntry() then
+    case PaymoInstance.StartRunningTimer(TControl(Sender).Tag) of
+      prOK:
+      begin
+        case PaymoInstance.GetRunningTimer() of
+          prOK:
+          begin
+            frmMain.DownloadRunningTimerFinish(nil, 0, 0);
+          end;
+          prTRYAGAIN, prERROR:
+          begin
+            ShowMessage(rsErrorCantStartTimer);
+          end;
+        end;
+      end;
+      prTRYAGAIN, prERROR:
+      begin
+        ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
+      end;
+    end;
   end
   else
     OnClickItem(Sender);
@@ -77,14 +99,14 @@ end;
 
 procedure TTaskList.OnClickTimeEntry(Sender: TObject);
 var
-  data: TJSONData;
+  Data: TJSONData;
 begin
   // show edit time entry
-  data := PaymoInstance.GetTimeEntry(TControl(Sender).Tag);
-  if data <> nil then
+  Data := PaymoInstance.GetTimeEntry(TControl(Sender).Tag);
+  if Data <> nil then
   begin
     frmTimeEntry.PaymoInstance := PaymoInstance;
-    frmTimeEntry.Data := data;
+    frmTimeEntry.Data := Data;
     //frmTimeEntry.Caption := 'Entry ' + TControl(Sender).Tag.ToString;
     frmTimeEntry.ShowData;
     frmTimeEntry.Show;

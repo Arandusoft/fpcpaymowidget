@@ -306,15 +306,18 @@ object frmMain: TfrmMain
     end
     object lblTask: TLabel
       Left = 38
-      Height = 19
+      Height = 80
       Top = 48
-      Width = 28
+      Width = 284
+      Anchors = [akTop, akLeft, akRight]
+      AutoSize = False
       Caption = 'Task'
       Font.Color = 4805637
       Font.Height = -14
       Font.Name = 'Nunito Sans SemiBold'
       ParentColor = False
       ParentFont = False
+      WordWrap = True
     end
     object lblTime: TLabel
       Left = 99
