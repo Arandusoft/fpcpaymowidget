@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtDlgs,
   DateUtils, upaymo, fpjson, utasklist, ColorSpeedButton, LMessages, ExtCtrls,
-  uresourcestring, LazUTF8;
+  uresourcestring, LazUTF8, LCLType;
 
 type
 
@@ -44,11 +44,17 @@ type
     procedure btnStartTimer(Sender: TObject);
     procedure editSearchProjectEnter(Sender: TObject);
     procedure editSearchProjectExit(Sender: TObject);
+    procedure editSearchProjectKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure editSearchTaskListsEnter(Sender: TObject);
     procedure editSearchTaskListsExit(Sender: TObject);
     procedure editSearchProjectChange(Sender: TObject);
+    procedure editSearchTaskListsKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure editSearchTasksEnter(Sender: TObject);
     procedure editSearchTasksExit(Sender: TObject);
+    procedure editSearchTasksKeyDown(Sender: TObject; var Key: Word;
+      Shift: TShiftState);
     procedure lbl_dateClick(Sender: TObject);
     procedure lbProjectsSelectionChange(Sender: TObject; User: boolean);
     procedure lbProjectTaskListsSelectionChange(Sender: TObject; User: boolean);
@@ -105,7 +111,7 @@ begin
   begin
     try
        lbProjectTaskLists.Enabled:=false;
-       FillProjectTaskLists();
+       //FillProjectTaskLists();
        FillProjectTasks(False);
     finally
       lbProjectTaskLists.Enabled:=true;
@@ -348,6 +354,38 @@ begin
       editSearchProject.Text:=lbProjects.Items[lbProjects.ItemIndex];
 end;
 
+procedure TfrmTimeEntry.editSearchProjectKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+var iPos:integer;
+begin
+  if (key = VK_DOWN) then
+  begin
+    key := 0;
+    if (lbProjects.Items.Count>0) then
+    begin
+       iPos:=lbProjects.ItemIndex;
+       inc(iPos);
+       if (iPos>lbProjects.Items.Count-1) then
+          iPos:=0;
+       lbProjects.ItemIndex:=iPos;
+    end;
+  end;
+  if (key = VK_UP) then
+  begin
+    key := 0;
+    if (lbProjects.Items.Count>0) then
+    begin
+       iPos:=lbProjects.ItemIndex;
+       dec(iPos);
+       if (iPos<0) then
+          iPos:=lbProjects.Items.Count-1;
+       lbProjects.ItemIndex:=iPos;
+    end;
+  end;
+  if Key=VK_RETURN then SelectNext(TWinControl(Sender), True, True);
+end;
+
+
 procedure TfrmTimeEntry.editSearchTaskListsEnter(Sender: TObject);
 begin
   lbProjectTaskLists.Visible:=true;
@@ -368,6 +406,37 @@ begin
   FillProjectTaskLists();
 end;
 
+procedure TfrmTimeEntry.editSearchTaskListsKeyDown(Sender: TObject;
+  var Key: Word; Shift: TShiftState);
+var iPos:integer;
+begin
+    if (key = VK_DOWN) then
+  begin
+    key := 0;
+    if (lbProjectTaskLists.Items.Count>0) then
+    begin
+       iPos:=lbProjectTaskLists.ItemIndex;
+       inc(iPos);
+       if (iPos>lbProjectTaskLists.Items.Count-1) then
+          iPos:=0;
+       lbProjectTaskLists.ItemIndex:=iPos;
+    end;
+  end;
+  if (key = VK_UP) then
+  begin
+    key := 0;
+    if (lbProjectTaskLists.Items.Count>0) then
+    begin
+       iPos:=lbProjectTaskLists.ItemIndex;
+       dec(iPos);
+       if (iPos<0) then
+          iPos:=lbProjectTaskLists.Items.Count-1;
+       lbProjectTaskLists.ItemIndex:=iPos;
+    end;
+  end;
+  if Key=VK_RETURN then SelectNext(TWinControl(Sender), True, True);
+end;
+
 procedure TfrmTimeEntry.editSearchTasksEnter(Sender: TObject);
 begin
   lbProjectTasks.Visible:=true;
@@ -379,6 +448,37 @@ begin
   lbProjectTasks.Visible:=false;
   if lbProjectTasks.ItemIndex>-1 then
       editSearchTasks.Text:=lbProjectTasks.Items[lbProjectTasks.ItemIndex];
+end;
+
+procedure TfrmTimeEntry.editSearchTasksKeyDown(Sender: TObject; var Key: Word;
+  Shift: TShiftState);
+var iPOs:Integer;
+begin
+    if (key = VK_DOWN) then
+  begin
+    key := 0;
+    if (lbProjectTasks.Items.Count>0) then
+    begin
+       iPos:=lbProjectTasks.ItemIndex;
+       inc(iPos);
+       if (iPos>lbProjectTasks.Items.Count-1) then
+          iPos:=0;
+       lbProjectTasks.ItemIndex:=iPos;
+    end;
+  end;
+  if (key = VK_UP) then
+  begin
+    key := 0;
+    if (lbProjectTasks.Items.Count>0) then
+    begin
+       iPos:=lbProjectTasks.ItemIndex;
+       dec(iPos);
+       if (iPos<0) then
+          iPos:=lbProjectTasks.Items.Count-1;
+       lbProjectTasks.ItemIndex:=iPos;
+    end;
+  end;
+  if Key=VK_RETURN then SelectNext(TWinControl(Sender), True, True);
 end;
 
 procedure TfrmTimeEntry.btnSaveEntryClick(Sender: TObject);

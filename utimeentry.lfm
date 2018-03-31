@@ -232,6 +232,7 @@ object frmTimeEntry: TfrmTimeEntry
     OnChange = editSearchProjectChange
     OnEnter = editSearchProjectEnter
     OnExit = editSearchProjectExit
+    OnKeyDown = editSearchProjectKeyDown
     TabOrder = 2
   end
   object editSearchTaskLists: TEdit
@@ -241,6 +242,7 @@ object frmTimeEntry: TfrmTimeEntry
     Width = 233
     OnEnter = editSearchTaskListsEnter
     OnExit = editSearchTaskListsExit
+    OnKeyDown = editSearchTaskListsKeyDown
     TabOrder = 3
   end
   object editSearchTasks: TEdit
@@ -250,6 +252,7 @@ object frmTimeEntry: TfrmTimeEntry
     Width = 233
     OnEnter = editSearchTasksEnter
     OnExit = editSearchTasksExit
+    OnKeyDown = editSearchTasksKeyDown
     TabOrder = 4
   end
   object lblDescription1: TLabel
