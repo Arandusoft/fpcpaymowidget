@@ -51,7 +51,7 @@ msgstr "FPC Paymo Widget"
 
 #: tfrmmain.lblproject.caption
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #: tfrmmain.lblstop.caption
 msgid "⏹"
@@ -59,7 +59,7 @@ msgstr ""
 
 #: tfrmmain.lbltask.caption
 msgid "Task"
-msgstr ""
+msgstr "Tarea"
 
 #: tfrmmain.lbltime.caption
 msgid "00:00:00"
@@ -93,51 +93,51 @@ msgstr "Horas trabajadas"
 
 #: tfrmtimeentry.btndeleteentry.caption
 msgid "Delete Entry"
-msgstr ""
+msgstr "Eliminar Entrada"
 
 #: tfrmtimeentry.btnexistingtask.caption
 msgid "Use Existing Task"
-msgstr ""
+msgstr "Usar Tarea Existente"
 
 #: tfrmtimeentry.btnsaveentry.caption
 msgctxt "tfrmtimeentry.btnsaveentry.caption"
 msgid "Save Entry"
-msgstr ""
+msgstr "Guardar Entrada"
 
 #: tfrmtimeentry.caption
 msgid "Edit Time Entry"
-msgstr ""
+msgstr "Editar Entrada de Tiempo"
 
 #: tfrmtimeentry.dlgdate.cancelcaption
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: tfrmtimeentry.dlgdate.okcaption
 msgid "&OK"
-msgstr ""
+msgstr "&OK"
 
 #: tfrmtimeentry.lbldescription.caption
 msgid "New task description:"
-msgstr ""
+msgstr "Descripción:"
 
 #: tfrmtimeentry.lbldescription1.caption
 msgctxt "tfrmtimeentry.lbldescription1.caption"
 msgid "Project:"
-msgstr ""
+msgstr "Proyecto:"
 
 #: tfrmtimeentry.lbldescription2.caption
 msgctxt "tfrmtimeentry.lbldescription2.caption"
 msgid "Task List:"
-msgstr ""
+msgstr "Lista:"
 
 #: tfrmtimeentry.lbldescription3.caption
 msgctxt "tfrmtimeentry.lbldescription3.caption"
 msgid "Task:"
-msgstr ""
+msgstr "Tarea:"
 
 #: tfrmtimeentry.lbl_date.caption
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #: tfrmtimeentry.time_end_hh.text
 msgctxt "tfrmtimeentry.time_end_hh.text"
@@ -175,11 +175,11 @@ msgstr ""
 
 #: uresourcestring.rserrorcantcreatetask
 msgid "Error: Can't create task."
-msgstr ""
+msgstr "Error: No se puede crear la tarea."
 
 #: uresourcestring.rserrorcantdeletetimeentry
 msgid "Error: Can't delete time entry."
-msgstr ""
+msgstr "Error: No se puede eliminar la entrada de tiempo."
 
 #: uresourcestring.rserrorcantlogin
 msgid "Can't login."
@@ -191,40 +191,40 @@ msgstr "Error: No se puede iniciar sesión. Intenta generando una nueva API Key.
 
 #: uresourcestring.rserrorcantstarttimer
 msgid "Error: Can't start timer."
-msgstr ""
+msgstr "Error: No se puede iniciar el temporizador."
 
 #: uresourcestring.rserrorcantstarttimertrystoppingcurrenttimerfirst
 msgid "Error: Can't start timer. Try stopping current timer first."
-msgstr ""
+msgstr "Error: No se puede iniciar el temporizador. Intenta parar el temporizador actual primero."
 
 #: uresourcestring.rserrorcantstoptimer
 msgid "Error: Can't stop timer."
-msgstr ""
+msgstr "Error: No se puede parar el temporizador."
 
 #: uresourcestring.rserrorcantupdatetimeentry
 msgid "Error: Can't update time entry."
-msgstr ""
+msgstr "Error: No se puede actualizar la entrada de tiempo."
 
 #: uresourcestring.rspleaseentertaskdescription
 msgid "Please enter task description."
-msgstr ""
+msgstr "Por favor ingrese la descripción de la tarea."
 
 #: uresourcestring.rspleasefillallfields
 msgid "Please fill all fields."
-msgstr ""
+msgstr "Por favor llene todos los campos."
 
 #: uresourcestring.rssaveentry
 msgctxt "uresourcestring.rssaveentry"
 msgid "Save Entry"
-msgstr ""
+msgstr "Guardar Entrada"
 
 #: uresourcestring.rsstarttimer
 msgid "Start Timer"
-msgstr ""
+msgstr "Iniciar Temporizador"
 
 #: uresourcestring.rstheremustbeatleastaminuteofdifferencebetweenstartandendtime
 msgid "There must be at least a minute of difference between start and end time."
-msgstr ""
+msgstr "Debe haber al menos un minuto de diferencia entre el tiempo inicial y el tiempo final."
 
 #: uresourcestring.rstoday
 msgid "TODAY"
@@ -237,4 +237,3 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
-

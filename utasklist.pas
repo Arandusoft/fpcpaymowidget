@@ -235,11 +235,15 @@ begin
       if arrEntries[j].GetPath('user_id').AsInteger <>
         PaymoInstance.MyData.GetPath('id').AsInteger then
         Continue;
-      // add only new items
-      tempstr := FormatDateTime('yyyy mm dd',
-        StringToDateTime(arrEntries[j].GetPath('start_time').AsString));
-      if (sl.IndexOf(tempstr) = -1) then
-        sl.Add(tempstr);
+      // ToDo: only start_time format for now
+      if arrEntries[j].FindPath('start_time') <> nil then
+      begin
+        // add only new items
+        tempstr := FormatDateTime('yyyy mm dd',
+          StringToDateTime(arrEntries[j].GetPath('start_time').AsString));
+        if (sl.IndexOf(tempstr) = -1) then
+          sl.Add(tempstr);
+      end;
     end;
   end;
 
@@ -275,6 +279,9 @@ begin
         // hide time entries of other users
         if arrEntries[j].GetPath('user_id').AsInteger <>
           PaymoInstance.MyData.GetPath('id').AsInteger then
+          Continue;
+        // ToDo: only start_time format for now
+        if arrEntries[j].FindPath('start_time') = nil then
           Continue;
         // show only items that match time
         if not IsSameDate(StringToDateTime(arrEntries[j].GetPath('start_time').AsString),

@@ -235,10 +235,10 @@ object frmTimeEntry: TfrmTimeEntry
     StateDisabled.BorderWidth = 1
   end
   object memoDescription: TMemo
-    Left = 24
+    Left = 16
     Height = 144
     Top = 272
-    Width = 289
+    Width = 297
     Font.Height = -14
     Font.Name = 'Nunito Sans'
     ParentFont = False
