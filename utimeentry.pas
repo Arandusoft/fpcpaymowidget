@@ -44,28 +44,29 @@ type
     procedure btnStartTimer(Sender: TObject);
     procedure editSearchProjectEnter(Sender: TObject);
     procedure editSearchProjectExit(Sender: TObject);
-    procedure editSearchProjectKeyDown(Sender: TObject; var Key: Word;
+    procedure editSearchProjectKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
+    procedure editSearchTaskListsChange(Sender: TObject);
     procedure editSearchTaskListsEnter(Sender: TObject);
     procedure editSearchTaskListsExit(Sender: TObject);
     procedure editSearchProjectChange(Sender: TObject);
-    procedure editSearchTaskListsKeyDown(Sender: TObject; var Key: Word;
+    procedure editSearchTaskListsKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
+    procedure editSearchTasksChange(Sender: TObject);
     procedure editSearchTasksEnter(Sender: TObject);
     procedure editSearchTasksExit(Sender: TObject);
-    procedure editSearchTasksKeyDown(Sender: TObject; var Key: Word;
+    procedure editSearchTasksKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
     procedure lbl_dateClick(Sender: TObject);
     procedure lbProjectsSelectionChange(Sender: TObject; User: boolean);
     procedure lbProjectTaskListsSelectionChange(Sender: TObject; User: boolean);
-    procedure lbProjectTasksSelectionChange(Sender: TObject; User: boolean);
     procedure time_end_hhChange(Sender: TObject);
     procedure time_end_mmChange(Sender: TObject);
   private
     Data_TaskListID: integer;
-    procedure FillProjectsCombo;
-    procedure FillProjectTaskLists(TaskListID: integer = 0);
-    procedure FillProjectTasks(FromData: boolean);
+    procedure FillProjectsCombo(Select: boolean = False);
+    procedure FillProjectTaskLists(Select: boolean = False; TaskListID: integer = 0);
+    procedure FillProjectTasks(Select: boolean = False; FromData: boolean = False);
     procedure FillDateAndTime;
     procedure WMMove(var Message: TLMMove); message LM_MOVE;
   public
@@ -94,13 +95,12 @@ begin
   end;
 end;
 
-procedure TfrmTimeEntry.lbProjectsSelectionChange(Sender: TObject; User: boolean
-  );
+procedure TfrmTimeEntry.lbProjectsSelectionChange(Sender: TObject; User: boolean);
 begin
   if (editSearchProject.Focused) or (lbProjects.Focused) then
   begin
-     FillProjectTasks(False);
-     FillProjectTaskLists();
+    FillProjectTasks(False);
+    FillProjectTaskLists();
   end;
 end;
 
@@ -110,22 +110,12 @@ begin
   if (editSearchTaskLists.Focused) or (lbProjectTaskLists.Focused) then
   begin
     try
-       lbProjectTaskLists.Enabled:=false;
-       //FillProjectTaskLists();
-       FillProjectTasks(False);
+      lbProjectTaskLists.Enabled := False;
+      //FillProjectTaskLists();
+      FillProjectTasks(False);
     finally
-      lbProjectTaskLists.Enabled:=true;
+      lbProjectTaskLists.Enabled := True;
     end;
-
-  end;
-end;
-
-procedure TfrmTimeEntry.lbProjectTasksSelectionChange(Sender: TObject;
-  User: boolean);
-begin
-  if (editSearchTasks.Focused) or (lbProjectTasks.Focused) then
-  begin
-     FillProjectTasks(False);
   end;
 end;
 
@@ -151,7 +141,7 @@ begin
     e.Text := '59';
 end;
 
-procedure TfrmTimeEntry.FillProjectsCombo;
+procedure TfrmTimeEntry.FillProjectsCombo(Select: boolean);
 var
   i, id: integer;
   projects: TJSONArray;
@@ -171,18 +161,23 @@ begin
   for i := 0 to projects.Count - 1 do
   begin
     if (pass1) or (UTF8Pos(search,
-      UTF8LowerCase(projects[i].GetPath('name').AsString)) <>
-      0) then
+      UTF8LowerCase(projects[i].GetPath('name').AsString)) <> 0) then
       lbProjects.AddItem(projects[i].GetPath('name').AsString, projects[i]);
     if id = projects[i].GetPath('id').AsInteger then
-      lbProjects.ItemIndex := i;
+      lbProjects.ItemIndex := lbProjects.Items.Count - 1;
   end;
 
-  if (lbProjects.ItemIndex = -1) and (lbProjects.Items.Count>0) then
-      lbProjects.ItemIndex := 0;
+  if (lbProjects.ItemIndex = -1) and (lbProjects.Items.Count > 0) then
+    lbProjects.ItemIndex := 0;
+
+  if Select then
+    if lbProjects.ItemIndex > -1 then
+      editSearchProject.Text := lbProjects.Items[lbProjects.ItemIndex]
+    else
+      editSearchProject.Text := '';
 end;
 
-procedure TfrmTimeEntry.FillProjectTaskLists(TaskListID: integer = 0);
+procedure TfrmTimeEntry.FillProjectTaskLists(Select: boolean; TaskListID: integer);
 var
   i: integer;
   tasklists: TJSONArray;
@@ -201,8 +196,8 @@ begin
   for i := 0 to tasklists.Count - 1 do
   begin
     if (proj_id = tasklists[i].GetPath('project_id').AsInteger) and
-      ((pass1) or (UTF8Pos(search, UTF8LowerCase(tasklists[i].GetPath('name').AsString)) <>
-      0)) then
+      ((pass1) or (UTF8Pos(search,
+      UTF8LowerCase(tasklists[i].GetPath('name').AsString)) <> 0)) then
     begin
       lbProjectTaskLists.AddItem(tasklists[i].GetPath('name').AsString, tasklists[i]);
       if TaskListID = tasklists[i].GetPath('id').AsInteger then
@@ -210,11 +205,17 @@ begin
     end;
   end;
 
-  if TaskListID = 0 then
+  if (TaskListID = 0) and (lbProjectTaskLists.Items.Count > 0) then
     lbProjectTaskLists.ItemIndex := 0;
+
+  if Select then
+    if lbProjectTaskLists.ItemIndex > -1 then
+      editSearchTaskLists.Text := lbProjectTaskLists.Items[lbProjectTaskLists.ItemIndex]
+    else
+      editSearchTaskLists.Text := '';
 end;
 
-procedure TfrmTimeEntry.FillProjectTasks(FromData: boolean);
+procedure TfrmTimeEntry.FillProjectTasks(Select: boolean; FromData: boolean);
 var
   i, proj_id, task_id: integer;
   tasks: TJSONArray;
@@ -251,8 +252,14 @@ begin
     end;
   end;
 
-  if (not FromData) and (lbProjectTasks.Items.Count>0)  then
+  if (not FromData) and (lbProjectTasks.Items.Count > 0) then
     lbProjectTasks.ItemIndex := 0;
+
+  if Select then
+    if lbProjectTasks.ItemIndex > -1 then
+      editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex]
+    else
+      editSearchTasks.Text := '';
 end;
 
 procedure TfrmTimeEntry.FillDateAndTime;
@@ -330,73 +337,85 @@ begin
     lblDescription.Visible := False;
     lblDescription3.Visible := True;
     editSearchTasks.Visible := True;
-    if editSearchProject.CanSetFocus then
-      editSearchProject.SetFocus;
+    {if editSearchProject.CanSetFocus then
+      editSearchProject.SetFocus;}
     btnExistingTask.Visible := False;
   end;
 
-  FillProjectsCombo;
-  FillProjectTasks(True);
-  FillProjectTaskLists(Data_TaskListID);
+  FillProjectsCombo(True);
+  FillProjectTasks(True, True);
+  FillProjectTaskLists(True, Data_TaskListID);
   FillDateAndTime;
+
+  lbProjects.Visible := False;
+  lbProjectTasks.Visible := False;
+  lbProjectTaskLists.Visible := False;
 end;
 
 procedure TfrmTimeEntry.editSearchProjectEnter(Sender: TObject);
 begin
-  lbProjects.Visible:=true;
-  lbProjects.Height:=editSearchProject.Height*4;
+  lbProjects.Visible := True;
+  lbProjects.Height := editSearchProject.Height * 4;
 end;
 
 procedure TfrmTimeEntry.editSearchProjectExit(Sender: TObject);
 begin
-  lbProjects.Visible:=false;
-  if lbProjects.ItemIndex>-1 then
-      editSearchProject.Text:=lbProjects.Items[lbProjects.ItemIndex];
+  lbProjects.Visible := False;
+  if lbProjects.ItemIndex > -1 then
+    editSearchProject.Text := lbProjects.Items[lbProjects.ItemIndex];
 end;
 
 procedure TfrmTimeEntry.editSearchProjectKeyDown(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
-var iPos:integer;
+  var Key: word; Shift: TShiftState);
+var
+  iPos: integer;
 begin
   if (key = VK_DOWN) then
   begin
     key := 0;
-    if (lbProjects.Items.Count>0) then
+    if (lbProjects.Items.Count > 0) then
     begin
-       iPos:=lbProjects.ItemIndex;
-       inc(iPos);
-       if (iPos>lbProjects.Items.Count-1) then
-          iPos:=0;
-       lbProjects.ItemIndex:=iPos;
+      iPos := lbProjects.ItemIndex;
+      Inc(iPos);
+      if (iPos > lbProjects.Items.Count - 1) then
+        iPos := 0;
+      lbProjects.ItemIndex := iPos;
     end;
   end;
   if (key = VK_UP) then
   begin
     key := 0;
-    if (lbProjects.Items.Count>0) then
+    if (lbProjects.Items.Count > 0) then
     begin
-       iPos:=lbProjects.ItemIndex;
-       dec(iPos);
-       if (iPos<0) then
-          iPos:=lbProjects.Items.Count-1;
-       lbProjects.ItemIndex:=iPos;
+      iPos := lbProjects.ItemIndex;
+      Dec(iPos);
+      if (iPos < 0) then
+        iPos := lbProjects.Items.Count - 1;
+      lbProjects.ItemIndex := iPos;
     end;
   end;
-  if Key=VK_RETURN then SelectNext(TWinControl(Sender), True, True);
+  if Key = VK_RETURN then
+    SelectNext(TWinControl(Sender), True, True);
+end;
+
+procedure TfrmTimeEntry.editSearchTaskListsChange(Sender: TObject);
+begin
+  FillProjectTasks(False);
+  FillProjectTaskLists();
 end;
 
 
 procedure TfrmTimeEntry.editSearchTaskListsEnter(Sender: TObject);
 begin
-  lbProjectTaskLists.Visible:=true;
-  lbProjectTaskLists.Height:=editSearchTaskLists.Height*4;
+  lbProjectTaskLists.Visible := True;
+  lbProjectTaskLists.Height := editSearchTaskLists.Height * 4;
 end;
 
 procedure TfrmTimeEntry.editSearchTaskListsExit(Sender: TObject);
 begin
-  lbProjectTaskLists.Visible:=false;
-  if lbProjectTaskLists.ItemIndex>-1 then
-      editSearchTaskLists.Text:=lbProjectTaskLists.Items[lbProjectTaskLists.ItemIndex];
+  lbProjectTaskLists.Visible := False;
+  if lbProjectTaskLists.ItemIndex > -1 then
+    editSearchTaskLists.Text := lbProjectTaskLists.Items[lbProjectTaskLists.ItemIndex];
 end;
 
 procedure TfrmTimeEntry.editSearchProjectChange(Sender: TObject);
@@ -407,78 +426,88 @@ begin
 end;
 
 procedure TfrmTimeEntry.editSearchTaskListsKeyDown(Sender: TObject;
-  var Key: Word; Shift: TShiftState);
-var iPos:integer;
+  var Key: word; Shift: TShiftState);
+var
+  iPos: integer;
 begin
-    if (key = VK_DOWN) then
+  if (key = VK_DOWN) then
   begin
     key := 0;
-    if (lbProjectTaskLists.Items.Count>0) then
+    if (lbProjectTaskLists.Items.Count > 0) then
     begin
-       iPos:=lbProjectTaskLists.ItemIndex;
-       inc(iPos);
-       if (iPos>lbProjectTaskLists.Items.Count-1) then
-          iPos:=0;
-       lbProjectTaskLists.ItemIndex:=iPos;
+      iPos := lbProjectTaskLists.ItemIndex;
+      Inc(iPos);
+      if (iPos > lbProjectTaskLists.Items.Count - 1) then
+        iPos := 0;
+      lbProjectTaskLists.ItemIndex := iPos;
     end;
   end;
   if (key = VK_UP) then
   begin
     key := 0;
-    if (lbProjectTaskLists.Items.Count>0) then
+    if (lbProjectTaskLists.Items.Count > 0) then
     begin
-       iPos:=lbProjectTaskLists.ItemIndex;
-       dec(iPos);
-       if (iPos<0) then
-          iPos:=lbProjectTaskLists.Items.Count-1;
-       lbProjectTaskLists.ItemIndex:=iPos;
+      iPos := lbProjectTaskLists.ItemIndex;
+      Dec(iPos);
+      if (iPos < 0) then
+        iPos := lbProjectTaskLists.Items.Count - 1;
+      lbProjectTaskLists.ItemIndex := iPos;
     end;
   end;
-  if Key=VK_RETURN then SelectNext(TWinControl(Sender), True, True);
+  if Key = VK_RETURN then
+    SelectNext(TWinControl(Sender), True, True);
+end;
+
+procedure TfrmTimeEntry.editSearchTasksChange(Sender: TObject);
+begin
+  FillProjectTasks(False);
 end;
 
 procedure TfrmTimeEntry.editSearchTasksEnter(Sender: TObject);
 begin
-  lbProjectTasks.Visible:=true;
-  lbProjectTasks.Height:=editSearchTasks.Height*4;
+  lbProjectTasks.Visible := True;
+  lbProjectTasks.Height := editSearchTasks.Height * 4;
 end;
 
 procedure TfrmTimeEntry.editSearchTasksExit(Sender: TObject);
 begin
-  lbProjectTasks.Visible:=false;
-  if lbProjectTasks.ItemIndex>-1 then
-      editSearchTasks.Text:=lbProjectTasks.Items[lbProjectTasks.ItemIndex];
+  lbProjectTasks.Visible := False;
+  if lbProjectTasks.ItemIndex > -1 then
+    editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex];
 end;
 
-procedure TfrmTimeEntry.editSearchTasksKeyDown(Sender: TObject; var Key: Word;
-  Shift: TShiftState);
-var iPOs:Integer;
+procedure TfrmTimeEntry.editSearchTasksKeyDown(Sender: TObject;
+  var Key: word; Shift: TShiftState);
+var
+  iPOs: integer;
 begin
-    if (key = VK_DOWN) then
+  if (key = VK_DOWN) then
   begin
     key := 0;
-    if (lbProjectTasks.Items.Count>0) then
+    if (lbProjectTasks.Items.Count > 0) then
     begin
-       iPos:=lbProjectTasks.ItemIndex;
-       inc(iPos);
-       if (iPos>lbProjectTasks.Items.Count-1) then
-          iPos:=0;
-       lbProjectTasks.ItemIndex:=iPos;
+      iPos := lbProjectTasks.ItemIndex;
+      Inc(iPos);
+      if (iPos > lbProjectTasks.Items.Count - 1) then
+        iPos := 0;
+      lbProjectTasks.ItemIndex := iPos;
     end;
   end;
   if (key = VK_UP) then
   begin
     key := 0;
-    if (lbProjectTasks.Items.Count>0) then
+    if (lbProjectTasks.Items.Count > 0) then
     begin
-       iPos:=lbProjectTasks.ItemIndex;
-       dec(iPos);
-       if (iPos<0) then
-          iPos:=lbProjectTasks.Items.Count-1;
-       lbProjectTasks.ItemIndex:=iPos;
+      iPos := lbProjectTasks.ItemIndex;
+      Dec(iPos);
+      if (iPos < 0) then
+        iPos := lbProjectTasks.Items.Count - 1;
+      lbProjectTasks.ItemIndex := iPos;
     end;
   end;
-  if Key=VK_RETURN then SelectNext(TWinControl(Sender), True, True);
+  if Key = VK_RETURN then
+
+    editSearchTasksExit(nil);
 end;
 
 procedure TfrmTimeEntry.btnSaveEntryClick(Sender: TObject);
@@ -630,6 +659,9 @@ begin
   lblDescription3.Visible := True;
   lblDescription.Visible := False;
   memoDescription.Visible := False;
+  if editSearchTasks.CanFocus then
+    editSearchTasks.SetFocus;
+  editSearchTasks.SendToBack;
 end;
 
 end.
