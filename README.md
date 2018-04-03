@@ -6,6 +6,9 @@
 
 [FPC Paymo Widget 1.0 (Linux 64 bit)](https://github.com/Arandusoft/fpcpaymowidget/releases/download/v1.0/fpcpaymowidget_linux64_1.0.zip)
 
+If you want a better look and feel, download and install this font:
+[Nunito Sans Font](https://github.com/Arandusoft/fpcpaymowidget/files/1873273/Nunito_Sans.zip)
+
 # macOS
 On macOS, you need to upgrade SSL in order to work.
 
