@@ -42,17 +42,20 @@ type
     procedure btnExistingTaskClick(Sender: TObject);
     procedure btnSaveEntryClick(Sender: TObject);
     procedure btnStartTimer(Sender: TObject);
+    procedure editSearchProjectClick(Sender: TObject);
     procedure editSearchProjectEnter(Sender: TObject);
     procedure editSearchProjectExit(Sender: TObject);
     procedure editSearchProjectKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
     procedure editSearchTaskListsChange(Sender: TObject);
+    procedure editSearchTaskListsClick(Sender: TObject);
     procedure editSearchTaskListsEnter(Sender: TObject);
     procedure editSearchTaskListsExit(Sender: TObject);
     procedure editSearchProjectChange(Sender: TObject);
     procedure editSearchTaskListsKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
     procedure editSearchTasksChange(Sender: TObject);
+    procedure editSearchTasksClick(Sender: TObject);
     procedure editSearchTasksEnter(Sender: TObject);
     procedure editSearchTasksExit(Sender: TObject);
     procedure editSearchTasksKeyDown(Sender: TObject; var Key: word;
@@ -171,6 +174,7 @@ var
   pass1: boolean;
   search: string;
 begin
+  ProjectExit := True;
   lbProjects.Clear;
   projects := PaymoInstance.ProjectsArray;
 
@@ -208,6 +212,7 @@ var
   pass1: boolean;
   search: string;
 begin
+  TaskListExit := True;
   lbProjectTaskLists.Clear;
   if lbProjects.Items.Count = 0 then
     exit;
@@ -245,6 +250,7 @@ var
   pass1: boolean;
   search: string;
 begin
+  TaskExit := True;
   lbProjectTasks.Clear;
   if lbProjects.Items.Count = 0 then
     exit;
@@ -391,8 +397,8 @@ begin
   end;
 
   FillProjectsCombo(True);
-  FillProjectTasks(True, True);
   FillProjectTaskLists(True, Data_TaskListID);
+  FillProjectTasks(True, True);
   FillDateAndTime;
 
   lbProjects.Visible := False;
@@ -448,7 +454,7 @@ begin
   if Key = VK_RETURN then
   begin
     editSearchProjectExit(nil);
-    SelectNext(TWinControl(Sender), True, True);
+    editSearchTaskLists.SetFocus;
   end;
 end;
 
@@ -459,6 +465,10 @@ begin
     FillProjectTaskLists();
 end;
 
+procedure TfrmTimeEntry.editSearchTaskListsClick(Sender: TObject);
+begin
+  CloseListBox(lbProjectTaskLists);
+end;
 
 procedure TfrmTimeEntry.editSearchTaskListsEnter(Sender: TObject);
 begin
@@ -516,7 +526,10 @@ begin
   if Key = VK_RETURN then
   begin
     editSearchTaskListsExit(nil);
-    SelectNext(TWinControl(Sender), True, True);
+    if editSearchTasks.Visible then
+      editSearchTasks.SetFocus
+    else if memoDescription.Visible then
+      memoDescription.SetFocus;
   end;
 end;
 
@@ -524,6 +537,11 @@ procedure TfrmTimeEntry.editSearchTasksChange(Sender: TObject);
 begin
   if not TaskExit then
     FillProjectTasks(False);
+end;
+
+procedure TfrmTimeEntry.editSearchTasksClick(Sender: TObject);
+begin
+  CloseListBox(lbProjectTasks);
 end;
 
 procedure TfrmTimeEntry.editSearchTasksEnter(Sender: TObject);
@@ -703,6 +721,11 @@ begin
     ShowMessage(rsErrorCantCreateTask);
 end;
 
+procedure TfrmTimeEntry.editSearchProjectClick(Sender: TObject);
+begin
+  CloseListBox(lbProjects);
+end;
+
 procedure TfrmTimeEntry.btnDeleteEntryClick(Sender: TObject);
 begin
   case PaymoInstance.DeleteTimeEntry(Data.GetPath('id').AsString) of
@@ -729,6 +752,7 @@ begin
   lblDescription3.Visible := True;
   lblDescription.Visible := False;
   memoDescription.Visible := False;
+  editSearchTasks.Clear;
   if editSearchTasks.CanFocus then
     editSearchTasks.SetFocus;
   editSearchTasks.SendToBack;

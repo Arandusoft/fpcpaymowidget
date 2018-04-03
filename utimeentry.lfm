@@ -16,6 +16,7 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 8
     Width = 233
     OnChange = editSearchProjectChange
+    OnClick = editSearchProjectClick
     OnEnter = editSearchProjectEnter
     OnKeyDown = editSearchProjectKeyDown
     TabStop = False
@@ -27,6 +28,7 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 72
     Width = 233
     OnChange = editSearchTaskListsChange
+    OnClick = editSearchTaskListsClick
     OnEnter = editSearchTaskListsEnter
     OnKeyDown = editSearchTaskListsKeyDown
     TabStop = False
@@ -38,6 +40,7 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 129
     Width = 233
     OnChange = editSearchTasksChange
+    OnClick = editSearchTasksClick
     OnEnter = editSearchTasksEnter
     OnKeyDown = editSearchTasksKeyDown
     TabStop = False
