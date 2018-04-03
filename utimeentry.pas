@@ -174,7 +174,6 @@ var
   pass1: boolean;
   search: string;
 begin
-  ProjectExit := True;
   lbProjects.Clear;
   projects := PaymoInstance.ProjectsArray;
 
@@ -212,7 +211,6 @@ var
   pass1: boolean;
   search: string;
 begin
-  TaskListExit := True;
   lbProjectTaskLists.Clear;
   if lbProjects.Items.Count = 0 then
     exit;
@@ -250,7 +248,6 @@ var
   pass1: boolean;
   search: string;
 begin
-  TaskExit := True;
   lbProjectTasks.Clear;
   if lbProjects.Items.Count = 0 then
     exit;
@@ -396,6 +393,9 @@ begin
     btnExistingTask.Visible := False;
   end;
 
+  ProjectExit := True;
+  TaskListExit := True;
+  TaskExit := True;
   FillProjectsCombo(True);
   FillProjectTaskLists(True, Data_TaskListID);
   FillProjectTasks(True, True);
@@ -438,6 +438,7 @@ begin
         iPos := 0;
       lbProjects.ItemIndex := iPos;
     end;
+    exit;
   end;
   if (key = VK_UP) then
   begin
@@ -450,11 +451,13 @@ begin
         iPos := lbProjects.Items.Count - 1;
       lbProjects.ItemIndex := iPos;
     end;
+    exit;
   end;
   if Key = VK_RETURN then
   begin
     editSearchProjectExit(nil);
     editSearchTaskLists.SetFocus;
+    exit;
   end;
 end;
 
@@ -467,6 +470,7 @@ end;
 
 procedure TfrmTimeEntry.editSearchTaskListsClick(Sender: TObject);
 begin
+  TaskListExit := False;
   CloseListBox(lbProjectTaskLists);
 end;
 
@@ -510,6 +514,7 @@ begin
         iPos := 0;
       lbProjectTaskLists.ItemIndex := iPos;
     end;
+    exit;
   end;
   if (key = VK_UP) then
   begin
@@ -522,6 +527,7 @@ begin
         iPos := lbProjectTaskLists.Items.Count - 1;
       lbProjectTaskLists.ItemIndex := iPos;
     end;
+    exit;
   end;
   if Key = VK_RETURN then
   begin
@@ -530,6 +536,7 @@ begin
       editSearchTasks.SetFocus
     else if memoDescription.Visible then
       memoDescription.SetFocus;
+    exit;
   end;
 end;
 
@@ -541,6 +548,7 @@ end;
 
 procedure TfrmTimeEntry.editSearchTasksClick(Sender: TObject);
 begin
+  TaskExit := False;
   CloseListBox(lbProjectTasks);
 end;
 
@@ -576,6 +584,7 @@ begin
         iPos := 0;
       lbProjectTasks.ItemIndex := iPos;
     end;
+    exit;
   end;
   if (key = VK_UP) then
   begin
@@ -588,9 +597,13 @@ begin
         iPos := lbProjectTasks.Items.Count - 1;
       lbProjectTasks.ItemIndex := iPos;
     end;
+    exit;
   end;
   if Key = VK_RETURN then
+  begin
     editSearchTasksExit(nil);
+    exit;
+  end;
 end;
 
 procedure TfrmTimeEntry.FormClick(Sender: TObject);
@@ -723,6 +736,7 @@ end;
 
 procedure TfrmTimeEntry.editSearchProjectClick(Sender: TObject);
 begin
+  ProjectExit := False;
   CloseListBox(lbProjects);
 end;
 
