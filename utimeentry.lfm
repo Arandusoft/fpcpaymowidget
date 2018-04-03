@@ -347,7 +347,6 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 30
     Width = 233
     ItemHeight = 0
-    OnExit = editSearchProjectExit
     OnSelectionChange = lbProjectsSelectionChange
     TabOrder = 5
     Visible = False

@@ -163,7 +163,7 @@ begin
     if (pass1) or (UTF8Pos(search,
       UTF8LowerCase(projects[i].GetPath('name').AsString)) <> 0) then
       lbProjects.AddItem(projects[i].GetPath('name').AsString, projects[i]);
-    if id = projects[i].GetPath('id').AsInteger then
+    if (Select) and (id = projects[i].GetPath('id').AsInteger) then
       lbProjects.ItemIndex := lbProjects.Items.Count - 1;
   end;
 
@@ -355,6 +355,7 @@ end;
 procedure TfrmTimeEntry.editSearchProjectEnter(Sender: TObject);
 begin
   lbProjects.Visible := True;
+  lbProjects.BringToFront;
   lbProjects.Height := editSearchProject.Height * 4;
 end;
 
@@ -408,6 +409,7 @@ end;
 procedure TfrmTimeEntry.editSearchTaskListsEnter(Sender: TObject);
 begin
   lbProjectTaskLists.Visible := True;
+  lbProjectTaskLists.BringToFront;
   lbProjectTaskLists.Height := editSearchTaskLists.Height * 4;
 end;
 
@@ -466,6 +468,7 @@ end;
 procedure TfrmTimeEntry.editSearchTasksEnter(Sender: TObject);
 begin
   lbProjectTasks.Visible := True;
+  lbProjectTasks.BringToFront;
   lbProjectTasks.Height := editSearchTasks.Height * 4;
 end;
 
@@ -506,7 +509,6 @@ begin
     end;
   end;
   if Key = VK_RETURN then
-
     editSearchTasksExit(nil);
 end;
 
