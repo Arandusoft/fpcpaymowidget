@@ -8,6 +8,7 @@ object frmTimeEntry: TfrmTimeEntry
   ClientHeight = 632
   ClientWidth = 333
   Color = 12111890
+  OnClick = FormClick
   LCLVersion = '1.9.0.0'
   object editSearchProject: TEdit
     Left = 80
@@ -16,8 +17,8 @@ object frmTimeEntry: TfrmTimeEntry
     Width = 233
     OnChange = editSearchProjectChange
     OnEnter = editSearchProjectEnter
-    OnExit = editSearchProjectExit
     OnKeyDown = editSearchProjectKeyDown
+    TabStop = False
     TabOrder = 2
   end
   object editSearchTaskLists: TEdit
@@ -27,8 +28,8 @@ object frmTimeEntry: TfrmTimeEntry
     Width = 233
     OnChange = editSearchTaskListsChange
     OnEnter = editSearchTaskListsEnter
-    OnExit = editSearchTaskListsExit
     OnKeyDown = editSearchTaskListsKeyDown
+    TabStop = False
     TabOrder = 3
   end
   object editSearchTasks: TEdit
@@ -38,8 +39,8 @@ object frmTimeEntry: TfrmTimeEntry
     Width = 233
     OnChange = editSearchTasksChange
     OnEnter = editSearchTasksEnter
-    OnExit = editSearchTasksExit
     OnKeyDown = editSearchTasksKeyDown
+    TabStop = False
     TabOrder = 4
   end
   object pnlGroup: TPanel
@@ -54,9 +55,9 @@ object frmTimeEntry: TfrmTimeEntry
     object lbl_date: TLabel
       Cursor = crIBeam
       Left = 45
-      Height = 21
+      Height = 18
       Top = 40
-      Width = 33
+      Width = 34
       Caption = 'Date'
       Font.Color = clWhite
       Font.Height = -16
@@ -105,9 +106,9 @@ object frmTimeEntry: TfrmTimeEntry
     end
     object time_start_separator1: TLabel
       Left = 136
-      Height = 21
+      Height = 18
       Top = 99
-      Width = 10
+      Width = 9
       Caption = '‒'
       Font.Color = clWhite
       Font.Height = -16
@@ -155,7 +156,7 @@ object frmTimeEntry: TfrmTimeEntry
     end
     object time_end_separator: TLabel
       Left = 210
-      Height = 21
+      Height = 18
       Top = 99
       Width = 4
       Caption = ':'
@@ -167,7 +168,7 @@ object frmTimeEntry: TfrmTimeEntry
     end
     object time_start_separator: TLabel
       Left = 74
-      Height = 21
+      Height = 18
       Top = 99
       Width = 4
       Caption = ':'
@@ -247,9 +248,9 @@ object frmTimeEntry: TfrmTimeEntry
   end
   object lblDescription: TLabel
     Left = 16
-    Height = 19
+    Height = 16
     Top = 248
-    Width = 135
+    Width = 133
     Caption = 'New task description:'
     Font.Color = 3883776
     Font.Height = -14
@@ -259,9 +260,9 @@ object frmTimeEntry: TfrmTimeEntry
   end
   object lblDescription1: TLabel
     Left = 16
-    Height = 19
+    Height = 16
     Top = 8
-    Width = 47
+    Width = 48
     Caption = 'Project:'
     Font.Color = 3883776
     Font.Height = -14
@@ -271,9 +272,9 @@ object frmTimeEntry: TfrmTimeEntry
   end
   object lblDescription2: TLabel
     Left = 16
-    Height = 19
+    Height = 16
     Top = 72
-    Width = 58
+    Width = 59
     Caption = 'Task List:'
     Font.Color = 3883776
     Font.Height = -14
@@ -283,9 +284,9 @@ object frmTimeEntry: TfrmTimeEntry
   end
   object lblDescription3: TLabel
     Left = 16
-    Height = 19
+    Height = 16
     Top = 129
-    Width = 31
+    Width = 33
     Caption = 'Task:'
     Font.Color = 3883776
     Font.Height = -14
@@ -328,6 +329,7 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 152
     Width = 233
     ItemHeight = 0
+    OnClick = lbProjectTasksClick
     TabOrder = 7
     Visible = False
   end
@@ -337,6 +339,7 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 94
     Width = 233
     ItemHeight = 0
+    OnClick = lbProjectTaskListsClick
     OnSelectionChange = lbProjectTaskListsSelectionChange
     TabOrder = 6
     Visible = False
@@ -347,6 +350,7 @@ object frmTimeEntry: TfrmTimeEntry
     Top = 30
     Width = 233
     ItemHeight = 0
+    OnClick = lbProjectsClick
     OnSelectionChange = lbProjectsSelectionChange
     TabOrder = 5
     Visible = False

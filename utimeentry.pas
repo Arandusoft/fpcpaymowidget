@@ -57,9 +57,13 @@ type
     procedure editSearchTasksExit(Sender: TObject);
     procedure editSearchTasksKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
+    procedure FormClick(Sender: TObject);
     procedure lbl_dateClick(Sender: TObject);
+    procedure lbProjectsClick(Sender: TObject);
     procedure lbProjectsSelectionChange(Sender: TObject; User: boolean);
+    procedure lbProjectTaskListsClick(Sender: TObject);
     procedure lbProjectTaskListsSelectionChange(Sender: TObject; User: boolean);
+    procedure lbProjectTasksClick(Sender: TObject);
     procedure time_end_hhChange(Sender: TObject);
     procedure time_end_mmChange(Sender: TObject);
   private
@@ -69,9 +73,13 @@ type
     procedure FillProjectTasks(Select: boolean = False; FromData: boolean = False);
     procedure FillDateAndTime;
     procedure WMMove(var Message: TLMMove); message LM_MOVE;
+    procedure CloseListBox(Keep: TListBox);
   public
     PaymoInstance: TPaymo;
     Data: TJSONData;
+    ProjectExit: boolean;
+    TaskExit: boolean;
+    TaskListExit: boolean;
     procedure ShowData;
   end;
 
@@ -95,6 +103,11 @@ begin
   end;
 end;
 
+procedure TfrmTimeEntry.lbProjectsClick(Sender: TObject);
+begin
+  editSearchProjectExit(nil);
+end;
+
 procedure TfrmTimeEntry.lbProjectsSelectionChange(Sender: TObject; User: boolean);
 begin
   if (editSearchProject.Focused) or (lbProjects.Focused) then
@@ -102,6 +115,11 @@ begin
     FillProjectTasks(False);
     FillProjectTaskLists();
   end;
+end;
+
+procedure TfrmTimeEntry.lbProjectTaskListsClick(Sender: TObject);
+begin
+  editSearchTaskListsExit(nil);
 end;
 
 procedure TfrmTimeEntry.lbProjectTaskListsSelectionChange(Sender: TObject;
@@ -117,6 +135,11 @@ begin
       lbProjectTaskLists.Enabled := True;
     end;
   end;
+end;
+
+procedure TfrmTimeEntry.lbProjectTasksClick(Sender: TObject);
+begin
+  editSearchTasksExit(nil);
 end;
 
 procedure TfrmTimeEntry.time_end_hhChange(Sender: TObject);
@@ -301,6 +324,31 @@ begin
     frmMain.Top := t;
 end;
 
+procedure TfrmTimeEntry.CloseListBox(Keep: TListBox);
+var
+  n: string;
+begin
+  if Assigned(Keep) then
+    n := Keep.Name
+  else
+    n := '';
+
+  if lbProjects.Name = n then
+    lbProjects.Visible := True
+  else
+    lbProjects.Visible := False;
+
+  if lbProjectTasks.Name = n then
+    lbProjectTasks.Visible := True
+  else
+    lbProjectTasks.Visible := False;
+
+  if lbProjectTaskLists.Name = n then
+    lbProjectTaskLists.Visible := True
+  else
+    lbProjectTaskLists.Visible := False;
+end;
+
 procedure TfrmTimeEntry.ShowData;
 begin
   Data_TaskListID := 0;
@@ -354,13 +402,15 @@ end;
 
 procedure TfrmTimeEntry.editSearchProjectEnter(Sender: TObject);
 begin
-  lbProjects.Visible := True;
+  ProjectExit := False;
+  CloseListBox(lbProjects);
   lbProjects.BringToFront;
   lbProjects.Height := editSearchProject.Height * 4;
 end;
 
 procedure TfrmTimeEntry.editSearchProjectExit(Sender: TObject);
 begin
+  ProjectExit := True;
   lbProjects.Visible := False;
   if lbProjects.ItemIndex > -1 then
     editSearchProject.Text := lbProjects.Items[lbProjects.ItemIndex];
@@ -396,25 +446,31 @@ begin
     end;
   end;
   if Key = VK_RETURN then
+  begin
+    editSearchProjectExit(nil);
     SelectNext(TWinControl(Sender), True, True);
+  end;
 end;
 
 procedure TfrmTimeEntry.editSearchTaskListsChange(Sender: TObject);
 begin
   FillProjectTasks(False);
-  FillProjectTaskLists();
+  if not TaskListExit then
+    FillProjectTaskLists();
 end;
 
 
 procedure TfrmTimeEntry.editSearchTaskListsEnter(Sender: TObject);
 begin
-  lbProjectTaskLists.Visible := True;
+  TaskListExit := False;
+  CloseListBox(lbProjectTaskLists);
   lbProjectTaskLists.BringToFront;
   lbProjectTaskLists.Height := editSearchTaskLists.Height * 4;
 end;
 
 procedure TfrmTimeEntry.editSearchTaskListsExit(Sender: TObject);
 begin
+  TaskListExit := True;
   lbProjectTaskLists.Visible := False;
   if lbProjectTaskLists.ItemIndex > -1 then
     editSearchTaskLists.Text := lbProjectTaskLists.Items[lbProjectTaskLists.ItemIndex];
@@ -422,7 +478,8 @@ end;
 
 procedure TfrmTimeEntry.editSearchProjectChange(Sender: TObject);
 begin
-  FillProjectsCombo;
+  if not ProjectExit then
+    FillProjectsCombo;
   FillProjectTasks(False);
   FillProjectTaskLists();
 end;
@@ -457,23 +514,29 @@ begin
     end;
   end;
   if Key = VK_RETURN then
+  begin
+    editSearchTaskListsExit(nil);
     SelectNext(TWinControl(Sender), True, True);
+  end;
 end;
 
 procedure TfrmTimeEntry.editSearchTasksChange(Sender: TObject);
 begin
-  FillProjectTasks(False);
+  if not TaskExit then
+    FillProjectTasks(False);
 end;
 
 procedure TfrmTimeEntry.editSearchTasksEnter(Sender: TObject);
 begin
-  lbProjectTasks.Visible := True;
+  TaskExit := False;
+  CloseListBox(lbProjectTasks);
   lbProjectTasks.BringToFront;
   lbProjectTasks.Height := editSearchTasks.Height * 4;
 end;
 
 procedure TfrmTimeEntry.editSearchTasksExit(Sender: TObject);
 begin
+  TaskExit := True;
   lbProjectTasks.Visible := False;
   if lbProjectTasks.ItemIndex > -1 then
     editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex];
@@ -510,6 +573,11 @@ begin
   end;
   if Key = VK_RETURN then
     editSearchTasksExit(nil);
+end;
+
+procedure TfrmTimeEntry.FormClick(Sender: TObject);
+begin
+  CloseListBox(nil);
 end;
 
 procedure TfrmTimeEntry.btnSaveEntryClick(Sender: TObject);
