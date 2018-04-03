@@ -1,22 +1,6 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: tfrmlogin.btnlogin.caption
-msgid "Login"
-msgstr ""
-
-#: tfrmlogin.caption
-msgid "FPC Paymo Widget - Login"
-msgstr ""
-
-#: tfrmlogin.edtapikey.editlabel.caption
-msgid "API Key"
-msgstr ""
-
-#: tfrmlogin.lblgenerateapikey.caption
-msgid "Generate API Key to Login"
-msgstr ""
-
 #: tfrmmain.btnabout.caption
 msgctxt "tfrmmain.btnabout.caption"
 msgid "About"
@@ -79,88 +63,6 @@ msgstr ""
 
 #: tfrmmain.pnltop.caption
 msgid "Timesheet"
-msgstr ""
-
-#: tfrmtimeentry.btndeleteentry.caption
-msgid "Delete Entry"
-msgstr ""
-
-#: tfrmtimeentry.btnexistingtask.caption
-msgid "Use Existing Task"
-msgstr ""
-
-#: tfrmtimeentry.btnsaveentry.caption
-msgctxt "tfrmtimeentry.btnsaveentry.caption"
-msgid "Save Entry"
-msgstr ""
-
-#: tfrmtimeentry.caption
-msgid "Edit Time Entry"
-msgstr ""
-
-#: tfrmtimeentry.dlgdate.cancelcaption
-msgid "Cancel"
-msgstr ""
-
-#: tfrmtimeentry.dlgdate.okcaption
-msgid "&OK"
-msgstr ""
-
-#: tfrmtimeentry.lbldescription.caption
-msgid "New task description:"
-msgstr ""
-
-#: tfrmtimeentry.lbldescription1.caption
-msgctxt "tfrmtimeentry.lbldescription1.caption"
-msgid "Project:"
-msgstr ""
-
-#: tfrmtimeentry.lbldescription2.caption
-msgctxt "tfrmtimeentry.lbldescription2.caption"
-msgid "Task List:"
-msgstr ""
-
-#: tfrmtimeentry.lbldescription3.caption
-msgctxt "tfrmtimeentry.lbldescription3.caption"
-msgid "Task:"
-msgstr ""
-
-#: tfrmtimeentry.lbl_date.caption
-msgid "Date"
-msgstr ""
-
-#: tfrmtimeentry.time_end_hh.text
-msgctxt "tfrmtimeentry.time_end_hh.text"
-msgid "00"
-msgstr ""
-
-#: tfrmtimeentry.time_end_mm.text
-msgctxt "tfrmtimeentry.time_end_mm.text"
-msgid "00"
-msgstr ""
-
-#: tfrmtimeentry.time_end_separator.caption
-msgctxt "tfrmtimeentry.time_end_separator.caption"
-msgid ":"
-msgstr ""
-
-#: tfrmtimeentry.time_start_hh.text
-msgctxt "tfrmtimeentry.time_start_hh.text"
-msgid "00"
-msgstr ""
-
-#: tfrmtimeentry.time_start_mm.text
-msgctxt "tfrmtimeentry.time_start_mm.text"
-msgid "00"
-msgstr ""
-
-#: tfrmtimeentry.time_start_separator.caption
-msgctxt "tfrmtimeentry.time_start_separator.caption"
-msgid ":"
-msgstr ""
-
-#: tfrmtimeentry.time_start_separator1.caption
-msgid "‒"
 msgstr ""
 
 #: uresourcestring.rserrorcantcreatetask
