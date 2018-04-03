@@ -1,8 +1,9 @@
 # FPC Paymo Widget
-(Paymo)[https://www.paymoapp.com/] Widget made with Free Pascal
+[Paymo](https://www.paymoapp.com/) Widget made with Free Pascal
 
 # Download
 [FPC Paymo Widget 1.0 (Windows)](https://github.com/Arandusoft/fpcpaymowidget/releases/download/v1.0/fpcpaymowidget_1.0.exe)
+
 [FPC Paymo Widget 1.0 (Linux 64 bit)](https://github.com/Arandusoft/fpcpaymowidget/releases/download/v1.0/fpcpaymowidget_linux64_1.0.zip)
 
 # macOS
