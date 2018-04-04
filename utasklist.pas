@@ -37,7 +37,6 @@ const
   FONTSIZEMEDIUM = -1; // medium
   FONTSIZESMALL = -10; // small
   {$ENDIF}
-  {$ENDIF}
   {$IFDEF DARWIN}
   FONTNAME = 'Helvetica Neue';
   FONTNAMELIGHT = 'Helvetica Neue';
