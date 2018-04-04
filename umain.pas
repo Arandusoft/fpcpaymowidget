@@ -29,6 +29,7 @@ type
     ilTrayNormalMac: TImageList;
     ilTrayOfflineWin: TImageList;
     ilApplication: TImageList;
+    JSONPropStorage1: TJSONPropStorage;
     lblTime: TLabel;
     lblStop: TLabel;
     lblProject: TLabel;
@@ -52,7 +53,6 @@ type
     timerEntry: TTimer;
     tiTray: TTrayIcon;
     wcThreadDownloader: TWCThread;
-    XMLPropStorage1: TXMLPropStorage;
     procedure btnAddTaskClick(Sender: TObject);
     procedure btnAddTaskPaint(Sender: TObject);
     procedure btnMenuClick(Sender: TObject);
@@ -149,8 +149,8 @@ begin
   // Restore position (only works with Position = poDesigned)
   if ForceDirectories(GetAppConfigDir(False)) then
   begin
-    XMLPropStorage1.FileName := GetAppConfigDir(False) + 'settings.xml';
-    XMLPropStorage1.Restore;
+    JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
+    JSONPropStorage1.Restore;
   end;
 end;
 

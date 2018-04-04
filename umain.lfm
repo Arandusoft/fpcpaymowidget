@@ -1371,9 +1371,10 @@ object frmMain: TfrmMain
       4C6900000000
     }
   end
-  object XMLPropStorage1: TXMLPropStorage
+  object JSONPropStorage1: TJSONPropStorage
     StoredValues = <>
-    Left = 193
-    Top = 45
+    Formatted = False
+    Left = 200
+    Top = 104
   end
 end
