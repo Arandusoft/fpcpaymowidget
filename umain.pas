@@ -561,15 +561,16 @@ begin
   if (Paymo.RunningTimerData <> nil) then
   begin
     lblTime.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now));
-    Application.Title:=lblTime.Caption + ' - ' + 'FPC Paymo Widget';
+    Application.Title := lblTime.Caption + ' - ' + 'FPC Paymo Widget';
+    tiTray.Hint := lblTime.Caption + ' - ' + 'FPC Paymo Widget';
     ChangeIcon(1);
   end
   else
   begin
     ChangeIcon(0);
-    Application.Title:='FPC Paymo Widget';
+    Application.Title := 'FPC Paymo Widget';
+    tiTray.Hint := 'FPC Paymo Widget';
   end;
-
 end;
 
 function TfrmMain.StopTimeEntry(): boolean;
