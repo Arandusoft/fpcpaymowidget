@@ -320,12 +320,12 @@ object frmMain: TfrmMain
     Visible = False
     object lblProject: TLabel
       Left = 38
-      Height = 19
+      Height = 16
       Top = 24
-      Width = 44
+      Width = 38
       Caption = 'Project'
       Font.Color = 4805637
-      Font.Height = 19
+      Font.Height = 16
       Font.Name = 'Nunito Sans'
       ParentColor = False
       ParentFont = False
