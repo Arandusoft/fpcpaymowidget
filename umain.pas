@@ -492,6 +492,8 @@ begin
   iIndex:=AIndex;
   if IconIndex=1 then iIndex:=3;//another start icon
   if IconIndex=3 then iIndex:=1;//another start icon
+  if AIndex=0 then iIndex:=0;
+  if AIndex=2 then iIndex:=2;
   if IconIndex=iIndex then exit;
   try
     IconIndex:=iIndex;
@@ -500,6 +502,7 @@ begin
     0: begin
           ilApplication.GetBitmap(0, Image1.Picture.BitMap);
           tiTray.Icons := ilTrayNormalWin;
+          IconIndex:=0;
        end;
     1: begin
           ilApplication.GetBitmap(1, Image1.Picture.BitMap);
@@ -512,6 +515,7 @@ begin
     2: begin
           ilApplication.GetBitmap(2, Image1.Picture.BitMap);
           tiTray.Icons := ilTrayOfflineWin;
+          IconIndex:=2;
        end;
     3: begin
           ilApplication.GetBitmap(3, Image1.Picture.BitMap);
