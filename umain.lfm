@@ -70,6 +70,7 @@ object frmMain: TfrmMain
       Height = 17
       Top = 17
       Width = 17
+      Anchors = [akTop, akRight]
       Enabled = False
       Font.Color = clWhite
       OnClick = btnAddTaskClick
