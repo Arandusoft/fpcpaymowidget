@@ -567,14 +567,22 @@ begin
   begin
     lblTime.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now));
     Application.Title := lblTime.Caption + ' - ' + 'FPC Paymo Widget';
+    {$IFDEF DARWIN}
+    // tray icon hint doesn't works
+    {$ELSE}
     tiTray.Hint := lblTime.Caption + ' - ' + 'FPC Paymo Widget';
+    {$ENDIF}
     ChangeIcon(1);
   end
   else
   begin
     ChangeIcon(0);
     Application.Title := 'FPC Paymo Widget';
+    {$IFDEF DARWIN}
+    // tray icon hint doesn't works
+    {$ELSE}
     tiTray.Hint := 'FPC Paymo Widget';
+    {$ENDIF}
   end;
 end;
 
