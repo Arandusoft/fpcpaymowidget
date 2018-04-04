@@ -58,7 +58,7 @@ type
       TaskListID: integer; var task: TJSONData): TPaymoResponseStatus;
     function StopRunningTimer(start_time, end_time: TDateTime;
       Description: string): TPaymoResponseStatus;
-    function StartRunningTimer(task_id: integer): TPaymoResponseStatus;
+    function StartRunningTimer(task_id: integer; start_time: TDateTime): TPaymoResponseStatus;
     function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
     function UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime;
       project_id, task_id, tasklist_id: string): TPaymoResponseStatus;
@@ -430,7 +430,7 @@ begin
   end;
 end;
 
-function TPaymo.StartRunningTimer(task_id: integer): TPaymoResponseStatus;
+function TPaymo.StartRunningTimer(task_id: integer; start_time: TDateTime): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
@@ -438,7 +438,7 @@ var
 begin
   jObj := TJSONObject.Create;
   jObj.Add('start_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
-    LocalTimeToUniversal(now)));
+    LocalTimeToUniversal(start_time)));
   jObj.Add('user_id', MyData.GetPath('id').AsInteger);
   jObj.Add('task_id', task_id);
   //jObj.Add('description', '');

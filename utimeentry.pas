@@ -15,6 +15,11 @@ type
 
   TfrmTimeEntry = class(TForm)
     btnExistingTask: TColorSpeedButton;
+    btnSet15: TColorSpeedButton;
+    btnSet1h: TColorSpeedButton;
+    btnSet30: TColorSpeedButton;
+    btnSet45: TColorSpeedButton;
+    btnSetNow: TColorSpeedButton;
     JSONPropStorage1: TJSONPropStorage;
     lbProjectTaskLists: TListBox;
     lbProjectTasks: TListBox;
@@ -29,6 +34,7 @@ type
     lblDescription3: TLabel;
     lbl_date: TLabel;
     memoDescription: TMemo;
+    pnlSetTime: TPanel;
     pnlGroup: TPanel;
     time_end_hh: TEdit;
     time_end_mm: TEdit;
@@ -42,6 +48,11 @@ type
     procedure btnDeleteEntryClick(Sender: TObject);
     procedure btnExistingTaskClick(Sender: TObject);
     procedure btnSaveEntryClick(Sender: TObject);
+    procedure btnSet15Click(Sender: TObject);
+    procedure btnSet1hClick(Sender: TObject);
+    procedure btnSet30Click(Sender: TObject);
+    procedure btnSet45Click(Sender: TObject);
+    procedure btnSetNowClick(Sender: TObject);
     procedure btnStartTimer(Sender: TObject);
     procedure editSearchProjectClick(Sender: TObject);
     procedure editSearchProjectEnter(Sender: TObject);
@@ -78,6 +89,7 @@ type
     procedure FillProjectTaskLists(Select: boolean = False; TaskListID: integer = 0);
     procedure FillProjectTasks(Select: boolean = False; FromData: boolean = False);
     procedure FillDateAndTime;
+    procedure FillStartTime;
     procedure WMMove(var Message: TLMMove); message LM_MOVE;
     procedure CloseListBox(Keep: TListBox);
   public
@@ -317,6 +329,12 @@ begin
   lbl_date.Caption := FormatDateTime('ddddd', dlgDate.Date);
 end;
 
+procedure TfrmTimeEntry.FillStartTime;
+begin
+  time_start_hh.Caption := FormatDateTime('hh', dlgDate.Date);
+  time_start_mm.Caption := FormatDateTime('nn', dlgDate.Date);
+end;
+
 procedure TfrmTimeEntry.WMMove(var Message: TLMMove);
 var
   l, t: integer;
@@ -372,7 +390,14 @@ begin
   begin
     lbProjectTasks.Visible := False;
     btnDeleteEntry.Visible := False;
-    pnlGroup.Visible := False;
+    lbl_date.Visible := False;
+    time_start_hh.Visible := True;
+    time_start_separator.Visible := True;
+    time_start_mm.Visible := True;
+    time_start_separator1.Visible := False;
+    time_end_hh.Visible := False;
+    time_end_separator.Visible := False;
+    time_end_mm.Visible := False;
     btnSaveEntry.Caption := rsStartTimer;
     btnSaveEntry.OnClick := @btnStartTimer;
     memoDescription.Visible := True;
@@ -383,12 +408,20 @@ begin
     lblDescription3.Visible := False;
     editSearchTasks.Visible := False;
     btnExistingTask.Visible := True;
+    pnlSetTime.Visible := True;
   end
   else
   begin
     lbProjectTasks.Visible := True;
     btnDeleteEntry.Visible := True;
-    pnlGroup.Visible := True;
+    lbl_date.Visible := True;
+    time_start_hh.Visible := True;
+    time_start_separator.Visible := True;
+    time_start_mm.Visible := True;
+    time_start_separator1.Visible := True;
+    time_end_hh.Visible := True;
+    time_end_separator.Visible := True;
+    time_end_mm.Visible := True;
     btnSaveEntry.Caption := rsSaveEntry;
     btnSaveEntry.OnClick := @btnSaveEntryClick;
     memoDescription.Visible := False;
@@ -398,6 +431,7 @@ begin
     {if editSearchProject.CanSetFocus then
       editSearchProject.SetFocus;}
     btnExistingTask.Visible := False;
+    pnlSetTime.Visible := False;
   end;
 
   ProjectExit := True;
@@ -695,11 +729,43 @@ begin
   end;
 end;
 
+procedure TfrmTimeEntry.btnSet15Click(Sender: TObject);
+begin
+  dlgDate.Date := IncMinute(dlgDate.Date, -15);
+  FillStartTime;
+end;
+
+procedure TfrmTimeEntry.btnSet1hClick(Sender: TObject);
+begin
+  dlgDate.Date := IncHour(dlgDate.Date, -1);
+  FillStartTime;
+end;
+
+procedure TfrmTimeEntry.btnSet30Click(Sender: TObject);
+begin
+  dlgDate.Date := IncMinute(dlgDate.Date, -30);
+  FillStartTime;
+end;
+
+procedure TfrmTimeEntry.btnSet45Click(Sender: TObject);
+begin
+  dlgDate.Date := IncMinute(dlgDate.Date, -45);
+  FillStartTime;
+end;
+
+procedure TfrmTimeEntry.btnSetNowClick(Sender: TObject);
+begin
+  dlgDate.Date := now;
+  FillStartTime;
+end;
+
 procedure TfrmTimeEntry.btnStartTimer(Sender: TObject);
 var
   task: TJSONData;
   r: TPaymoResponseStatus;
   canSave: boolean;
+  s_hh, s_mm: string;
+  t_start: TDateTime;
 begin
   if (frmMain.pnlMenu.Width <> 0) and (not frmMain.pnlMenu.Timer.Enabled) then
     frmMain.hideMenu(nil);
@@ -743,7 +809,12 @@ begin
 
   if (r = prOK) then
   begin
-    case PaymoInstance.StartRunningTimer(task.GetPath('id').AsInteger) of
+    // start time
+    s_hh := time_start_hh.Text;
+    s_mm := time_start_mm.Text;
+    t_start := now;
+    ReplaceTime(t_start, EncodeTime(s_hh.ToInteger, s_mm.ToInteger, 0, 0));
+    case PaymoInstance.StartRunningTimer(task.GetPath('id').AsInteger, t_start) of
       prOK:
       begin
         case PaymoInstance.GetRunningTimer() of

@@ -78,6 +78,26 @@ msgctxt "tfrmtimeentry.btnsaveentry.caption"
 msgid "Save Entry"
 msgstr ""
 
+#: tfrmtimeentry.btnset15.caption
+msgid "-15"
+msgstr ""
+
+#: tfrmtimeentry.btnset1h.caption
+msgid "-1h"
+msgstr ""
+
+#: tfrmtimeentry.btnset30.caption
+msgid "-30"
+msgstr ""
+
+#: tfrmtimeentry.btnset45.caption
+msgid "-45"
+msgstr ""
+
+#: tfrmtimeentry.btnsetnow.caption
+msgid "Now"
+msgstr ""
+
 #: tfrmtimeentry.caption
 msgid "Edit Time Entry"
 msgstr ""

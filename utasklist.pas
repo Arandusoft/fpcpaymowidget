@@ -111,7 +111,7 @@ begin
   begin
     // ToDo: stop current entry, then start new one (don't show error)
     //if frmMain.StopTimeEntry() then
-    case PaymoInstance.StartRunningTimer(TControl(Sender).Tag) of
+    case PaymoInstance.StartRunningTimer(TControl(Sender).Tag, now) of
       prOK:
       begin
         case PaymoInstance.GetRunningTimer() of
