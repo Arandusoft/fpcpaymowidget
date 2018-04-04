@@ -106,7 +106,7 @@ msgstr ""
 
 #: tfrmtimeentry.btnsetnow.caption
 msgid "Now"
-msgstr ""
+msgstr "Ahora"
 
 #: tfrmtimeentry.caption
 msgid "Edit Time Entry"
@@ -138,7 +138,7 @@ msgstr "Tarea:"
 
 #: tfrmtimeentry.lbl_date.caption
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #: tfrmtimeentry.time_end_hh.text
 msgctxt "tfrmtimeentry.time_end_hh.text"
@@ -223,6 +223,10 @@ msgstr "Guardar Entrada"
 msgid "Start Timer"
 msgstr "Iniciar Temporizador"
 
+#: uresourcestring.rstaskiscomplete
+msgid "Task is complete"
+msgstr "Tarea completada"
+
 #: uresourcestring.rstheremustbeatleastaminuteofdifferencebetweenstartandendtime
 msgid "There must be at least a minute of difference between start and end time."
 msgstr "Debe haber al menos un minuto de diferencia entre el tiempo inicial y el tiempo final."
@@ -238,4 +242,3 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
-

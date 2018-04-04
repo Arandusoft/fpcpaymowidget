@@ -400,7 +400,7 @@ begin
       else
       begin
         play.ShowHint := True;
-        play.Hint := 'Task is complete';
+        play.Hint := rsTaskIsComplete;
         play.Tag := 0;
       end;
       play.Parent := p;

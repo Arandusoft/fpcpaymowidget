@@ -27,6 +27,7 @@ resourcestring
   rsSaveEntry = 'Save Entry';
   rsErrorCantCreateTask = 'Error: Can''t create task.';
   rsPleaseEnterTaskDescription = 'Please enter task description.';
+  rsTaskIsComplete = 'Task is complete';
 
 implementation
 
