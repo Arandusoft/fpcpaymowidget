@@ -640,6 +640,8 @@ var
   t_start, t_end: TDateTime;
   s_hh, s_mm: string;
 begin
+  if (frmMain.pnlMenu.Width <> 0) and (not frmMain.pnlMenu.Timer.Enabled) then
+    frmMain.hideMenu(nil);
   // required fields
   canSave := (time_start_hh.Text <> '') and (time_start_mm.Text <> '') and
     (time_end_hh.Text <> '') and (time_end_mm.Text <> '') and
@@ -692,6 +694,8 @@ var
   r: TPaymoResponseStatus;
   canSave: boolean;
 begin
+  if (frmMain.pnlMenu.Width <> 0) and (not frmMain.pnlMenu.Timer.Enabled) then
+    frmMain.hideMenu(nil);
   if memoDescription.Visible then
   begin
     // required fields

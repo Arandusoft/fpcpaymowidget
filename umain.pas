@@ -183,8 +183,8 @@ end;
 
 procedure TfrmMain.btnMenuClick(Sender: TObject);
 begin
-  pnlMenu.Visible := True;
   pnlMenu.BringToFront;
+  pnlMenu.Visible := True;
   pnlMenu.Width := 0;
   pnlMenu.Height := Height;
   pnlMenu.Animate();
