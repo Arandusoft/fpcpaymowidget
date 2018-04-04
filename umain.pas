@@ -99,10 +99,12 @@ type
     Paymo: TPaymo;
     start_time: TDateTime;
     stop_ok: boolean;
+    IconIndex:integer;
     procedure Login;
     procedure ListProjects();
     procedure ListTasks();
     procedure ListTimeEntry();
+    procedure ChangeIcon(const AIndex: Integer);
     procedure RefreshTimeEntry();
     function StopTimeEntry(): boolean;
   end;
@@ -195,6 +197,8 @@ begin
   frmTimeEntry.Data := nil;
   frmTimeEntry.ShowData;
   frmTimeEntry.Show;
+  frmTimeEntry.editSearchProject.Clear;
+  frmTimeEntry.editSearchProject.SetFocus;
 end;
 
 procedure TfrmMain.btnOpenPaymoAppClick(Sender: TObject);
@@ -480,12 +484,56 @@ begin
     pnlTime.Visible := False;
 end;
 
+procedure TfrmMain.ChangeIcon(const AIndex: Integer);   //0: normal //1:start //2:offline
+var Image1:TImage;
+begin
+  if IconIndex=AIndex then exit;
+  try
+    IconIndex:=AIndex;
+    Image1 := TImage.Create(self);
+    case AIndex of
+    0: begin
+          ilTrayNormalWin.GetBitmap(1, Image1.Picture.BitMap);
+          tiTray.Icons := ilTrayNormalWin;
+       end;
+    1: begin
+          ilTrayAnimWin.GetBitmap(1, Image1.Picture.BitMap);
+          //Image1.Canvas.Font.Color := clBlack;
+          //Image1.Canvas.Font.Size := 20;
+          //Image1.Canvas.Brush.Style := bsClear;
+          //Image1.Canvas.TextOut(20, 20, 'HELLO WORLD');
+          tiTray.Icons := ilTrayAnimWin;
+       end;
+    2: begin
+          ilTrayAnimWin.GetBitmap(1, Image1.Picture.BitMap);
+          tiTray.Icons := ilTrayNormalWin;
+       end;
+    else
+       begin
+          ilTrayOfflineWin.GetBitmap(1, Image1.Picture.BitMap);
+          tiTray.Icons := ilTrayOfflineWin;
+       end;
+    end;
+    Application.Icon.Assign(Image1.Picture.Graphic);
+  finally
+     Image1.free;
+  end;
+end;
+
 procedure TfrmMain.RefreshTimeEntry();
 begin
   if (Paymo.RunningTimerData <> nil) then
   begin
     lblTime.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now));
+    Application.Title:=lblTime.Caption + ' - ' + 'FPC Paymo Widget';
+    ChangeIcon(1);
+  end
+  else
+  begin
+    ChangeIcon(0);
+    Application.Title:='FPC Paymo Widget';
   end;
+
 end;
 
 function TfrmMain.StopTimeEntry(): boolean;

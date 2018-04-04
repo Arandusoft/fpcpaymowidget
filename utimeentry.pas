@@ -42,17 +42,20 @@ type
     procedure btnExistingTaskClick(Sender: TObject);
     procedure btnSaveEntryClick(Sender: TObject);
     procedure btnStartTimer(Sender: TObject);
+    procedure editSearchProjectClick(Sender: TObject);
     procedure editSearchProjectEnter(Sender: TObject);
     procedure editSearchProjectExit(Sender: TObject);
     procedure editSearchProjectKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
     procedure editSearchTaskListsChange(Sender: TObject);
+    procedure editSearchTaskListsClick(Sender: TObject);
     procedure editSearchTaskListsEnter(Sender: TObject);
     procedure editSearchTaskListsExit(Sender: TObject);
     procedure editSearchProjectChange(Sender: TObject);
     procedure editSearchTaskListsKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
     procedure editSearchTasksChange(Sender: TObject);
+    procedure editSearchTasksClick(Sender: TObject);
     procedure editSearchTasksEnter(Sender: TObject);
     procedure editSearchTasksExit(Sender: TObject);
     procedure editSearchTasksKeyDown(Sender: TObject; var Key: word;
@@ -390,9 +393,12 @@ begin
     btnExistingTask.Visible := False;
   end;
 
+  ProjectExit := True;
+  TaskListExit := True;
+  TaskExit := True;
   FillProjectsCombo(True);
-  FillProjectTasks(True, True);
   FillProjectTaskLists(True, Data_TaskListID);
+  FillProjectTasks(True, True);
   FillDateAndTime;
 
   lbProjects.Visible := False;
@@ -432,6 +438,7 @@ begin
         iPos := 0;
       lbProjects.ItemIndex := iPos;
     end;
+    exit;
   end;
   if (key = VK_UP) then
   begin
@@ -444,11 +451,13 @@ begin
         iPos := lbProjects.Items.Count - 1;
       lbProjects.ItemIndex := iPos;
     end;
+    exit;
   end;
   if Key = VK_RETURN then
   begin
     editSearchProjectExit(nil);
-    SelectNext(TWinControl(Sender), True, True);
+    editSearchTaskLists.SetFocus;
+    exit;
   end;
 end;
 
@@ -459,6 +468,11 @@ begin
     FillProjectTaskLists();
 end;
 
+procedure TfrmTimeEntry.editSearchTaskListsClick(Sender: TObject);
+begin
+  TaskListExit := False;
+  CloseListBox(lbProjectTaskLists);
+end;
 
 procedure TfrmTimeEntry.editSearchTaskListsEnter(Sender: TObject);
 begin
@@ -500,6 +514,7 @@ begin
         iPos := 0;
       lbProjectTaskLists.ItemIndex := iPos;
     end;
+    exit;
   end;
   if (key = VK_UP) then
   begin
@@ -512,11 +527,16 @@ begin
         iPos := lbProjectTaskLists.Items.Count - 1;
       lbProjectTaskLists.ItemIndex := iPos;
     end;
+    exit;
   end;
   if Key = VK_RETURN then
   begin
     editSearchTaskListsExit(nil);
-    SelectNext(TWinControl(Sender), True, True);
+    if editSearchTasks.Visible then
+      editSearchTasks.SetFocus
+    else if memoDescription.Visible then
+      memoDescription.SetFocus;
+    exit;
   end;
 end;
 
@@ -524,6 +544,12 @@ procedure TfrmTimeEntry.editSearchTasksChange(Sender: TObject);
 begin
   if not TaskExit then
     FillProjectTasks(False);
+end;
+
+procedure TfrmTimeEntry.editSearchTasksClick(Sender: TObject);
+begin
+  TaskExit := False;
+  CloseListBox(lbProjectTasks);
 end;
 
 procedure TfrmTimeEntry.editSearchTasksEnter(Sender: TObject);
@@ -558,6 +584,7 @@ begin
         iPos := 0;
       lbProjectTasks.ItemIndex := iPos;
     end;
+    exit;
   end;
   if (key = VK_UP) then
   begin
@@ -570,9 +597,13 @@ begin
         iPos := lbProjectTasks.Items.Count - 1;
       lbProjectTasks.ItemIndex := iPos;
     end;
+    exit;
   end;
   if Key = VK_RETURN then
+  begin
     editSearchTasksExit(nil);
+    exit;
+  end;
 end;
 
 procedure TfrmTimeEntry.FormClick(Sender: TObject);
@@ -703,6 +734,12 @@ begin
     ShowMessage(rsErrorCantCreateTask);
 end;
 
+procedure TfrmTimeEntry.editSearchProjectClick(Sender: TObject);
+begin
+  ProjectExit := False;
+  CloseListBox(lbProjects);
+end;
+
 procedure TfrmTimeEntry.btnDeleteEntryClick(Sender: TObject);
 begin
   case PaymoInstance.DeleteTimeEntry(Data.GetPath('id').AsString) of
@@ -729,6 +766,7 @@ begin
   lblDescription3.Visible := True;
   lblDescription.Visible := False;
   memoDescription.Visible := False;
+  editSearchTasks.Clear;
   if editSearchTasks.CanFocus then
     editSearchTasks.SetFocus;
   editSearchTasks.SendToBack;
