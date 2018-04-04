@@ -128,6 +128,7 @@ uses
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   SetFonts(Self);
+  pnlMenu.AnimWidth := ScaleX(pnlMenu.AnimWidth, 96);
   DoubleBuffered := True;
   pnlMenu.Left := 0;
   pnlMenu.Top := 0;
@@ -154,7 +155,6 @@ begin
     JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
     JSONPropStorage1.Restore;
   end;
-
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -485,6 +485,7 @@ procedure TfrmMain.ListTasks();
 begin
   Tasks.Visible := False;
   Tasks.RefreshItems;
+  //SetFonts(Tasks);
   Tasks.Visible := True;
 end;
 
@@ -612,7 +613,7 @@ var
   WinControl: TWinControl;
 begin
   // Font Size
-  case Control.Font.Size of
+  case Control.Tag of
     -12:
     begin
       Control.Font.Size := FONTSIZESMALL;
@@ -645,8 +646,8 @@ begin
     begin
       Control.Font.Size := FONTSIZEMEDIUM;
     end;
-    else
-      Control.Font.Size := FONTSIZEMEDIUM;
+    {else
+      Control.Font.Size := FONTSIZEMEDIUM;}
   end;
 
   // Font Name

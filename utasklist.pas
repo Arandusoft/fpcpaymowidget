@@ -301,7 +301,7 @@ begin
     d.Font.Name := FONTNAME;
     d.BevelOuter := bvNone;
     d.Align := alTop;
-    d.BorderSpacing.Top := 20;
+    d.BorderSpacing.Top := ScaleX(20, 96);
     d.AutoSize := True;
     //d.OnClick := @DayClick;
     d.Parent := Self;
@@ -339,9 +339,9 @@ begin
       p := TPanel.Create(d);
       p.Font.Name := FONTNAME;
       p.BevelOuter := bvNone;
-      p.BorderSpacing.Left := 30;
-      p.BorderSpacing.Right := 30;
-      p.BorderSpacing.Bottom := 20;
+      p.BorderSpacing.Left := ScaleX(30, 96);
+      p.BorderSpacing.Right := ScaleX(30, 96);
+      p.BorderSpacing.Bottom := ScaleX(20, 96);
       p.Align := alTop;
       p.AutoSize := True;
       p.Parent := d;
@@ -359,7 +359,7 @@ begin
       // project title
       l := TLabel.Create(pc);
       l.Font.Name := FONTNAME;
-      l.BorderSpacing.Left := 30;
+      l.BorderSpacing.Left := ScaleX(30, 96);
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
       l.Font.Size := FONTSIZESMALL;
@@ -385,7 +385,7 @@ begin
       play.BevelOuter := bvNone;
       play.Font.Color := RGBToColor(221, 221, 221);
       play.Align := alLeft;
-      play.Width := 30;
+      play.Width := ScaleX(30, 96);
       play.Font.Size := FONTSIZEBIG;
       play.Caption := '▶';
       play.Cursor := crHandPoint;
@@ -441,7 +441,7 @@ begin
       e.Style := apsTopBottom;
       e.UseAutoSize := True;
       e.Font.Name := FONTNAME;
-      e.BorderSpacing.Left := 30;
+      e.BorderSpacing.Left := ScaleX(30, 96);
       e.BevelOuter := bvNone;
       e.Align := alBottom;
       e.Height := 0;
@@ -450,8 +450,8 @@ begin
       e.ChildSizing.ControlsPerLine := 2;
       e.ChildSizing.Layout := cclLeftToRightThenTopToBottom;
       e.ChildSizing.EnlargeHorizontal := crsScaleChilds;
-      e.ChildSizing.VerticalSpacing := 20;
-      e.ChildSizing.TopBottomSpacing := 10;
+      e.ChildSizing.VerticalSpacing := ScaleX(20, 96);
+      e.ChildSizing.TopBottomSpacing := ScaleX(10, 96);
       e.Parent := p;
       // time entries
       sum := 0;
@@ -503,7 +503,7 @@ begin
     pc.AutoSize := True;
     pc.ChildSizing.ControlsPerLine := 4;
     pc.ChildSizing.Layout := cclLeftToRightThenTopToBottom;
-    pc.ChildSizing.HorizontalSpacing := 5;
+    pc.ChildSizing.HorizontalSpacing := ScaleX(5, 96);
     pc.Parent := p;
     // day label
     l := TLabel.Create(pc);
@@ -511,8 +511,8 @@ begin
     l.Cursor := crHandPoint;
     l.OnClick := @DayClickParent;
     l.Font.Size := FONTSIZESMALL;
-    l.BorderSpacing.Top := 10;
-    l.BorderSpacing.Bottom := 10;
+    l.BorderSpacing.Top := ScaleX(10, 96);
+    l.BorderSpacing.Bottom := ScaleX(10, 96);
     l.Parent := pc;
     if (IsSameDate(t, now)) then
     begin
@@ -539,7 +539,7 @@ begin
       lt.Parent := pc;
     end;
     // min height of container (label height + border spacing)
-    d.Constraints.MinHeight := l.Height + 20;
+    d.Constraints.MinHeight := l.Height + ScaleX(20, 96);
     // arrow
     l := TLabel.Create(pc);
     l.Font.Name := FONTNAMEFIXED;
