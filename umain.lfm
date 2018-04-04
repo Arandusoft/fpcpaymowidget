@@ -367,7 +367,7 @@ object frmMain: TfrmMain
       Width = 36
       Alignment = taCenter
       AutoSize = False
-      Caption = '⏹'
+      Caption = '■'
       Font.Color = clWhite
       Font.Height = -24
       Font.Name = 'Nunito Sans Light'

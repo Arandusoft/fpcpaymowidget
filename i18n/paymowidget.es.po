@@ -38,7 +38,7 @@ msgid "Project"
 msgstr "Proyecto"
 
 #: tfrmmain.lblstop.caption
-msgid "⏹"
+msgid "■"
 msgstr ""
 
 #: tfrmmain.lbltask.caption
