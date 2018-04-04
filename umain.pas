@@ -102,14 +102,15 @@ type
     Paymo: TPaymo;
     start_time: TDateTime;
     stop_ok: boolean;
-    IconIndex:integer;
+    IconIndex: integer;
     procedure Login;
     procedure ListProjects();
     procedure ListTasks();
     procedure ListTimeEntry();
-    procedure ChangeIcon(const AIndex: Integer);
+    procedure ChangeIcon(const AIndex: integer);
     procedure RefreshTimeEntry();
     function StopTimeEntry(): boolean;
+    procedure SetFonts(Control: TControl);
   end;
 
 var
@@ -126,6 +127,7 @@ uses
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  SetFonts(Self);
   DoubleBuffered := True;
   pnlMenu.Left := 0;
   pnlMenu.Top := 0;
@@ -144,14 +146,15 @@ begin
     end;
   end;
   // Default position (center of the screen)
-  Left := (Screen.Width-Width) div 2;
-  Top := (Screen.Height-Height) div 2;
+  Left := (Screen.Width - Width) div 2;
+  Top := (Screen.Height - Height) div 2;
   // Restore position (only works with Position = poDesigned)
   if ForceDirectories(GetAppConfigDir(False)) then
   begin
     JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
     JSONPropStorage1.Restore;
   end;
+
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -501,63 +504,73 @@ begin
     pnlTime.Visible := False;
 end;
 
-procedure TfrmMain.ChangeIcon(const AIndex: Integer);   //0: normal //1:start //2:offline
-var Image1:TImage;
-    iIndex: integer;
-    //bmp: TBGRABitmap;
+procedure TfrmMain.ChangeIcon(const AIndex: integer);   //0: normal //1:start //2:offline
+var
+  Image1: TImage;
+  iIndex: integer;
+  //bmp: TBGRABitmap;
 begin
-  iIndex:=AIndex;
-  if IconIndex=1 then iIndex:=3;//another start icon
-  if IconIndex=3 then iIndex:=1;//another start icon
-  if AIndex=0 then iIndex:=0;
-  if AIndex=2 then iIndex:=2;
-  if IconIndex=iIndex then exit;
+  iIndex := AIndex;
+  if IconIndex = 1 then
+    iIndex := 3;//another start icon
+  if IconIndex = 3 then
+    iIndex := 1;//another start icon
+  if AIndex = 0 then
+    iIndex := 0;
+  if AIndex = 2 then
+    iIndex := 2;
+  if IconIndex = iIndex then
+    exit;
   try
-    IconIndex:=iIndex;
+    IconIndex := iIndex;
     Image1 := TImage.Create(self);
     case iIndex of
-    0: begin
-          ilApplication.GetBitmap(0, Image1.Picture.BitMap);
-          tiTray.Icons := ilTrayNormalWin;
-          IconIndex:=0;
-       end;
-    1: begin
-          ilApplication.GetBitmap(1, Image1.Picture.BitMap);
-          //Image1.Canvas.Font.Color := clBlack;
-          //Image1.Canvas.Font.Size := 20;
-          //Image1.Canvas.Brush.Style := bsClear;
-          //Image1.Canvas.TextOut(20, 20, 'HELLO WORLD');
-          tiTray.Icons := ilTrayAnimWin;
-       end;
-    2: begin
-          ilApplication.GetBitmap(2, Image1.Picture.BitMap);
-          tiTray.Icons := ilTrayOfflineWin;
-          IconIndex:=2;
-       end;
-    3: begin
-          ilApplication.GetBitmap(3, Image1.Picture.BitMap);
-          //Image1.Canvas.Font.Color := clBlack;
-          //Image1.Canvas.Font.Size := 20;
-          //Image1.Canvas.Brush.Style := bsClear;
-          //Image1.Canvas.TextOut(20, 20, 'HELLO WORLD');
-       end;
-    else
-       begin
-          ilTrayNormalWin.GetBitmap(0, Image1.Picture.BitMap);
-          tiTray.Icons := ilTrayNormalWin;
-       end;
+      0:
+      begin
+        ilApplication.GetBitmap(0, Image1.Picture.BitMap);
+        tiTray.Icons := ilTrayNormalWin;
+        IconIndex := 0;
+      end;
+      1:
+      begin
+        ilApplication.GetBitmap(1, Image1.Picture.BitMap);
+        //Image1.Canvas.Font.Color := clBlack;
+        //Image1.Canvas.Font.Size := 20;
+        //Image1.Canvas.Brush.Style := bsClear;
+        //Image1.Canvas.TextOut(20, 20, 'HELLO WORLD');
+        tiTray.Icons := ilTrayAnimWin;
+      end;
+      2:
+      begin
+        ilApplication.GetBitmap(2, Image1.Picture.BitMap);
+        tiTray.Icons := ilTrayOfflineWin;
+        IconIndex := 2;
+      end;
+      3:
+      begin
+        ilApplication.GetBitmap(3, Image1.Picture.BitMap);
+        //Image1.Canvas.Font.Color := clBlack;
+        //Image1.Canvas.Font.Size := 20;
+        //Image1.Canvas.Brush.Style := bsClear;
+        //Image1.Canvas.TextOut(20, 20, 'HELLO WORLD');
+      end;
+      else
+      begin
+        ilTrayNormalWin.GetBitmap(0, Image1.Picture.BitMap);
+        tiTray.Icons := ilTrayNormalWin;
+      end;
     end;
     {bmp := TBGRABitmap.Create();
     bmp.Assign(Image1.Picture.Graphic);
     bmp.FontHeight := 11;
-    bmp.FontName := 'Courier New';
+    bmp.FontName := FONTNAMEARROW;
     bmp.Rectangle(0, bmp.Height-15, bmp.Width, bmp.Height, BGRABlack, BGRABlack, dmSet);
     bmp.TextOut(0, bmp.Height-15, TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now)), BGRAWhite);
     Application.Icon.Assign(bmp.Bitmap);}
     Application.Icon.Assign(Image1.Picture.Graphic);
   finally
     //bmp.Free;
-    Image1.free;
+    Image1.Free;
   end;
 end;
 
@@ -591,6 +604,95 @@ begin
   Result := True;
   lblStopClick(nil);
   Result := stop_ok;
+end;
+
+procedure TfrmMain.SetFonts(Control: TControl);
+var
+  n: integer;
+  WinControl: TWinControl;
+begin
+  // Font Size
+  case Control.Font.Size of
+    -12:
+    begin
+      Control.Font.Size := FONTSIZESMALL;
+    end;
+    -14:
+    begin
+      Control.Font.Size := FONTSIZEMEDIUM;
+    end;
+    -16:
+    begin
+      Control.Font.Size := FONTSIZEBIG;
+    end;
+    -23:
+    begin
+      Control.Font.Size := FONTSIZEBIG2;
+    end;
+    -24:
+    begin
+      Control.Font.Size := FONTSIZESTOP;
+    end;
+    -30:
+    begin
+      Control.Font.Size := FONTSIZEBACK;
+    end;
+    -40:
+    begin
+      Control.Font.Size := FONTSIZETIME;
+    end;
+    0:
+    begin
+      Control.Font.Size := FONTSIZEMEDIUM;
+    end;
+    else
+      Control.Font.Size := FONTSIZEMEDIUM;
+  end;
+
+  // Font Name
+  case Control.Font.Name of
+    'Nunito Sans':
+    begin
+      Control.Font.Name := FONTNAME;
+    end;
+    'Nunito Sans Light':
+    begin
+      Control.Font.Name := FONTNAMELIGHT2;
+    end;
+    'Nunito Sans ExtraLight':
+    begin
+      Control.Font.Name := FONTNAMELIGHT;
+    end;
+    'Nunito Sans ExtraBold':
+    begin
+      Control.Font.Name := FONTNAMEBOLD;
+    end;
+    'Courier New':
+    begin
+      Control.Font.Name := FONTNAMEFIXED;
+    end;
+    'default':
+    begin
+      Control.Font.Name := FONTNAME;
+    end;
+    else
+      Control.Font.Name := FONTNAME;
+  end;
+
+  if Control is TWinControl then
+  begin
+    WinControl := TWinControl(Control);
+    if WinControl.ControlCount > 0 then
+    begin
+      for n := 0 to WinControl.ControlCount - 1 do
+      begin
+        if WinControl.Controls[n] is TControl then
+        begin
+          SetFonts(WinControl.Controls[n]);
+        end;
+      end;
+    end;
+  end;
 end;
 
 end.

@@ -9,10 +9,48 @@ uses
   upaymo, Dialogs, DateUtils, AnimatedPanel, LazUTF8, Math, uresourcestring;
 
 const
+  {$IFDEF WINDOWS}
   FONTNAME = 'Nunito Sans';
   FONTNAMELIGHT = 'Nunito Sans ExtraLight';
+  FONTNAMELIGHT2 = 'Nunito Sans Light';
   FONTNAMEBOLD = 'Nunito Sans ExtraBold';
-  FONTNAMEARROW = 'Courier New';
+  FONTNAMEFIXED = 'Courier New';
+  FONTSIZETIME = -40; // timer
+  FONTSIZEBACK = -30; // <- back (menu)
+  FONTSIZESTOP = -24; // [] stop button
+  FONTSIZEBIG2 = -23; // total time of day
+  FONTSIZEBIG = -16; // big
+  FONTSIZEMEDIUM = -14; // medium
+  FONTSIZESMALL = -12; // small
+  {$ENDIF}
+  {$IFDEF LINUX}
+  FONTNAME = 'Roboto';
+  FONTNAMELIGHT = 'Roboto';
+  FONTNAMELIGHT2 = 'Roboto';
+  FONTNAMEBOLD = 'Roboto';
+  FONTNAMEFIXED = 'Courier New';
+  FONTSIZETIME = 9; // timer
+  FONTSIZEBACK = 9; // <- back (menu)
+  FONTSIZESTOP = 9; // [] stop button
+  FONTSIZEBIG2 = 9; // total time of day
+  FONTSIZEBIG = 9; // big
+  FONTSIZEMEDIUM = 9; // medium
+  FONTSIZESMALL = 9; // small
+  {$ENDIF}
+  {$IFDEF DARWIN}
+  FONTNAME = 'Helvetica Neue';
+  FONTNAMELIGHT = 'Helvetica Neue';
+  FONTNAMELIGHT2 = 'Helvetica Neue';
+  FONTNAMEBOLD = 'Helvetica Neue';
+  FONTNAMEFIXED = 'Monaco';
+  FONTSIZETIME = 11; // timer
+  FONTSIZEBACK = 11; // <- back (menu)
+  FONTSIZESTOP = 11; // [] stop button
+  FONTSIZEBIG2 = 11; // total time of day
+  FONTSIZEBIG = 11; // big
+  FONTSIZEMEDIUM = 11; // medium
+  FONTSIZESMALL = 11; // small
+  {$ENDIF}
 
 type
 
@@ -324,17 +362,17 @@ begin
       l.BorderSpacing.Left := 30;
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
-      l.Font.Size := -12;
+      l.Font.Size := FONTSIZESMALL;
       l.Align := alLeft;
       l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger);
       l.OnClick := @OnClickItemParent;
       l.Parent := pc;
       // task right arrow
       l := TLabel.Create(pc);
-      l.Font.Name := FONTNAMEARROW;
+      l.Font.Name := FONTNAMEFIXED;
       l.Cursor := crHandPoint;
       l.Font.Color := clGray;
-      l.Font.Size := -12;
+      l.Font.Size := FONTSIZESMALL;
       l.Align := alRight;
       l.Alignment := taRightJustify;
       l.Name := 'arrow';
@@ -348,7 +386,7 @@ begin
       play.Font.Color := RGBToColor(221, 221, 221);
       play.Align := alLeft;
       play.Width := 30;
-      play.Font.Size := -16;
+      play.Font.Size := FONTSIZEBIG;
       play.Caption := '▶';
       play.Cursor := crHandPoint;
       play.OnClick := @OnClickPlay;
@@ -371,7 +409,7 @@ begin
       l.Font.Name := FONTNAME;
       l.Cursor := crHandPoint;
       l.Font.Color := clBlack;
-      l.Font.Size := -14;
+      l.Font.Size := FONTSIZEMEDIUM;
       l.Align := alClient;
       l.WordWrap := True;
       if arr[i].GetPath('complete').AsBoolean then
@@ -393,7 +431,7 @@ begin
       lt.Font.Name := FONTNAME;
       lt.Cursor := crHandPoint;
       lt.Font.Color := clGray;
-      lt.Font.Size := -12;
+      lt.Font.Size := FONTSIZESMALL;
       lt.Alignment := taRightJustify;
       lt.Align := alBottom;
       lt.OnClick := @OnClickItemParent;
@@ -424,7 +462,7 @@ begin
         l.Font.Name := FONTNAME;
         l.Cursor := crHandPoint;
         l.Font.Color := clGray;
-        l.Font.Size := -12;
+        l.Font.Size := FONTSIZESMALL;
         l.Alignment := taLeftJustify;
         l.Caption := FormatDateTime('t', StringToDateTime(
           arrFilteredEntries[j].GetPath('start_time').AsString)) +
@@ -439,7 +477,7 @@ begin
         l := TLabel.Create(e);
         l.Font.Name := FONTNAME;
         l.Font.Color := clGray;
-        l.Font.Size := -12;
+        l.Font.Size := FONTSIZESMALL;
         l.Alignment := taRightJustify;
         sec := SecondsBetween(StringToDateTime(
           arrFilteredEntries[j].GetPath('start_time').AsString),
@@ -472,7 +510,7 @@ begin
     l.Font.Name := FONTNAMEBOLD;
     l.Cursor := crHandPoint;
     l.OnClick := @DayClickParent;
-    l.Font.Height := -12;
+    l.Font.Size := FONTSIZESMALL;
     l.BorderSpacing.Top := 10;
     l.BorderSpacing.Bottom := 10;
     l.Parent := pc;
@@ -495,7 +533,7 @@ begin
       lt.Font.Name := FONTNAME;
       lt.Cursor := crHandPoint;
       lt.OnClick := @DayClickParent;
-      lt.Font.Height := -12;
+      lt.Font.Size := FONTSIZESMALL;
       lt.Font.Color := clGray;
       lt.Caption := UTF8UpperCase(FormatDateTime('ddddd', t));
       lt.Parent := pc;
@@ -504,10 +542,10 @@ begin
     d.Constraints.MinHeight := l.Height + 20;
     // arrow
     l := TLabel.Create(pc);
-    l.Font.Name := FONTNAMEARROW;
+    l.Font.Name := FONTNAMEFIXED;
     l.Cursor := crHandPoint;
     l.Font.Color := clGray;
-    l.Font.Size := -12;
+    l.Font.Size := FONTSIZESMALL;
     l.Name := 'arrow';
     l.Caption := '˄';
     l.OnClick := @DayClickParent;
@@ -522,7 +560,7 @@ begin
     // total time of day
     lt := TLabel.Create(p);
     lt.Font.Name := FONTNAMELIGHT;
-    lt.Font.Height := -23;
+    lt.Font.Size := FONTSIZEBIG2;
     lt.Align := alTop;
     lt.Font.Color := clBlack;
     lt.Caption := SecondsToString(sumDay);

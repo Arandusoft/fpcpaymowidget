@@ -61,6 +61,7 @@ type
     procedure editSearchTasksKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
     procedure FormClick(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure lbl_dateClick(Sender: TObject);
     procedure lbProjectsClick(Sender: TObject);
@@ -616,20 +617,21 @@ begin
   CloseListBox(nil);
 end;
 
+procedure TfrmTimeEntry.FormCreate(Sender: TObject);
+begin
+  frmMain.SetFonts(Self);
+end;
+
 procedure TfrmTimeEntry.FormShow(Sender: TObject);
-{$IFDEF LINUX}
 var
   l, t: integer;
-{$ENDIF}
 begin
-  {$IFDEF LINUX}
   l := frmMain.Left - Width;
   t := frmMain.Top;
   if Left <> l then
     Left := l;
   if Top <> t then
     Top := t;
-  {$ENDIF}
 end;
 
 procedure TfrmTimeEntry.btnSaveEntryClick(Sender: TObject);
