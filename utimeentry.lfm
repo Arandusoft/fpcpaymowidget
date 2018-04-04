@@ -9,6 +9,7 @@ object frmTimeEntry: TfrmTimeEntry
   ClientWidth = 333
   Color = 12111890
   OnClick = FormClick
+  OnShow = FormShow
   LCLVersion = '1.9.0.0'
   object editSearchProject: TEdit
     Left = 80
@@ -183,7 +184,7 @@ object frmTimeEntry: TfrmTimeEntry
     end
   end
   object btnSaveEntry: TColorSpeedButton
-    Left = 56
+    Left = 64
     Height = 40
     Top = 424
     Width = 208
@@ -211,7 +212,7 @@ object frmTimeEntry: TfrmTimeEntry
     StateDisabled.BorderWidth = 1
   end
   object btnDeleteEntry: TColorSpeedButton
-    Left = 56
+    Left = 64
     Height = 40
     Top = 480
     Width = 208
@@ -253,8 +254,8 @@ object frmTimeEntry: TfrmTimeEntry
     Left = 16
     Height = 16
     Top = 248
-    Width = 133
-    Caption = 'New task description:'
+    Width = 106
+    Caption = 'Task description:'
     Font.Color = 3883776
     Font.Height = -14
     Font.Name = 'Nunito Sans'
@@ -298,10 +299,10 @@ object frmTimeEntry: TfrmTimeEntry
     ParentFont = False
   end
   object btnExistingTask: TColorSpeedButton
-    Left = 160
+    Left = 128
     Height = 40
     Top = 224
-    Width = 153
+    Width = 185
     Caption = 'Use Existing Task'
     Font.Color = 3883776
     Font.Height = -14

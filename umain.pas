@@ -413,12 +413,16 @@ var
   l, t: integer;
 begin
   inherited WMMove(Message);
+  {$IFDEF LINUX}
+  // does not works on linux
+  {$ELSE}
   l := Self.Left - frmTimeEntry.Width;
   t := Self.Top;
   if frmTimeEntry.Left <> l then
     frmTimeEntry.Left := l;
   if frmTimeEntry.Top <> t then
     frmTimeEntry.Top := t;
+  {$ENDIF}
 end;
 
 procedure TfrmMain.Login;

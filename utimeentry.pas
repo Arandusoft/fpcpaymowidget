@@ -61,6 +61,7 @@ type
     procedure editSearchTasksKeyDown(Sender: TObject; var Key: word;
       Shift: TShiftState);
     procedure FormClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
     procedure lbl_dateClick(Sender: TObject);
     procedure lbProjectsClick(Sender: TObject);
     procedure lbProjectsSelectionChange(Sender: TObject; User: boolean);
@@ -319,12 +320,16 @@ var
   l, t: integer;
 begin
   inherited WMMove(Message);
+  {$IFDEF LINUX}
+  // does not works on linux
+  {$ELSE}
   l := Self.Left + Self.Width;
   t := Self.Top;
   if frmMain.Left <> l then
     frmMain.Left := l;
   if frmMain.Top <> t then
     frmMain.Top := t;
+  {$ENDIF}
 end;
 
 procedure TfrmTimeEntry.CloseListBox(Keep: TListBox);
@@ -609,6 +614,22 @@ end;
 procedure TfrmTimeEntry.FormClick(Sender: TObject);
 begin
   CloseListBox(nil);
+end;
+
+procedure TfrmTimeEntry.FormShow(Sender: TObject);
+{$IFDEF LINUX}
+var
+  l, t: integer;
+{$ENDIF}
+begin
+  {$IFDEF LINUX}
+  l := frmMain.Left - Width;
+  t := frmMain.Top;
+  if Left <> l then
+    Left := l;
+  if Top <> t then
+    Top := t;
+  {$ENDIF}
 end;
 
 procedure TfrmTimeEntry.btnSaveEntryClick(Sender: TObject);
