@@ -34,7 +34,7 @@ const
   FONTSIZESTOP = -24; // [] stop button
   FONTSIZEBIG2 = -18; // total time of day
   FONTSIZEBIG = -14; // big
-  FONTSIZEMEDIUM = -1; // medium
+  FONTSIZEMEDIUM = -11; // medium
   FONTSIZESMALL = -10; // small
   {$ENDIF}
   {$IFDEF DARWIN}
@@ -48,7 +48,7 @@ const
   FONTSIZESTOP = -24; // [] stop button
   FONTSIZEBIG2 = -18; // total time of day
   FONTSIZEBIG = -14; // big
-  FONTSIZEMEDIUM = -1; // medium
+  FONTSIZEMEDIUM = -11; // medium
   FONTSIZESMALL = -10; // small
   {$ENDIF}
 
