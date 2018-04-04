@@ -29,13 +29,13 @@ const
   FONTNAMELIGHT2 = 'Roboto';
   FONTNAMEBOLD = 'Roboto';
   FONTNAMEFIXED = 'Courier New';
-  FONTSIZETIME = 9; // timer
-  FONTSIZEBACK = 9; // <- back (menu)
-  FONTSIZESTOP = 9; // [] stop button
-  FONTSIZEBIG2 = 9; // total time of day
-  FONTSIZEBIG = 9; // big
-  FONTSIZEMEDIUM = 9; // medium
-  FONTSIZESMALL = 9; // small
+  FONTSIZETIME = -40; // timer
+  FONTSIZEBACK = -30; // <- back (menu)
+  FONTSIZESTOP = -24; // [] stop button
+  FONTSIZEBIG2 = -18; // total time of day
+  FONTSIZEBIG = -14; // big
+  FONTSIZEMEDIUM = -1; // medium
+  FONTSIZESMALL = -10; // small
   {$ENDIF}
   {$IFDEF DARWIN}
   FONTNAME = 'Helvetica Neue';
@@ -43,13 +43,13 @@ const
   FONTNAMELIGHT2 = 'Helvetica Neue';
   FONTNAMEBOLD = 'Helvetica Neue';
   FONTNAMEFIXED = 'Monaco';
-  FONTSIZETIME = 11; // timer
-  FONTSIZEBACK = 11; // <- back (menu)
-  FONTSIZESTOP = 11; // [] stop button
-  FONTSIZEBIG2 = 11; // total time of day
-  FONTSIZEBIG = 11; // big
-  FONTSIZEMEDIUM = 11; // medium
-  FONTSIZESMALL = 11; // small
+  FONTSIZETIME = -40; // timer
+  FONTSIZEBACK = -30; // <- back (menu)
+  FONTSIZESTOP = -24; // [] stop button
+  FONTSIZEBIG2 = -18; // total time of day
+  FONTSIZEBIG = -14; // big
+  FONTSIZEMEDIUM = -1; // medium
+  FONTSIZESMALL = -10; // small
   {$ENDIF}
 
 type
