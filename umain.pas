@@ -5,10 +5,11 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Menus, upaymo, fpjson, uresourcestring, utasklist,
-  AnimatedPanel, ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread,
-  LMessages, DateUtils;
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
+  Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
+  ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
+  JSONPropStorage, XMLPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
+  BGRABitmapTypes;
 
 type
 
@@ -51,6 +52,7 @@ type
     timerEntry: TTimer;
     tiTray: TTrayIcon;
     wcThreadDownloader: TWCThread;
+    XMLPropStorage1: TXMLPropStorage;
     procedure btnAddTaskClick(Sender: TObject);
     procedure btnAddTaskPaint(Sender: TObject);
     procedure btnMenuClick(Sender: TObject);
@@ -140,6 +142,15 @@ begin
       DownloadTaskLists.Start;
     except
     end;
+  end;
+  // Default position (center of the screen)
+  Left := (Screen.Width-Width) div 2;
+  Top := (Screen.Height-Height) div 2;
+  // Restore position (only works with Position = poDesigned)
+  if ForceDirectories(GetAppConfigDir(False)) then
+  begin
+    XMLPropStorage1.FileName := GetAppConfigDir(False) + 'settings.xml';
+    XMLPropStorage1.Restore;
   end;
 end;
 
@@ -488,6 +499,7 @@ end;
 procedure TfrmMain.ChangeIcon(const AIndex: Integer);   //0: normal //1:start //2:offline
 var Image1:TImage;
     iIndex: integer;
+    //bmp: TBGRABitmap;
 begin
   iIndex:=AIndex;
   if IconIndex=1 then iIndex:=3;//another start icon
@@ -530,9 +542,17 @@ begin
           tiTray.Icons := ilTrayNormalWin;
        end;
     end;
+    {bmp := TBGRABitmap.Create();
+    bmp.Assign(Image1.Picture.Graphic);
+    bmp.FontHeight := 11;
+    bmp.FontName := 'Courier New';
+    bmp.Rectangle(0, bmp.Height-15, bmp.Width, bmp.Height, BGRABlack, BGRABlack, dmSet);
+    bmp.TextOut(0, bmp.Height-15, TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now)), BGRAWhite);
+    Application.Icon.Assign(bmp.Bitmap);}
     Application.Icon.Assign(Image1.Picture.Graphic);
   finally
-     Image1.free;
+    //bmp.Free;
+    Image1.free;
   end;
 end;
 

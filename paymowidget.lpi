@@ -306,19 +306,22 @@
       <FormatVersion Value="2"/>
       <Modes Count="0"/>
     </RunParams>
-    <RequiredPackages Count="4">
+    <RequiredPackages Count="5">
       <Item1>
-        <PackageName Value="Threading"/>
+        <PackageName Value="IDEIntf"/>
       </Item1>
       <Item2>
-        <PackageName Value="fpcpaymowidgetcontrols"/>
+        <PackageName Value="Threading"/>
       </Item2>
       <Item3>
-        <PackageName Value="bgracontrols"/>
+        <PackageName Value="fpcpaymowidgetcontrols"/>
       </Item3>
       <Item4>
-        <PackageName Value="LCL"/>
+        <PackageName Value="bgracontrols"/>
       </Item4>
+      <Item5>
+        <PackageName Value="LCL"/>
+      </Item5>
     </RequiredPackages>
     <Units Count="7">
       <Unit0>

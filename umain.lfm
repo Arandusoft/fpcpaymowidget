@@ -16,7 +16,7 @@ object frmMain: TfrmMain
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
-  Position = poScreenCenter
+  SessionProperties = 'Left;Top;Width;Height'
   ShowInTaskBar = stNever
   LCLVersion = '1.9.0.0'
   object pnlTop: TPanel
@@ -1370,5 +1370,10 @@ object frmMain: TfrmMain
     BitmapAdv = {
       4C6900000000
     }
+  end
+  object XMLPropStorage1: TXMLPropStorage
+    StoredValues = <>
+    Left = 193
+    Top = 45
   end
 end
