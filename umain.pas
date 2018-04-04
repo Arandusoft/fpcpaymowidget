@@ -5,8 +5,8 @@ unit umain;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, Grids,
-  ExtCtrls, Menus, upaymo, fpjson, uresourcestring, Types, utasklist,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  ExtCtrls, Menus, upaymo, fpjson, uresourcestring, utasklist,
   AnimatedPanel, ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread,
   LMessages, DateUtils;
 
@@ -27,6 +27,7 @@ type
     ilTrayNormalWin: TImageList;
     ilTrayNormalMac: TImageList;
     ilTrayOfflineWin: TImageList;
+    ilApplication: TImageList;
     lblTime: TLabel;
     lblStop: TLabel;
     lblProject: TLabel;
@@ -486,18 +487,22 @@ end;
 
 procedure TfrmMain.ChangeIcon(const AIndex: Integer);   //0: normal //1:start //2:offline
 var Image1:TImage;
+    iIndex: integer;
 begin
-  if IconIndex=AIndex then exit;
+  iIndex:=AIndex;
+  if IconIndex=1 then iIndex:=3;//another start icon
+  if IconIndex=3 then iIndex:=1;//another start icon
+  if IconIndex=iIndex then exit;
   try
-    IconIndex:=AIndex;
+    IconIndex:=iIndex;
     Image1 := TImage.Create(self);
-    case AIndex of
+    case iIndex of
     0: begin
-          ilTrayNormalWin.GetBitmap(1, Image1.Picture.BitMap);
+          ilApplication.GetBitmap(0, Image1.Picture.BitMap);
           tiTray.Icons := ilTrayNormalWin;
        end;
     1: begin
-          ilTrayAnimWin.GetBitmap(1, Image1.Picture.BitMap);
+          ilApplication.GetBitmap(1, Image1.Picture.BitMap);
           //Image1.Canvas.Font.Color := clBlack;
           //Image1.Canvas.Font.Size := 20;
           //Image1.Canvas.Brush.Style := bsClear;
@@ -505,13 +510,20 @@ begin
           tiTray.Icons := ilTrayAnimWin;
        end;
     2: begin
-          ilTrayAnimWin.GetBitmap(1, Image1.Picture.BitMap);
-          tiTray.Icons := ilTrayNormalWin;
+          ilApplication.GetBitmap(2, Image1.Picture.BitMap);
+          tiTray.Icons := ilTrayOfflineWin;
+       end;
+    3: begin
+          ilApplication.GetBitmap(3, Image1.Picture.BitMap);
+          //Image1.Canvas.Font.Color := clBlack;
+          //Image1.Canvas.Font.Size := 20;
+          //Image1.Canvas.Brush.Style := bsClear;
+          //Image1.Canvas.TextOut(20, 20, 'HELLO WORLD');
        end;
     else
        begin
-          ilTrayOfflineWin.GetBitmap(1, Image1.Picture.BitMap);
-          tiTray.Icons := ilTrayOfflineWin;
+          ilTrayNormalWin.GetBitmap(0, Image1.Picture.BitMap);
+          tiTray.Icons := ilTrayNormalWin;
        end;
     end;
     Application.Icon.Assign(Image1.Picture.Graphic);
