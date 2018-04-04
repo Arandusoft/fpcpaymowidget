@@ -3,6 +3,7 @@ object frmMain: TfrmMain
   Height = 540
   Top = 126
   Width = 360
+  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'FPC Paymo Widget'
   ClientHeight = 540
   ClientWidth = 360

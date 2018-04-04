@@ -8,9 +8,11 @@ object frmTimeEntry: TfrmTimeEntry
   ClientHeight = 632
   ClientWidth = 333
   Color = 12111890
+  Constraints.MinWidth = 333
   OnClick = FormClick
   OnCreate = FormCreate
   OnShow = FormShow
+  SessionProperties = 'Width'
   LCLVersion = '1.9.0.0'
   object editSearchProject: TEdit
     Tag = -12
@@ -18,6 +20,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 23
     Top = 8
     Width = 233
+    Anchors = [akTop, akLeft, akRight]
     Font.Height = 16
     OnChange = editSearchProjectChange
     OnClick = editSearchProjectClick
@@ -33,6 +36,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 23
     Top = 72
     Width = 233
+    Anchors = [akTop, akLeft, akRight]
     Font.Height = 16
     OnChange = editSearchTaskListsChange
     OnClick = editSearchTaskListsClick
@@ -48,6 +52,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 23
     Top = 129
     Width = 233
+    Anchors = [akTop, akLeft, akRight]
     Font.Height = 16
     OnChange = editSearchTasksChange
     OnClick = editSearchTasksClick
@@ -207,6 +212,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 40
     Top = 424
     Width = 208
+    Anchors = [akTop, akLeft, akRight]
     Caption = 'Save Entry'
     Font.Color = 3883776
     Font.Height = 19
@@ -236,6 +242,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 40
     Top = 480
     Width = 208
+    Anchors = [akTop, akLeft, akRight]
     Caption = 'Delete Entry'
     Font.Color = 3883776
     Font.Height = 19
@@ -265,6 +272,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 144
     Top = 272
     Width = 297
+    Anchors = [akTop, akLeft, akRight]
     Font.Height = 19
     Font.Name = 'Nunito Sans'
     ParentFont = False
@@ -329,6 +337,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 40
     Top = 224
     Width = 185
+    Anchors = [akTop, akRight]
     Caption = 'Use Existing Task'
     Font.Color = 3883776
     Font.Height = 19
@@ -359,6 +368,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 23
     Top = 152
     Width = 233
+    Anchors = [akTop, akLeft, akRight]
     Font.Height = 16
     ItemHeight = 0
     OnClick = lbProjectTasksClick
@@ -372,6 +382,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 23
     Top = 94
     Width = 233
+    Anchors = [akTop, akLeft, akRight]
     Font.Height = 16
     ItemHeight = 0
     OnClick = lbProjectTaskListsClick
@@ -386,6 +397,7 @@ object frmTimeEntry: TfrmTimeEntry
     Height = 23
     Top = 30
     Width = 233
+    Anchors = [akTop, akLeft, akRight]
     Font.Height = 16
     ItemHeight = 0
     OnClick = lbProjectsClick
@@ -400,6 +412,12 @@ object frmTimeEntry: TfrmTimeEntry
     OKCaption = '&OK'
     CancelCaption = 'Cancel'
     Left = 136
+    Top = 280
+  end
+  object JSONPropStorage1: TJSONPropStorage
+    StoredValues = <>
+    Formatted = False
+    Left = 224
     Top = 280
   end
 end

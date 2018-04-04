@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtDlgs,
   DateUtils, upaymo, fpjson, utasklist, ColorSpeedButton, LMessages, ExtCtrls,
-  uresourcestring, LazUTF8, LCLType;
+  uresourcestring, LazUTF8, LCLType, JSONPropStorage;
 
 type
 
@@ -15,6 +15,7 @@ type
 
   TfrmTimeEntry = class(TForm)
     btnExistingTask: TColorSpeedButton;
+    JSONPropStorage1: TJSONPropStorage;
     lbProjectTaskLists: TListBox;
     lbProjectTasks: TListBox;
     lbProjects: TListBox;
@@ -620,6 +621,12 @@ end;
 procedure TfrmTimeEntry.FormCreate(Sender: TObject);
 begin
   frmMain.SetFonts(Self);
+  // Restore position (only works with Position = poDesigned)
+  if ForceDirectories(GetAppConfigDir(False)) then
+  begin
+    JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
+    JSONPropStorage1.Restore;
+  end;
 end;
 
 procedure TfrmTimeEntry.FormShow(Sender: TObject);
