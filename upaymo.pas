@@ -12,6 +12,9 @@ const
   PAYMOAPIBASEURL = 'https://app.paymoapp.com/api/';
   PAYMOAPIKEYURL = 'https://app.paymoapp.com/#Paymo.module.myaccount/';
 
+  function NameSort(Item1, Item2: Pointer): Integer;
+  function InverseNameSort(Item1, Item2: Pointer): Integer;
+
 type
   TPaymoResponseStatus = (prOK, prERROR, prTRYAGAIN);
 
@@ -69,6 +72,24 @@ type
   end;
 
 implementation
+
+function NameSort(Item1, Item2: Pointer): Integer;
+begin
+  if TJSONData(Item1).GetPath('name').AsString > TJSONData(Item2).GetPath('name').AsString then
+    exit(1);
+  if TJSONData(Item1).GetPath('name').AsString < TJSONData(Item2).GetPath('name').AsString then
+    exit(-1);
+  exit(0);
+end;
+
+function InverseNameSort(Item1, Item2: Pointer): Integer;
+begin
+  if TJSONData(Item1).GetPath('name').AsString < TJSONData(Item2).GetPath('name').AsString then
+    exit(1);
+  if TJSONData(Item1).GetPath('name').AsString > TJSONData(Item2).GetPath('name').AsString then
+    exit(-1);
+  exit(0);
+end;
 
 { TPaymo }
 
@@ -237,6 +258,7 @@ begin
       if Assigned(FTasks) then
         FTasks.Free;
       FTasks := TJSONObject(GetJSON(response));
+      TasksArray.Sort(@NameSort);
     end;
   end;
 end;
@@ -252,6 +274,7 @@ begin
       if Assigned(FProjects) then
         FProjects.Free;
       FProjects := TJSONObject(GetJSON(response));
+      ProjectsArray.Sort(@NameSort);
     end;
   end;
 end;
@@ -267,6 +290,7 @@ begin
       if Assigned(FTaskLists) then
         FTaskLists.Free;
       FTaskLists := TJSONObject(GetJSON(response));
+      TaskListsArray.Sort(@NameSort);
     end;
   end;
 end;

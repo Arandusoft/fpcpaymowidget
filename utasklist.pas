@@ -261,6 +261,9 @@ begin
 
   arr := PaymoInstance.TasksArray;
 
+  // Reverse the order of array (array is accesed from bottom to top)
+  arr.Sort(@InverseNameSort);
+
   // list of days
   sl := TStringList.Create;
   for i := 0 to arr.Count - 1 do
@@ -567,6 +570,9 @@ begin
     lt.Parent := p;
   end;
   sl.Free;
+
+  // Revert to original sorting
+  arr.Sort(@NameSort);
 end;
 
 constructor TTaskList.Create(AOwner: TComponent);
