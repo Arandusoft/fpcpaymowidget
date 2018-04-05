@@ -304,7 +304,8 @@ begin
       editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex]
     else
       editSearchTasks.Text := '';
-    chkCompletedTask.Checked := TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
+    chkCompletedTask.Checked :=
+      TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
   end;
 end;
 
@@ -615,7 +616,8 @@ begin
   if lbProjectTasks.ItemIndex > -1 then
   begin
     editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex];
-    chkCompletedTask.Checked := TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
+    chkCompletedTask.Checked :=
+      TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
   end;
 end;
 
@@ -690,15 +692,16 @@ var
   canSave: boolean;
   t_start, t_end: TDateTime;
   s_hh, s_mm: string;
-  r: TPaymoResponseStatus;
+  r, r2: TPaymoResponseStatus;
 begin
+  //ShowMessage(TJSONData(lbProjectTaskLists.Items.Objects[lbProjectTaskLists.ItemIndex]).GetPath('id').AsString);
   if (frmMain.pnlMenu.Width <> 0) and (not frmMain.pnlMenu.Timer.Enabled) then
     frmMain.hideMenu(nil);
   // required fields
   canSave := (time_start_hh.Text <> '') and (time_start_mm.Text <> '') and
     (time_end_hh.Text <> '') and (time_end_mm.Text <> '') and
-    (lbProjects.ItemIndex >= 0) and (lbProjectTaskLists.ItemIndex >= 0) and
-    (lbProjectTasks.ItemIndex >= 0);
+    (lbProjects.ItemIndex >= 0) and (lbProjects.ItemIndex < lbProjects.Count) and (lbProjectTaskLists.ItemIndex >= 0) and (lbProjectTaskLists.ItemIndex < lbProjectTaskLists.Count) and
+    (lbProjectTasks.ItemIndex >= 0) and (lbProjectTasks.ItemIndex < lbProjectTasks.Count);
   if not CanSave then
   begin
     ShowMessage(rsPleaseFillAllFields);
@@ -720,31 +723,36 @@ begin
     ShowMessage(rsThereMustBeAtLeastAMinuteOfDifferenceBetweenStartAndEndTime);
     exit();
   end;
-  if TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean = chkCompletedTask.Checked then
-    exit;
-  case PaymoInstance.UpdateTaskCompletion(chkCompletedTask.Checked, TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex])) of
-    prTRYAGAIN, prERROR: begin
-      ShowMessage(rsErrorCantUpdateTask);
-      exit;
-    end;
-  end;
-  case PaymoInstance.UpdateTimeEntry(Data.GetPath('id').AsString,
-      t_end, TJSONData(lbProjects.Items.Objects[lbProjects.ItemIndex]).GetPath('id').AsString, TJSONData(
-      lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('id').AsString,
-      TJSONData(lbProjectTaskLists.Items.Objects[lbProjectTaskLists.ItemIndex]).GetPath(
-      'id').AsString) of
-    prOK:
-    begin
-      Self.Close;
-      Application.ProcessMessages;
-      // Sync for now, ToDo: change to async with tasks
-      PaymoInstance.GetTasks();
-      frmMain.DownloadTasksFinish(nil, 0, 0);
-    end;
+  // time entry
+  r := PaymoInstance.UpdateTimeEntry(Data.GetPath('id').AsInteger,
+    t_end, TJSONData(lbProjects.Items.Objects[lbProjects.ItemIndex]).GetPath('id').AsInteger, TJSONData(
+    lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('id').AsInteger,
+    TJSONData(lbProjectTaskLists.Items.Objects[lbProjectTaskLists.ItemIndex]).GetPath(
+    'id').AsInteger);
+  case r of
     prTRYAGAIN, prERROR:
     begin
       ShowMessage(rsErrorCantUpdateTimeEntry);
     end;
+  end;
+  // task completion
+  if TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean <> chkCompletedTask.Checked then
+    r2 := PaymoInstance.UpdateTaskCompletion(chkCompletedTask.Checked,
+      TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]));
+  case r2 of
+    prTRYAGAIN, prERROR:
+    begin
+      ShowMessage(rsErrorCantUpdateTask);
+      exit;
+    end;
+  end;
+  if (r = prOK) or (r2 = prOK) then
+  begin
+    Self.Close;
+    Application.ProcessMessages;
+    // Sync for now, ToDo: change to async with tasks
+    PaymoInstance.GetTasks();
+    frmMain.DownloadTasksFinish(nil, 0, 0);
   end;
 end;
 

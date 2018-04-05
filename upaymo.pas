@@ -61,8 +61,8 @@ type
       Description: string): TPaymoResponseStatus;
     function StartRunningTimer(task_id: integer; start_time: TDateTime): TPaymoResponseStatus;
     function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
-    function UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime;
-      project_id, task_id, tasklist_id: string): TPaymoResponseStatus;
+    function UpdateTimeEntry(TimeEntryID: integer; end_time: TDateTime;
+  project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
   public
     procedure LoadSettings;
     procedure SaveSettings;
@@ -415,11 +415,11 @@ begin
   sJSON := jObj.FormatJSON();
   jObj.Free;
   Result := Post('tasks/' + task.GetPath('id').AsString, sJSON, response);
-  case Result of
+  {case Result of
     prOK: begin
       task := GetJSON(response).GetPath('tasks').Items[0];
     end;
-  end;
+  end;}
 end;
 
 function TPaymo.StopRunningTimer(start_time, end_time: TDateTime;
@@ -473,12 +473,13 @@ begin
   Result := Delete('entries/' + TimeEntryID, response);
 end;
 
-function TPaymo.UpdateTimeEntry(TimeEntryID: string; end_time: TDateTime;
-  project_id, task_id, tasklist_id: string): TPaymoResponseStatus;
+function TPaymo.UpdateTimeEntry(TimeEntryID: integer; end_time: TDateTime;
+  project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
   jObj: TJSONObject;
+  r: TPaymoResponseStatus;
 begin
   jObj := TJSONObject.Create;
   jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
@@ -487,13 +488,13 @@ begin
   jObj.Add('task_id', task_id);
   sJSON := jObj.FormatJSON();
   jObj.Free;
-  Result := Post('entries/' + TimeEntryID, sJSON, response);
+  Result := Post('entries/' + TimeEntryID.ToString, sJSON, response);
 
   jObj := TJSONObject.Create;
   jObj.Add('tasklist_id', tasklist_id);
   sJSON := jObj.FormatJSON();
   jObj.Free;
-  Result := Post('tasks/' + task_id, sJSON, response);
+  r := Post('tasks/' + task_id.ToString, sJSON, response);
 end;
 
 procedure TPaymo.LoadSettings;
