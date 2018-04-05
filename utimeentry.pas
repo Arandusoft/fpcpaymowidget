@@ -446,8 +446,8 @@ begin
   TaskListExit := True;
   TaskExit := True;
   FillProjectsCombo(True);
-  FillProjectTaskLists(True, Data_TaskListID);
   FillProjectTasks(True, True);
+  FillProjectTaskLists(True, Data_TaskListID);
   FillDateAndTime;
 
   lbProjects.Visible := False;
