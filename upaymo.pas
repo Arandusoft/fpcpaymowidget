@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, fphttpclient, jsonConf, fpjson, jsonparser,
-  Dialogs, DateUtils;
+  Dialogs, DateUtils, LazUTF8;
 
 const
   PAYMOAPIBASEURL = 'https://app.paymoapp.com/api/';
@@ -83,22 +83,22 @@ implementation
 
 function NameSort(Item1, Item2: Pointer): integer;
 begin
-  if TJSONData(Item1).GetPath('name').AsString >
-    TJSONData(Item2).GetPath('name').AsString then
+  if UTF8LowerCase(TJSONData(Item1).GetPath('name').AsString) >
+    UTF8LowerCase(TJSONData(Item2).GetPath('name').AsString) then
     exit(1);
-  if TJSONData(Item1).GetPath('name').AsString <
-    TJSONData(Item2).GetPath('name').AsString then
+  if UTF8LowerCase(TJSONData(Item1).GetPath('name').AsString) <
+    UTF8LowerCase(TJSONData(Item2).GetPath('name').AsString) then
     exit(-1);
   exit(0);
 end;
 
 function InverseNameSort(Item1, Item2: Pointer): integer;
 begin
-  if TJSONData(Item1).GetPath('name').AsString <
-    TJSONData(Item2).GetPath('name').AsString then
+  if UTF8LowerCase(TJSONData(Item1).GetPath('name').AsString) <
+    UTF8LowerCase(TJSONData(Item2).GetPath('name').AsString) then
     exit(1);
-  if TJSONData(Item1).GetPath('name').AsString >
-    TJSONData(Item2).GetPath('name').AsString then
+  if UTF8LowerCase(TJSONData(Item1).GetPath('name').AsString) >
+    UTF8LowerCase(TJSONData(Item2).GetPath('name').AsString) then
     exit(-1);
   exit(0);
 end;
