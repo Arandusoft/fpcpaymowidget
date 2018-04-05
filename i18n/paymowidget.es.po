@@ -17,6 +17,7 @@ msgid "About"
 msgstr "Acerca de"
 
 #: tfrmmain.btnmenuexit.caption
+msgctxt "tfrmmain.btnmenuexit.caption"
 msgid "←"
 msgstr ""
 
@@ -29,9 +30,27 @@ msgctxt "tfrmmain.btnquit.caption"
 msgid "Quit"
 msgstr "Salir"
 
+#: tfrmmain.btnreset.caption
+msgid "Reset"
+msgstr "Resetear"
+
+#: tfrmmain.btnsettings.caption
+msgctxt "tfrmmain.btnsettings.caption"
+msgid "Settings"
+msgstr "Configuración"
+
+#: tfrmmain.btnsettingsexit.caption
+msgctxt "tfrmmain.btnsettingsexit.caption"
+msgid "←"
+msgstr ""
+
 #: tfrmmain.caption
 msgid "FPC Paymo Widget"
 msgstr "FPC Paymo Widget"
+
+#: tfrmmain.cbshowtimeinappicon.caption
+msgid "Show time in app icon"
+msgstr "Mostrar tiempo en el icono"
 
 #: tfrmmain.lblproject.caption
 msgid "Project"
@@ -48,6 +67,10 @@ msgstr "Tarea"
 #: tfrmmain.lbltime.caption
 msgid "00:00:00"
 msgstr ""
+
+#: tfrmmain.leapiurl.editlabel.caption
+msgid "API URL"
+msgstr "URL de la API"
 
 #: tfrmmain.miabout.caption
 msgctxt "tfrmmain.miabout.caption"

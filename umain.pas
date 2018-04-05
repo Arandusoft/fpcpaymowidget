@@ -16,12 +16,16 @@ type
   { TfrmMain }
 
   TfrmMain = class(TForm)
+    btnSettings: TColorSpeedButton;
     btnAbout: TColorSpeedButton;
     btnMenu: TColorSpeedButton;
     btnAddTask: TColorSpeedButton;
+    btnSettingsExit: TColorSpeedButton;
     btnOpenPaymoApp: TColorSpeedButton;
     btnMenuExit: TColorSpeedButton;
     btnQuit: TColorSpeedButton;
+    btnReset: TButton;
+    cbShowTimeInAppIcon: TCheckBox;
     ilTrayAnimWin: TImageList;
     ilTrayAnimMac: TImageList;
     ilTrayOfflineMac: TImageList;
@@ -33,9 +37,11 @@ type
     lblTime: TLabel;
     lblStop: TLabel;
     lblProject: TLabel;
+    leAPIURL: TLabeledEdit;
     miShow: TMenuItem;
     miAbout: TMenuItem;
     miQuit: TMenuItem;
+    pnlSettings: TPanel;
     pnlMenu: TAnimatedPanel;
     pnlMenuCompany: TLabel;
     pnlMenuUser: TLabel;
@@ -53,6 +59,8 @@ type
     timerEntry: TTimer;
     tiTray: TTrayIcon;
     wcThreadDownloader: TWCThread;
+    procedure btnResetClick(Sender: TObject);
+    procedure btnSettingsClick(Sender: TObject);
     procedure btnAddTaskClick(Sender: TObject);
     procedure btnAddTaskPaint(Sender: TObject);
     procedure btnMenuClick(Sender: TObject);
@@ -60,6 +68,7 @@ type
     procedure btnOpenPaymoAppClick(Sender: TObject);
     procedure btnOpenPaymoAppMouseEnter(Sender: TObject);
     procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
+    procedure btnSettingsExitClick(Sender: TObject);
     procedure DownloadCompanyExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure DownloadCompanyFinish(const Sender: TTask; const Msg: word;
@@ -87,11 +96,9 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure JSONPropStorage1StoredValues0Restore(Sender: TStoredValue;
-      var Value: TStoredType);
-    procedure JSONPropStorage1StoredValues0Save(Sender: TStoredValue;
-      var Value: TStoredType);
+    procedure JSONPropStorage1RestoreProperties(Sender: TObject);
     procedure lblStopClick(Sender: TObject);
+    procedure leAPIURLChange(Sender: TObject);
     procedure miAboutClick(Sender: TObject);
     procedure miQuitClick(Sender: TObject);
     procedure DownloadTaskListsExecute(const Sender: TTask; const Msg: word;
@@ -107,7 +114,6 @@ type
     start_time: TDateTime;
     stop_ok: boolean;
     IconIndex: integer;
-    ShowTimeInIcon: boolean;
     procedure Login;
     procedure ListProjects();
     procedure ListTasks();
@@ -139,7 +145,12 @@ begin
   pnlMenu.Top := 0;
   Paymo := TPaymo.Create;
   Paymo.LoadSettings;
+  //try
   Login;
+  //except
+  //ShowMessage(rsErrorCantLogin);
+  //Application.Terminate;
+  //end;
   if Paymo.LoggedIn then
   begin
     try
@@ -222,6 +233,20 @@ begin
   frmTimeEntry.editSearchProject.SetFocus;
 end;
 
+procedure TfrmMain.btnSettingsClick(Sender: TObject);
+begin
+  hideMenu(nil);
+  pnlSettings.BringToFront;
+  pnlSettings.Left := 0;
+  pnlSettings.Top := 0;
+  pnlSettings.Visible := True;
+end;
+
+procedure TfrmMain.btnResetClick(Sender: TObject);
+begin
+  leAPIURL.Text := PAYMOAPIBASEURL;
+end;
+
 procedure TfrmMain.btnOpenPaymoAppClick(Sender: TObject);
 begin
   OpenURL('https://app.paymoapp.com/');
@@ -235,6 +260,11 @@ end;
 procedure TfrmMain.btnOpenPaymoAppMouseLeave(Sender: TObject);
 begin
   TControl(Sender).Font.Color := RGBToColor(135, 143, 156);
+end;
+
+procedure TfrmMain.btnSettingsExitClick(Sender: TObject);
+begin
+  pnlSettings.Visible := False;
 end;
 
 procedure TfrmMain.DownloadCompanyExecute(const Sender: TTask;
@@ -334,6 +364,8 @@ procedure TfrmMain.FormResize(Sender: TObject);
 begin
   pnlMenu.Height := Height;
   frmTimeEntry.Height := frmMain.Height;
+  pnlSettings.Width := Width;
+  pnlSettings.Height := Height;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
@@ -350,19 +382,10 @@ begin
   {$ENDIF}
 end;
 
-procedure TfrmMain.JSONPropStorage1StoredValues0Restore(Sender: TStoredValue;
-  var Value: TStoredType);
+procedure TfrmMain.JSONPropStorage1RestoreProperties(Sender: TObject);
 begin
-  if Value = '' then
-    ShowTimeInIcon := True
-  else
-    ShowTimeInIcon := StrToBool(Value);
-end;
-
-procedure TfrmMain.JSONPropStorage1StoredValues0Save(Sender: TStoredValue;
-  var Value: TStoredType);
-begin
-  Value := BoolToStr(ShowTimeInIcon);
+  if leAPIURL.Text = '' then
+    leAPIURL.Text := PAYMOAPIBASEURL;
 end;
 
 procedure TfrmMain.lblStopClick(Sender: TObject);
@@ -390,6 +413,11 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TfrmMain.leAPIURLChange(Sender: TObject);
+begin
+  Paymo.APIURL := leAPIURL.Text;
 end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);
@@ -573,7 +601,7 @@ begin
         tiTray.Icons := ilTrayNormalWin;
       end;
     end;
-    if ShowTimeInIcon and ((iIndex = 1) or (iIndex = 3)) then
+    if cbShowTimeInAppIcon.Checked and ((iIndex = 1) or (iIndex = 3)) then
     begin
       bmp := TBGRABitmap.Create();
       try

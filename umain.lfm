@@ -17,7 +17,7 @@ object frmMain: TfrmMain
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
-  SessionProperties = 'Left;Top;Width;Height'
+  SessionProperties = 'Height;Left;Top;Width;cbShowTimeInAppIcon.Checked;leAPIURL.Text'
   ShowInTaskBar = stNever
   LCLVersion = '1.9.0.0'
   object pnlTop: TPanel
@@ -97,11 +97,11 @@ object frmMain: TfrmMain
   end
   object pnlMenu: TAnimatedPanel
     Left = 8
-    Height = 256
+    Height = 328
     Top = 280
     Width = 270
     BevelOuter = bvNone
-    ClientHeight = 256
+    ClientHeight = 328
     ClientWidth = 270
     Color = 2365715
     ParentColor = False
@@ -143,7 +143,7 @@ object frmMain: TfrmMain
       ParentColor = False
       ParentFont = False
     end
-    object btnAbout: TColorSpeedButton
+    object btnSettings: TColorSpeedButton
       Tag = -14
       Cursor = crHandPoint
       Left = 0
@@ -153,11 +153,11 @@ object frmMain: TfrmMain
       Align = alTop
       AutoSize = True
       Constraints.MinHeight = 40
-      Caption = 'About'
+      Caption = 'Settings'
       Font.Color = 10260359
       Font.Height = 19
       Font.Name = 'Nunito Sans'
-      OnClick = miAboutClick
+      OnClick = btnSettingsClick
       OnMouseEnter = btnOpenPaymoAppMouseEnter
       OnMouseLeave = btnOpenPaymoAppMouseLeave
       ParentFont = False
@@ -182,7 +182,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 202
+      Top = 242
       Width = 270
       Align = alTop
       AutoSize = True
@@ -214,7 +214,7 @@ object frmMain: TfrmMain
     object pnlSpacer1: TPanel
       Left = 30
       Height = 1
-      Top = 196
+      Top = 236
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -309,6 +309,40 @@ object frmMain: TfrmMain
       StateDisabled.BorderColor = 2365715
       StateDisabled.BorderWidth = 0
     end
+    object btnAbout: TColorSpeedButton
+      Tag = -14
+      Cursor = crHandPoint
+      Left = 0
+      Height = 40
+      Top = 191
+      Width = 270
+      Align = alTop
+      AutoSize = True
+      Constraints.MinHeight = 40
+      Caption = 'About'
+      Font.Color = 10260359
+      Font.Height = 19
+      Font.Name = 'Nunito Sans'
+      OnClick = miAboutClick
+      OnMouseEnter = btnOpenPaymoAppMouseEnter
+      OnMouseLeave = btnOpenPaymoAppMouseLeave
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 2365715
+      StateNormal.BorderColor = 2365715
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 2102801
+      StateHover.BorderColor = 2102801
+      StateHover.BorderWidth = 0
+      StateActive.Color = 5131537
+      StateActive.BorderColor = 5131537
+      StateActive.BorderWidth = 1
+      StateDisabled.Color = 2365715
+      StateDisabled.BorderColor = 2365715
+      StateDisabled.BorderWidth = 0
+    end
   end
   object pnlTime: TPanel
     Left = 0
@@ -384,6 +418,103 @@ object frmMain: TfrmMain
       ParentColor = False
       ParentFont = False
       OnClick = lblStopClick
+    end
+  end
+  object pnlSettings: TPanel
+    Left = 8
+    Height = 184
+    Top = 312
+    Width = 336
+    BevelOuter = bvNone
+    ClientHeight = 184
+    ClientWidth = 336
+    TabOrder = 3
+    Visible = False
+    object cbShowTimeInAppIcon: TCheckBox
+      Tag = -14
+      Left = 16
+      Height = 23
+      Top = 64
+      Width = 160
+      Caption = 'Show time in app icon'
+      Font.Height = 19
+      Font.Name = 'Nunito Sans'
+      ParentFont = False
+      TabOrder = 0
+    end
+    object leAPIURL: TLabeledEdit
+      Tag = -14
+      Left = 16
+      Height = 27
+      Top = 120
+      Width = 224
+      Anchors = [akTop, akLeft, akRight]
+      EditLabel.Tag = -14
+      EditLabel.AnchorSideLeft.Control = leAPIURL
+      EditLabel.AnchorSideRight.Control = leAPIURL
+      EditLabel.AnchorSideRight.Side = asrBottom
+      EditLabel.AnchorSideBottom.Control = leAPIURL
+      EditLabel.Left = 16
+      EditLabel.Height = 15
+      EditLabel.Top = 102
+      EditLabel.Width = 224
+      EditLabel.Caption = 'API URL'
+      EditLabel.ParentColor = False
+      Enabled = False
+      Font.Height = 19
+      Font.Name = 'Nunito Sans'
+      ParentFont = False
+      TabOrder = 1
+      OnChange = leAPIURLChange
+    end
+    object btnReset: TButton
+      Tag = -14
+      Left = 248
+      Height = 26
+      Top = 120
+      Width = 75
+      Anchors = [akTop, akRight]
+      Caption = 'Reset'
+      Enabled = False
+      Font.Height = 19
+      Font.Name = 'Nunito Sans'
+      OnClick = btnResetClick
+      ParentFont = False
+      TabOrder = 2
+    end
+    object btnSettingsExit: TColorSpeedButton
+      Tag = -30
+      Cursor = crHandPoint
+      Left = 16
+      Height = 44
+      Top = 8
+      Width = 30
+      AutoSize = True
+      Constraints.MinHeight = 40
+      Caption = '←'
+      Font.Color = clBlack
+      Font.Height = 40
+      Font.Name = 'Nunito Sans'
+      Font.Style = [fsBold]
+      OnClick = btnSettingsExitClick
+      OnMouseEnter = btnOpenPaymoAppMouseEnter
+      OnMouseLeave = btnOpenPaymoAppMouseLeave
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = clWhite
+      StateNormal.BorderColor = 2365715
+      StateNormal.BorderWidth = 0
+      StateHover.Color = clWhite
+      StateHover.BorderColor = 2365715
+      StateHover.BorderWidth = 0
+      StateActive.Color = clWhite
+      StateActive.BorderColor = 2365715
+      StateActive.BorderWidth = 0
+      StateDisabled.Color = clWhite
+      StateDisabled.BorderColor = 2365715
+      StateDisabled.BorderWidth = 0
     end
   end
   object tiTray: TTrayIcon
@@ -1382,13 +1513,9 @@ object frmMain: TfrmMain
     }
   end
   object JSONPropStorage1: TJSONPropStorage
-    StoredValues = <    
-      item
-        Name = 'ShowTimeInIcon'
-        OnSave = JSONPropStorage1StoredValues0Save
-        OnRestore = JSONPropStorage1StoredValues0Restore
-      end>
+    StoredValues = <>
     Formatted = False
+    OnRestoreProperties = JSONPropStorage1RestoreProperties
     Left = 200
     Top = 104
   end

@@ -47,6 +47,7 @@ type
     function GetTaskName(TaskID: integer): string;
     function GetTimeEntry(EntryID: integer): TJSONData;
   public
+    constructor Create;
     destructor Destroy; override;
     property APIKey: string read FAPIKey write SetFAPIKey;
     property APIURL: string read FAPIURL write SetFAPIURL;
@@ -218,6 +219,13 @@ begin
         exit(arrEntries[j]);
     end;
   end;
+end;
+
+constructor TPaymo.Create;
+begin
+  inherited Create;
+  APIKeyURL := PAYMOAPIKEYURL;
+  APIURL := PAYMOAPIBASEURL;
 end;
 
 destructor TPaymo.Destroy;
@@ -559,18 +567,10 @@ begin
     begin
       c.Filename := GetAppConfigFile(False);
       APIKey := c.GetValue('apikey', '');
-      APIKeyURL := c.GetValue('apikeyurl', PAYMOAPIKEYURL);
-      APIURL := c.GetValue('apiurl', PAYMOAPIBASEURL);
     end;
   finally
     c.Free;
   end;
-
-  if APIKeyURL = '' then
-    APIKeyURL := PAYMOAPIKEYURL;
-
-  if APIURL = '' then
-    APIURL := PAYMOAPIBASEURL;
 end;
 
 procedure TPaymo.SaveSettings;
@@ -583,8 +583,6 @@ begin
     begin
       c.Filename := GetAppConfigFile(False);
       c.SetValue('apikey', APIKey);
-      c.SetValue('apikeyurl', APIKeyURL);
-      c.SetValue('apiurl', APIURL);
     end;
   finally
     c.Free;
