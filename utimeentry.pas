@@ -304,8 +304,9 @@ begin
       editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex]
     else
       editSearchTasks.Text := '';
-    chkCompletedTask.Checked :=
-      TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
+    if lbProjectTasks.ItemIndex>=0 then
+       chkCompletedTask.Checked :=
+             TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
   end;
 end;
 
@@ -616,8 +617,9 @@ begin
   if lbProjectTasks.ItemIndex > -1 then
   begin
     editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex];
-    chkCompletedTask.Checked :=
-      TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
+    if lbProjectTasks.ItemIndex>=0 then
+       chkCompletedTask.Checked :=
+          TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
   end;
 end;
 

@@ -18,7 +18,7 @@ object frmTimeEntry: TfrmTimeEntry
   object editSearchProject: TEdit
     Tag = -12
     Left = 80
-    Height = 23
+    Height = 21
     Top = 8
     Width = 260
     Anchors = [akTop, akLeft, akRight]
@@ -34,7 +34,7 @@ object frmTimeEntry: TfrmTimeEntry
   object editSearchTaskLists: TEdit
     Tag = -12
     Left = 80
-    Height = 23
+    Height = 21
     Top = 72
     Width = 260
     Anchors = [akTop, akLeft, akRight]
@@ -50,7 +50,7 @@ object frmTimeEntry: TfrmTimeEntry
   object editSearchTasks: TEdit
     Tag = -12
     Left = 80
-    Height = 23
+    Height = 21
     Top = 129
     Width = 260
     Anchors = [akTop, akLeft, akRight]
@@ -77,9 +77,9 @@ object frmTimeEntry: TfrmTimeEntry
       Tag = -16
       Cursor = crIBeam
       Left = 53
-      Height = 21
+      Height = 25
       Top = 0
-      Width = 32
+      Width = 47
       Caption = 'Date'
       Font.Color = clWhite
       Font.Height = 21
@@ -131,9 +131,9 @@ object frmTimeEntry: TfrmTimeEntry
     object time_start_separator1: TLabel
       Tag = -16
       Left = 144
-      Height = 21
+      Height = 25
       Top = 59
-      Width = 9
+      Width = 14
       Caption = '‒'
       Font.Color = clWhite
       Font.Height = 21
@@ -184,9 +184,9 @@ object frmTimeEntry: TfrmTimeEntry
     object time_end_separator: TLabel
       Tag = -16
       Left = 218
-      Height = 21
+      Height = 25
       Top = 59
-      Width = 4
+      Width = 7
       Caption = ':'
       Font.Color = clWhite
       Font.Height = 21
@@ -197,9 +197,9 @@ object frmTimeEntry: TfrmTimeEntry
     object time_start_separator: TLabel
       Tag = -16
       Left = 82
-      Height = 21
+      Height = 25
       Top = 59
-      Width = 4
+      Width = 7
       Caption = ':'
       Font.Color = clWhite
       Font.Height = 21
@@ -439,9 +439,9 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription: TLabel
     Tag = -14
     Left = 16
-    Height = 19
+    Height = 23
     Top = 205
-    Width = 104
+    Width = 159
     Caption = 'Task description:'
     Font.Color = 3883776
     Font.Height = 19
@@ -452,9 +452,9 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription1: TLabel
     Tag = -14
     Left = 16
-    Height = 19
+    Height = 23
     Top = 8
-    Width = 47
+    Width = 70
     Caption = 'Project:'
     Font.Color = 3883776
     Font.Height = 19
@@ -465,9 +465,9 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription2: TLabel
     Tag = -14
     Left = 16
-    Height = 19
+    Height = 23
     Top = 72
-    Width = 58
+    Width = 88
     Caption = 'Task List:'
     Font.Color = 3883776
     Font.Height = 19
@@ -478,9 +478,9 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription3: TLabel
     Tag = -14
     Left = 16
-    Height = 19
+    Height = 23
     Top = 129
-    Width = 31
+    Width = 50
     Caption = 'Task:'
     Font.Color = 3883776
     Font.Height = 19
@@ -566,9 +566,9 @@ object frmTimeEntry: TfrmTimeEntry
   object chkCompletedTask: TCheckBox
     Tag = -14
     Left = 64
-    Height = 23
+    Height = 27
     Top = 304
-    Width = 120
+    Width = 175
     Caption = 'Completed Task'
     Font.Color = clWhite
     Font.Height = 19
