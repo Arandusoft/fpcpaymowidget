@@ -28,6 +28,7 @@ resourcestring
   rsErrorCantCreateTask = 'Error: Can''t create task.';
   rsPleaseEnterTaskDescription = 'Please enter task description.';
   rsTaskIsComplete = 'Task is complete';
+  rsErrorCantUpdateTask = 'Error: Can''t update task.';
 
 implementation
 

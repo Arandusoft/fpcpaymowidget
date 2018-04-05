@@ -20,6 +20,7 @@ type
     btnSet30: TColorSpeedButton;
     btnSet45: TColorSpeedButton;
     btnSetNow: TColorSpeedButton;
+    chkCompletedTask: TCheckBox;
     JSONPropStorage1: TJSONPropStorage;
     lbProjectTaskLists: TListBox;
     lbProjectTasks: TListBox;
@@ -54,6 +55,7 @@ type
     procedure btnSet45Click(Sender: TObject);
     procedure btnSetNowClick(Sender: TObject);
     procedure btnStartTimer(Sender: TObject);
+    procedure chkCompletedTaskClick(Sender: TObject);
     procedure editSearchProjectClick(Sender: TObject);
     procedure editSearchProjectEnter(Sender: TObject);
     procedure editSearchProjectExit(Sender: TObject);
@@ -297,10 +299,13 @@ begin
     lbProjectTasks.ItemIndex := 0;
 
   if Select then
+  begin
     if lbProjectTasks.ItemIndex > -1 then
       editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex]
     else
       editSearchTasks.Text := '';
+    chkCompletedTask.Checked := TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
+  end;
 end;
 
 procedure TfrmTimeEntry.FillDateAndTime;
@@ -409,6 +414,7 @@ begin
     editSearchTasks.Visible := False;
     btnExistingTask.Visible := True;
     pnlSetTime.Visible := True;
+    chkCompletedTask.Visible := False;
   end
   else
   begin
@@ -432,6 +438,7 @@ begin
       editSearchProject.SetFocus;}
     btnExistingTask.Visible := False;
     pnlSetTime.Visible := False;
+    chkCompletedTask.Visible := True;
   end;
 
   ProjectExit := True;
@@ -606,7 +613,10 @@ begin
   TaskExit := True;
   lbProjectTasks.Visible := False;
   if lbProjectTasks.ItemIndex > -1 then
+  begin
     editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex];
+    chkCompletedTask.Checked := TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
+  end;
 end;
 
 procedure TfrmTimeEntry.editSearchTasksKeyDown(Sender: TObject;
@@ -680,6 +690,7 @@ var
   canSave: boolean;
   t_start, t_end: TDateTime;
   s_hh, s_mm: string;
+  r: TPaymoResponseStatus;
 begin
   if (frmMain.pnlMenu.Width <> 0) and (not frmMain.pnlMenu.Timer.Enabled) then
     frmMain.hideMenu(nil);
@@ -708,6 +719,14 @@ begin
   begin
     ShowMessage(rsThereMustBeAtLeastAMinuteOfDifferenceBetweenStartAndEndTime);
     exit();
+  end;
+  if TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean = chkCompletedTask.Checked then
+    exit;
+  case PaymoInstance.UpdateTaskCompletion(chkCompletedTask.Checked, TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex])) of
+    prTRYAGAIN, prERROR: begin
+      ShowMessage(rsErrorCantUpdateTask);
+      exit;
+    end;
   end;
   case PaymoInstance.UpdateTimeEntry(Data.GetPath('id').AsString,
       t_end, TJSONData(lbProjects.Items.Objects[lbProjects.ItemIndex]).GetPath('id').AsString, TJSONData(
@@ -837,6 +856,11 @@ begin
   end
   else
     ShowMessage(rsErrorCantCreateTask);
+end;
+
+procedure TfrmTimeEntry.chkCompletedTaskClick(Sender: TObject);
+begin
+
 end;
 
 procedure TfrmTimeEntry.editSearchProjectClick(Sender: TObject);

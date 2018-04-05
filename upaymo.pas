@@ -56,6 +56,7 @@ type
     function Delete(Endpoint: string; var Response: string): TPaymoResponseStatus;
     function CreateTask(Name, Description: string;
       TaskListID: integer; var task: TJSONData): TPaymoResponseStatus;
+    function UpdateTaskCompletion(Complete: boolean; task: TJSONData): TPaymoResponseStatus;
     function StopRunningTimer(start_time, end_time: TDateTime;
       Description: string): TPaymoResponseStatus;
     function StartRunningTimer(task_id: integer; start_time: TDateTime): TPaymoResponseStatus;
@@ -399,6 +400,24 @@ begin
     begin
       task := GetJSON(response).GetPath('tasks').Items[0];
       TasksArray.Add(task);
+    end;
+  end;
+end;
+
+function TPaymo.UpdateTaskCompletion(Complete: boolean; task: TJSONData): TPaymoResponseStatus;
+var
+  response: string;
+  sJSON: TJSONStringType;
+  jObj: TJSONObject;
+begin
+  jObj := TJSONObject.Create;
+  jObj.Add('complete', Complete);
+  sJSON := jObj.FormatJSON();
+  jObj.Free;
+  Result := Post('tasks/' + task.GetPath('id').AsString, sJSON, response);
+  case Result of
+    prOK: begin
+      task := GetJSON(response).GetPath('tasks').Items[0];
     end;
   end;
 end;

@@ -426,7 +426,7 @@ object frmTimeEntry: TfrmTimeEntry
   object memoDescription: TMemo
     Tag = -14
     Left = 16
-    Height = 96
+    Height = 56
     Top = 232
     Width = 324
     Anchors = [akTop, akLeft, akRight]
@@ -563,12 +563,25 @@ object frmTimeEntry: TfrmTimeEntry
     TabOrder = 5
     Visible = False
   end
+  object chkCompletedTask: TCheckBox
+    Tag = -14
+    Left = 64
+    Height = 23
+    Top = 304
+    Width = 120
+    Caption = 'Completed Task'
+    Font.Color = clWhite
+    Font.Height = 19
+    Font.Name = 'Nunito Sans'
+    ParentFont = False
+    TabOrder = 8
+  end
   object dlgDate: TCalendarDialog
     DialogPosition = poOwnerFormCenter
     Date = 43188
     OKCaption = '&OK'
     CancelCaption = 'Cancel'
-    Left = 136
+    Left = 304
     Top = 280
   end
   object JSONPropStorage1: TJSONPropStorage

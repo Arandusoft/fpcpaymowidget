@@ -112,6 +112,10 @@ msgstr "Ahora"
 msgid "Edit Time Entry"
 msgstr "Editar Entrada de Tiempo"
 
+#: tfrmtimeentry.chkcompletedtask.caption
+msgid "Completed Task"
+msgstr ""
+
 #: tfrmtimeentry.dlgdate.cancelcaption
 msgid "Cancel"
 msgstr "Cancelar"
@@ -202,6 +206,10 @@ msgstr "Error: No se puede iniciar el temporizador. Intenta parar el temporizado
 msgid "Error: Can't stop timer."
 msgstr "Error: No se puede parar el temporizador."
 
+#: uresourcestring.rserrorcantupdatetask
+msgid "Error: Can't update task."
+msgstr ""
+
 #: uresourcestring.rserrorcantupdatetimeentry
 msgid "Error: Can't update time entry."
 msgstr "Error: No se puede actualizar la entrada de tiempo."
@@ -242,3 +250,4 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
+

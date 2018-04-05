@@ -102,6 +102,10 @@ msgstr ""
 msgid "Edit Time Entry"
 msgstr ""
 
+#: tfrmtimeentry.chkcompletedtask.caption
+msgid "Completed Task"
+msgstr ""
+
 #: tfrmtimeentry.dlgdate.cancelcaption
 msgid "Cancel"
 msgstr ""
@@ -190,6 +194,10 @@ msgstr ""
 
 #: uresourcestring.rserrorcantstoptimer
 msgid "Error: Can't stop timer."
+msgstr ""
+
+#: uresourcestring.rserrorcantupdatetask
+msgid "Error: Can't update task."
 msgstr ""
 
 #: uresourcestring.rserrorcantupdatetimeentry
