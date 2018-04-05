@@ -1382,7 +1382,12 @@ object frmMain: TfrmMain
     }
   end
   object JSONPropStorage1: TJSONPropStorage
-    StoredValues = <>
+    StoredValues = <    
+      item
+        Name = 'ShowTimeInIcon'
+        OnSave = JSONPropStorage1StoredValues0Save
+        OnRestore = JSONPropStorage1StoredValues0Restore
+      end>
     Formatted = False
     Left = 200
     Top = 104

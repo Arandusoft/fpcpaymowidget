@@ -9,7 +9,7 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, XMLPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes;
+  BGRABitmapTypes, PropertyStorage;
 
 type
 
@@ -87,6 +87,10 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure JSONPropStorage1StoredValues0Restore(Sender: TStoredValue;
+      var Value: TStoredType);
+    procedure JSONPropStorage1StoredValues0Save(Sender: TStoredValue;
+      var Value: TStoredType);
     procedure lblStopClick(Sender: TObject);
     procedure miAboutClick(Sender: TObject);
     procedure miQuitClick(Sender: TObject);
@@ -103,6 +107,7 @@ type
     start_time: TDateTime;
     stop_ok: boolean;
     IconIndex: integer;
+    ShowTimeInIcon: boolean;
     procedure Login;
     procedure ListProjects();
     procedure ListTasks();
@@ -345,6 +350,21 @@ begin
   {$ENDIF}
 end;
 
+procedure TfrmMain.JSONPropStorage1StoredValues0Restore(Sender: TStoredValue;
+  var Value: TStoredType);
+begin
+  if Value = '' then
+    ShowTimeInIcon := True
+  else
+    ShowTimeInIcon := StrToBool(Value);
+end;
+
+procedure TfrmMain.JSONPropStorage1StoredValues0Save(Sender: TStoredValue;
+  var Value: TStoredType);
+begin
+  Value := BoolToStr(ShowTimeInIcon);
+end;
+
 procedure TfrmMain.lblStopClick(Sender: TObject);
 begin
   if (Paymo.RunningTimerData <> nil) then
@@ -553,24 +573,24 @@ begin
         tiTray.Icons := ilTrayNormalWin;
       end;
     end;
-    if (iIndex=1) or (iIndex=3) then
+    if ShowTimeInIcon and ((iIndex = 1) or (iIndex = 3)) then
     begin
       bmp := TBGRABitmap.Create();
       try
-
-
         bmp.Assign(Image1.Picture.Graphic);
         bmp.FontHeight := 11;
         //bmp.FontName := FONTNAMEARROW;
-        bmp.Rectangle(0, bmp.Height-11, bmp.Width, bmp.Height, BGRABlack, BGRABlack, dmSet);
-        bmp.TextOut(0, bmp.Height-11, TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now)), BGRAWhite);
+        bmp.Rectangle(0, bmp.Height - 11, bmp.Width, bmp.Height, BGRABlack,
+          BGRABlack, dmSet);
+        bmp.TextOut(0, bmp.Height - 11, TTaskList.SecondsToHHMMSS(
+          SecondsBetween(start_time, now)), BGRAWhite);
         Application.Icon.Assign(bmp.Bitmap);
-       finally
+      finally
         bmp.Free;
-       end;
-
+      end;
     end
-    else Application.Icon.Assign(Image1.Picture.Graphic);
+    else
+      Application.Icon.Assign(Image1.Picture.Graphic);
   finally
     Image1.Free;
   end;

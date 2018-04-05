@@ -12,8 +12,8 @@ const
   PAYMOAPIBASEURL = 'https://app.paymoapp.com/api/';
   PAYMOAPIKEYURL = 'https://app.paymoapp.com/#Paymo.module.myaccount/';
 
-  function NameSort(Item1, Item2: Pointer): Integer;
-  function InverseNameSort(Item1, Item2: Pointer): Integer;
+function NameSort(Item1, Item2: Pointer): integer;
+function InverseNameSort(Item1, Item2: Pointer): integer;
 
 type
   TPaymoResponseStatus = (prOK, prERROR, prTRYAGAIN);
@@ -23,6 +23,8 @@ type
   TPaymo = class(TObject)
   private
     FAPIKey: string;
+    FAPIKeyURL: string;
+    FAPIURL: string;
     FLoggedIn: boolean;
     FMe: TJSONObject;
     FProjects: TJSONObject;
@@ -31,6 +33,8 @@ type
     FTasks: TJSONObject;
     FCompany: TJSONObject;
     procedure SetFAPIKey(AValue: string);
+    procedure SetFAPIKeyURL(AValue: string);
+    procedure SetFAPIURL(AValue: string);
     procedure SetFLoggedIn(AValue: boolean);
   public
     function ProjectsArray: TJSONArray;
@@ -45,6 +49,8 @@ type
   public
     destructor Destroy; override;
     property APIKey: string read FAPIKey write SetFAPIKey;
+    property APIURL: string read FAPIURL write SetFAPIURL;
+    property APIKeyURL: string read FAPIKeyURL write SetFAPIKeyURL;
     property LoggedIn: boolean read FLoggedIn write SetFLoggedIn;
     function Login: TPaymoResponseStatus;
     function Get(Endpoint: string; var Response: string): TPaymoResponseStatus;
@@ -57,15 +63,17 @@ type
     function Post(Endpoint: string; sJSON: TJSONStringType;
       var Response: string): TPaymoResponseStatus;
     function Delete(Endpoint: string; var Response: string): TPaymoResponseStatus;
-    function CreateTask(Name, Description: string;
-      TaskListID: integer; var task: TJSONData): TPaymoResponseStatus;
-    function UpdateTaskCompletion(Complete: boolean; task: TJSONData): TPaymoResponseStatus;
+    function CreateTask(Name, Description: string; TaskListID: integer;
+      var task: TJSONData): TPaymoResponseStatus;
+    function UpdateTaskCompletion(Complete: boolean;
+      task: TJSONData): TPaymoResponseStatus;
     function StopRunningTimer(start_time, end_time: TDateTime;
       Description: string): TPaymoResponseStatus;
-    function StartRunningTimer(task_id: integer; start_time: TDateTime): TPaymoResponseStatus;
+    function StartRunningTimer(task_id: integer;
+      start_time: TDateTime): TPaymoResponseStatus;
     function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
     function UpdateTimeEntry(TimeEntryID: integer; end_time: TDateTime;
-  project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
+      project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
   public
     procedure LoadSettings;
     procedure SaveSettings;
@@ -73,20 +81,24 @@ type
 
 implementation
 
-function NameSort(Item1, Item2: Pointer): Integer;
+function NameSort(Item1, Item2: Pointer): integer;
 begin
-  if TJSONData(Item1).GetPath('name').AsString > TJSONData(Item2).GetPath('name').AsString then
+  if TJSONData(Item1).GetPath('name').AsString >
+    TJSONData(Item2).GetPath('name').AsString then
     exit(1);
-  if TJSONData(Item1).GetPath('name').AsString < TJSONData(Item2).GetPath('name').AsString then
+  if TJSONData(Item1).GetPath('name').AsString <
+    TJSONData(Item2).GetPath('name').AsString then
     exit(-1);
   exit(0);
 end;
 
-function InverseNameSort(Item1, Item2: Pointer): Integer;
+function InverseNameSort(Item1, Item2: Pointer): integer;
 begin
-  if TJSONData(Item1).GetPath('name').AsString < TJSONData(Item2).GetPath('name').AsString then
+  if TJSONData(Item1).GetPath('name').AsString <
+    TJSONData(Item2).GetPath('name').AsString then
     exit(1);
-  if TJSONData(Item1).GetPath('name').AsString > TJSONData(Item2).GetPath('name').AsString then
+  if TJSONData(Item1).GetPath('name').AsString >
+    TJSONData(Item2).GetPath('name').AsString then
     exit(-1);
   exit(0);
 end;
@@ -98,6 +110,20 @@ begin
   if FAPIKey = AValue then
     Exit;
   FAPIKey := AValue;
+end;
+
+procedure TPaymo.SetFAPIKeyURL(AValue: string);
+begin
+  if FAPIKeyURL = AValue then
+    Exit;
+  FAPIKeyURL := AValue;
+end;
+
+procedure TPaymo.SetFAPIURL(AValue: string);
+begin
+  if FAPIURL = AValue then
+    Exit;
+  FAPIURL := AValue;
 end;
 
 procedure TPaymo.SetFLoggedIn(AValue: boolean);
@@ -232,7 +258,7 @@ begin
     client.UserName := FAPIKey;
     client.Password := '';
     try
-      Response := client.Get(PAYMOAPIBASEURL + Endpoint);
+      Response := client.Get(APIURL + Endpoint);
       if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
         Result := prOK
       else if (client.ResponseStatusCode = 429) then
@@ -359,7 +385,7 @@ begin
     ss.Position := 0;
     client.RequestBody := ss;
     try
-      Response := client.Post(PAYMOAPIBASEURL + Endpoint);
+      Response := client.Post(APIURL + Endpoint);
       if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
         Result := prOK
       else if (client.ResponseStatusCode = 429) then
@@ -386,7 +412,7 @@ begin
     client.UserName := FAPIKey;
     client.Password := '';
     try
-      Response := client.Delete(PAYMOAPIBASEURL + Endpoint);
+      Response := client.Delete(APIURL + Endpoint);
       if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
         Result := prOK
       else if (client.ResponseStatusCode = 429) then
@@ -401,8 +427,8 @@ begin
   end;
 end;
 
-function TPaymo.CreateTask(Name, Description: string;
-  TaskListID: integer; var task: TJSONData): TPaymoResponseStatus;
+function TPaymo.CreateTask(Name, Description: string; TaskListID: integer;
+  var task: TJSONData): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
@@ -428,7 +454,8 @@ begin
   end;
 end;
 
-function TPaymo.UpdateTaskCompletion(Complete: boolean; task: TJSONData): TPaymoResponseStatus;
+function TPaymo.UpdateTaskCompletion(Complete: boolean;
+  task: TJSONData): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
@@ -473,7 +500,8 @@ begin
   end;
 end;
 
-function TPaymo.StartRunningTimer(task_id: integer; start_time: TDateTime): TPaymoResponseStatus;
+function TPaymo.StartRunningTimer(task_id: integer;
+  start_time: TDateTime): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
@@ -531,10 +559,18 @@ begin
     begin
       c.Filename := GetAppConfigFile(False);
       APIKey := c.GetValue('apikey', '');
+      APIKeyURL := c.GetValue('apikeyurl', PAYMOAPIKEYURL);
+      APIURL := c.GetValue('apiurl', PAYMOAPIBASEURL);
     end;
   finally
     c.Free;
   end;
+
+  if APIKeyURL = '' then
+    APIKeyURL := PAYMOAPIKEYURL;
+
+  if APIURL = '' then
+    APIURL := PAYMOAPIBASEURL;
 end;
 
 procedure TPaymo.SaveSettings;
@@ -547,6 +583,8 @@ begin
     begin
       c.Filename := GetAppConfigFile(False);
       c.SetValue('apikey', APIKey);
+      c.SetValue('apikeyurl', APIKeyURL);
+      c.SetValue('apiurl', APIURL);
     end;
   finally
     c.Free;
