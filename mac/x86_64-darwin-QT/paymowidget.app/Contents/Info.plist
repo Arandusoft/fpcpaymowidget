@@ -8,9 +8,9 @@
   <string>paymowidget</string>
   <key>CFBundleName</key>
   <string>FPC Paymo Widget</string>
-  <key>CFBundleIdentifier</key>
   <key>CFBundleIconFile</key>
   <string>paymowidget.icns</string>
+  <key>CFBundleIdentifier</key>
   <string>com.company.paymowidget</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
