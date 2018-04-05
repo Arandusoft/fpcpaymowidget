@@ -509,7 +509,7 @@ procedure TfrmMain.ChangeIcon(const AIndex: integer);   //0: normal //1:start //
 var
   Image1: TImage;
   iIndex: integer;
-  //bmp: TBGRABitmap;
+  bmp: TBGRABitmap;
 begin
   iIndex := AIndex;
   if IconIndex = 1 then
@@ -535,10 +535,6 @@ begin
       1:
       begin
         ilApplication.GetBitmap(1, Image1.Picture.BitMap);
-        //Image1.Canvas.Font.Color := clBlack;
-        //Image1.Canvas.Font.Size := 20;
-        //Image1.Canvas.Brush.Style := bsClear;
-        //Image1.Canvas.TextOut(20, 20, 'HELLO WORLD');
         tiTray.Icons := ilTrayAnimWin;
       end;
       2:
@@ -550,10 +546,6 @@ begin
       3:
       begin
         ilApplication.GetBitmap(3, Image1.Picture.BitMap);
-        //Image1.Canvas.Font.Color := clBlack;
-        //Image1.Canvas.Font.Size := 20;
-        //Image1.Canvas.Brush.Style := bsClear;
-        //Image1.Canvas.TextOut(20, 20, 'HELLO WORLD');
       end;
       else
       begin
@@ -561,16 +553,25 @@ begin
         tiTray.Icons := ilTrayNormalWin;
       end;
     end;
-    {bmp := TBGRABitmap.Create();
-    bmp.Assign(Image1.Picture.Graphic);
-    bmp.FontHeight := 11;
-    bmp.FontName := FONTNAMEARROW;
-    bmp.Rectangle(0, bmp.Height-15, bmp.Width, bmp.Height, BGRABlack, BGRABlack, dmSet);
-    bmp.TextOut(0, bmp.Height-15, TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now)), BGRAWhite);
-    Application.Icon.Assign(bmp.Bitmap);}
-    Application.Icon.Assign(Image1.Picture.Graphic);
+    if (iIndex=1) or (iIndex=3) then
+    begin
+      bmp := TBGRABitmap.Create();
+      try
+
+
+        bmp.Assign(Image1.Picture.Graphic);
+        bmp.FontHeight := 11;
+        //bmp.FontName := FONTNAMEARROW;
+        bmp.Rectangle(0, bmp.Height-11, bmp.Width, bmp.Height, BGRABlack, BGRABlack, dmSet);
+        bmp.TextOut(0, bmp.Height-11, TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now)), BGRAWhite);
+        Application.Icon.Assign(bmp.Bitmap);
+       finally
+        bmp.Free;
+       end;
+
+    end
+    else Application.Icon.Assign(Image1.Picture.Graphic);
   finally
-    //bmp.Free;
     Image1.Free;
   end;
 end;
