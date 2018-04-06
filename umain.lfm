@@ -31,7 +31,7 @@ object frmMain: TfrmMain
     Caption = 'Timesheet'
     ClientHeight = 50
     ClientWidth = 360
-    Color = 12111890
+    Color = 13348638
     Constraints.MinHeight = 50
     Font.Color = clWhite
     Font.Height = 21
@@ -53,16 +53,16 @@ object frmMain: TfrmMain
       Toggle = False
       Pressed = False
       PopupMode = False
-      StateNormal.Color = 12111890
+      StateNormal.Color = 13348638
       StateNormal.BorderColor = 11382189
       StateNormal.BorderWidth = 0
-      StateHover.Color = 12111890
+      StateHover.Color = 12942607
       StateHover.BorderColor = 14120960
       StateHover.BorderWidth = 0
-      StateActive.Color = 12111890
+      StateActive.Color = 12942607
       StateActive.BorderColor = 10048512
       StateActive.BorderWidth = 0
-      StateDisabled.Color = 12111890
+      StateDisabled.Color = 13348638
       StateDisabled.BorderColor = clBlack
       StateDisabled.BorderWidth = 0
     end
@@ -81,16 +81,16 @@ object frmMain: TfrmMain
       Toggle = False
       Pressed = False
       PopupMode = False
-      StateNormal.Color = 12111890
+      StateNormal.Color = 13348638
       StateNormal.BorderColor = 11382189
       StateNormal.BorderWidth = 0
-      StateHover.Color = 12111890
+      StateHover.Color = 12942607
       StateHover.BorderColor = 14120960
       StateHover.BorderWidth = 0
-      StateActive.Color = 12111890
+      StateActive.Color = 12942607
       StateActive.BorderColor = 10048512
       StateActive.BorderWidth = 0
-      StateDisabled.Color = 12111890
+      StateDisabled.Color = 13348638
       StateDisabled.BorderColor = clBlack
       StateDisabled.BorderWidth = 0
     end
@@ -281,7 +281,7 @@ object frmMain: TfrmMain
       Left = 232
       Height = 44
       Top = 0
-      Width = 30
+      Width = 38
       AutoSize = True
       Constraints.MinHeight = 40
       Caption = '←'
@@ -353,7 +353,7 @@ object frmMain: TfrmMain
     BevelOuter = bvNone
     ClientHeight = 222
     ClientWidth = 360
-    Color = 12111890
+    Color = 16182455
     Constraints.MinHeight = 50
     Font.Color = clWhite
     ParentColor = False
@@ -365,7 +365,7 @@ object frmMain: TfrmMain
       Left = 38
       Height = 16
       Top = 24
-      Width = 38
+      Width = 41
       Caption = 'Project'
       Font.Color = 4805637
       Font.Height = 16
@@ -394,7 +394,7 @@ object frmMain: TfrmMain
       Left = 99
       Height = 53
       Top = 128
-      Width = 156
+      Width = 182
       Caption = '00:00:00'
       Font.Color = clWhite
       Font.Height = 53
@@ -435,7 +435,7 @@ object frmMain: TfrmMain
       Left = 16
       Height = 23
       Top = 64
-      Width = 160
+      Width = 181
       Caption = 'Show time in app icon'
       Font.Height = 19
       Font.Name = 'Nunito Sans'
@@ -488,7 +488,7 @@ object frmMain: TfrmMain
       Left = 16
       Height = 44
       Top = 8
-      Width = 30
+      Width = 38
       AutoSize = True
       Constraints.MinHeight = 40
       Caption = '←'
@@ -1518,5 +1518,11 @@ object frmMain: TfrmMain
     OnRestoreProperties = JSONPropStorage1RestoreProperties
     Left = 200
     Top = 104
+  end
+  object timerRefresh: TTimer
+    Interval = 30000
+    OnTimer = timerRefreshTimer
+    Left = 280
+    Top = 136
   end
 end

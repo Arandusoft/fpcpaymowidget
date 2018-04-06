@@ -55,7 +55,6 @@ type
     procedure btnSet45Click(Sender: TObject);
     procedure btnSetNowClick(Sender: TObject);
     procedure btnStartTimer(Sender: TObject);
-    procedure chkCompletedTaskClick(Sender: TObject);
     procedure editSearchProjectClick(Sender: TObject);
     procedure editSearchProjectEnter(Sender: TObject);
     procedure editSearchProjectExit(Sender: TObject);
@@ -866,11 +865,6 @@ begin
   end
   else
     ShowMessage(rsErrorCantCreateTask);
-end;
-
-procedure TfrmTimeEntry.chkCompletedTaskClick(Sender: TObject);
-begin
-
 end;
 
 procedure TfrmTimeEntry.editSearchProjectClick(Sender: TObject);

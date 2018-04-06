@@ -8,7 +8,7 @@ uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
-  JSONPropStorage, XMLPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
+  JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
   BGRABitmapTypes, PropertyStorage;
 
 type
@@ -57,6 +57,7 @@ type
     pnlTime: TPanel;
     lblTask: TLabel;
     timerEntry: TTimer;
+    timerRefresh: TTimer;
     tiTray: TTrayIcon;
     wcThreadDownloader: TWCThread;
     procedure btnResetClick(Sender: TObject);
@@ -104,6 +105,7 @@ type
     procedure DownloadTaskListsExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure timerEntryTimer(Sender: TObject);
+    procedure timerRefreshTimer(Sender: TObject);
     procedure tiTrayClick(Sender: TObject);
     procedure hideMenu(Sender: TObject);
   private
@@ -154,11 +156,8 @@ begin
   if Paymo.LoggedIn then
   begin
     try
-      DownloadCompany.Start;
-      DownloadProjects.Start;
-      DownloadTasks.Start;
-      DownloadRunningTimer.Start;
-      DownloadTaskLists.Start;
+      timerRefresh.Enabled:=true;
+      timerRefreshTimer(self);
     except
     end;
   end;
@@ -441,6 +440,15 @@ end;
 procedure TfrmMain.timerEntryTimer(Sender: TObject);
 begin
   RefreshTimeEntry();
+end;
+
+procedure TfrmMain.timerRefreshTimer(Sender: TObject);
+begin
+  DownloadCompany.Start;
+  DownloadProjects.Start;
+  DownloadTasks.Start;
+  DownloadRunningTimer.Start;
+  DownloadTaskLists.Start;
 end;
 
 procedure TfrmMain.tiTrayClick(Sender: TObject);
