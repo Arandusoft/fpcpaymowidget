@@ -25,7 +25,6 @@ msgid "Reset"
 msgstr ""
 
 #: tfrmmain.btnsettings.caption
-msgctxt "tfrmmain.btnsettings.caption"
 msgid "Settings"
 msgstr ""
 
@@ -225,6 +224,10 @@ msgstr ""
 
 #: uresourcestring.rserrorcantupdatetimeentry
 msgid "Error: Can't update time entry."
+msgstr ""
+
+#: uresourcestring.rsnointernettryagainsoon
+msgid "Apparently there is no Internet connection. Try again soon."
 msgstr ""
 
 #: uresourcestring.rspleaseentertaskdescription

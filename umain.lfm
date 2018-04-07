@@ -3,7 +3,6 @@ object frmMain: TfrmMain
   Height = 540
   Top = 126
   Width = 360
-  BorderIcons = [biSystemMenu, biMinimize]
   Caption = 'FPC Paymo Widget'
   ClientHeight = 540
   ClientWidth = 360
@@ -1507,9 +1506,6 @@ object frmMain: TfrmMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000
-    }
-    BitmapAdv = {
-      4C6900000000
     }
   end
   object JSONPropStorage1: TJSONPropStorage

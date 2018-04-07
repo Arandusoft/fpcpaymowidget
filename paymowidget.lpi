@@ -7,7 +7,6 @@
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
       <Title Value="FPC Paymo Widget"/>
-      <Scaled Value="True"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <XPManifest>
@@ -24,7 +23,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
-      <RevisionNr Value="3"/>
+      <RevisionNr Value="4"/>
       <StringTable CompanyName="Arandusoft"/>
     </VersionInfo>
     <BuildModes Count="9">

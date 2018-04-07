@@ -9,6 +9,7 @@ uses
 
 resourcestring
   rsTooManyRequestsTryAgainSoon = 'Too many Requests. Try again soon.';
+  rsNoInternetTryAgainSoon = 'Apparently there is no Internet connection. Try again soon.';
   rsErrorCantLoginTryGeneratingANewAPIKey =
     'Error: Can''t login. Try generating a new API Key.';
   rsErrorCantLogin = 'Can''t login.';
