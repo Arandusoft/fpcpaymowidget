@@ -16,7 +16,7 @@ function NameSort(Item1, Item2: Pointer): integer;
 function InverseNameSort(Item1, Item2: Pointer): integer;
 
 type
-  TPaymoResponseStatus = (prOK, prERROR, prTRYAGAIN);
+  TPaymoResponseStatus = (prOK, prERROR, prTRYAGAIN, prNOInternet);
 
   { TPaymo }
 
@@ -273,8 +273,13 @@ begin
         Result := prTRYAGAIN
       else
         Result := prERROR;
-    except
-      Result := prERROR;
+    except on e:exception do
+    begin
+      if (Pos('HOST NAME RESOLUTION',UpperCase(e.message))>0) then
+          Result := prNOInternet
+      else
+          Result := prERROR;
+    end;
     end;
   finally
     client.Free;

@@ -405,7 +405,7 @@ begin
         Paymo.GetTasks();
         DownloadTasksFinish(nil, 0, 0);
       end;
-      prTRYAGAIN, prERROR:
+      prTRYAGAIN, prERROR, prNOInternet:
       begin
         stop_ok := False;
         ShowMessage(rsErrorCantStopTimer);
@@ -509,6 +509,8 @@ begin
   case Paymo.Login of
     // api limit error
     prTRYAGAIN: ShowMessage(rsTooManyRequestsTryAgainSoon);
+    //NO Internet
+    prNOInternet: ShowMessage(rsNoInternetTryAgainSoon);
     // login error
     prERROR:
     begin

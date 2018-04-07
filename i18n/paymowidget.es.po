@@ -32,12 +32,11 @@ msgstr "Salir"
 
 #: tfrmmain.btnreset.caption
 msgid "Reset"
-msgstr "Resetear"
+msgstr ""
 
 #: tfrmmain.btnsettings.caption
-msgctxt "tfrmmain.btnsettings.caption"
 msgid "Settings"
-msgstr "Configuración"
+msgstr ""
 
 #: tfrmmain.btnsettingsexit.caption
 msgctxt "tfrmmain.btnsettingsexit.caption"
@@ -50,7 +49,7 @@ msgstr "FPC Paymo Widget"
 
 #: tfrmmain.cbshowtimeinappicon.caption
 msgid "Show time in app icon"
-msgstr "Mostrar tiempo en el icono"
+msgstr ""
 
 #: tfrmmain.lblproject.caption
 msgid "Project"
@@ -70,7 +69,7 @@ msgstr ""
 
 #: tfrmmain.leapiurl.editlabel.caption
 msgid "API URL"
-msgstr "URL de la API"
+msgstr ""
 
 #: tfrmmain.miabout.caption
 msgctxt "tfrmmain.miabout.caption"
@@ -236,6 +235,10 @@ msgstr "Error: No se puede actualizar la tarea."
 #: uresourcestring.rserrorcantupdatetimeentry
 msgid "Error: Can't update time entry."
 msgstr "Error: No se puede actualizar la entrada de tiempo."
+
+#: uresourcestring.rsnointernettryagainsoon
+msgid "Apparently there is no Internet connection. Try again soon."
+msgstr ""
 
 #: uresourcestring.rspleaseentertaskdescription
 msgid "Please enter task description."
