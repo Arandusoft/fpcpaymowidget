@@ -695,7 +695,7 @@ var
   s_hh, s_mm: string;
   r, r2: TPaymoResponseStatus;
 begin
-  //ShowMessage(TJSONData(lbProjectTaskLists.Items.Objects[lbProjectTaskLists.ItemIndex]).GetPath('id').AsString);
+  ShowMessage(TJSONData(lbProjectTaskLists.Items.Objects[lbProjectTaskLists.ItemIndex]).GetPath('id').AsString);
   if (frmMain.pnlMenu.Width <> 0) and (not frmMain.pnlMenu.Timer.Enabled) then
     frmMain.hideMenu(nil);
   // required fields

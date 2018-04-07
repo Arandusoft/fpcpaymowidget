@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "FPC Paymo Widget"
-#define MyAppVersion "1.0.3"
+#define MyAppVersion "1.0.4"
 #define MyAppPublisher "Arandú Software"
 #define MyAppURL "http://www.arandusoft.com/"
 #define MyAppExeName "paymowidget.exe"
