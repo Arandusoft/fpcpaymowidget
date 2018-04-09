@@ -1,0 +1,31 @@
+object Form1: TForm1
+  Left = 348
+  Height = 240
+  Top = 121
+  Width = 320
+  ActiveControl = Button1
+  Caption = 'Form1'
+  ClientHeight = 240
+  ClientWidth = 320
+  OnClick = FormClick
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
+  OnShow = FormShow
+  LCLVersion = '1.9.0.0'
+  object AutoCompletePanel1: TAutoCompletePanel
+    Left = 8
+    Height = 23
+    Top = 8
+    Width = 234
+    OnSearch = AutoCompletePanel1Search
+  end
+  object Button1: TButton
+    Left = 232
+    Height = 25
+    Top = 200
+    Width = 75
+    Caption = 'Codigo'
+    OnClick = Button1Click
+    TabOrder = 1
+  end
+end

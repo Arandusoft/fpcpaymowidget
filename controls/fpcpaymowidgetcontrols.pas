@@ -8,13 +8,14 @@ unit fpcpaymowidgetcontrols;
 interface
 
 uses
-  AnimatedPanel, LazarusPackageIntf;
+  AnimatedPanel, AutoCompletePanel, LazarusPackageIntf;
 
 implementation
 
 procedure Register;
 begin
   RegisterUnit('AnimatedPanel', @AnimatedPanel.Register);
+  RegisterUnit('AutoCompletePanel', @AutoCompletePanel.Register);
 end;
 
 initialization

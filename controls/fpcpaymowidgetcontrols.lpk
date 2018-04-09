@@ -8,15 +8,23 @@
       <Version Value="11"/>
       <PathDelim Value="\"/>
       <SearchPaths>
-        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)\"/>
+        <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Files Count="1">
+    <Files Count="3">
       <Item1>
         <Filename Value="animatedpanel.pas"/>
         <HasRegisterProc Value="True"/>
         <UnitName Value="AnimatedPanel"/>
       </Item1>
+      <Item2>
+        <HasRegisterProc Value="True"/>
+      </Item2>
+      <Item3>
+        <Filename Value="autocompletepanel.pas"/>
+        <HasRegisterProc Value="True"/>
+        <UnitName Value="AutoCompletePanel"/>
+      </Item3>
     </Files>
     <RequiredPkgs Count="2">
       <Item1>
@@ -32,5 +40,8 @@
     <PublishOptions>
       <Version Value="2"/>
     </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
   </Package>
 </CONFIG>
