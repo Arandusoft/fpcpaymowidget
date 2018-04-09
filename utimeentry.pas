@@ -72,6 +72,7 @@ type
   public
     PaymoInstance: TPaymo;
     Data: TJSONData;
+    selected_data: integer;
     selected_project: integer;
     selected_task: integer;
     selected_tasklist: integer;
@@ -181,8 +182,15 @@ begin
 
   if FromRefresh then
   begin
-    SelectItems(selected_project, selected_task, selected_tasklist);
-    exit;
+    // show work in progress stuff of new task
+    if selected_data = 0 then
+    begin
+      SelectItems(selected_project, selected_task, selected_tasklist);
+      exit;
+    end
+    // reload task being edited, can be changed so reload entirely from synchro
+    else
+      Data := PaymoInstance.GetTimeEntry(selected_data);
   end;
 
   // show / hide depending if is a new task or edit time entry
@@ -209,6 +217,7 @@ begin
     btnExistingTask.Visible := True;
     pnlSetTime.Visible := True;
     chkCompletedTask.Visible := False;
+    selected_data := 0;
   end
   else
   begin
@@ -235,6 +244,7 @@ begin
     chkCompletedTask.Visible := True;
     SelectItems(Data.GetPath('project_id').AsInteger,
       Data.GetPath('task_id').AsInteger, 0);
+    selected_data := Data.GetPath('id').AsInteger;
   end;
   FillDateAndTime;
 end;

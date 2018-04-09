@@ -45,6 +45,7 @@ type
     function RunningTimerData: TJSONData;
     function GetProjectName(ProjectID: integer): string;
     function GetTaskName(TaskID: integer): string;
+    function GetTask(TaskID: integer): TJSONData;
     function GetTimeEntry(EntryID: integer): TJSONData;
   public
     constructor Create;
@@ -200,6 +201,20 @@ begin
   begin
     if TaskID = arr[i].GetPath('id').AsInteger then
       exit(arr[i].GetPath('name').AsString);
+  end;
+end;
+
+function TPaymo.GetTask(TaskID: integer): TJSONData;
+var
+  i: integer;
+  arr: TJSONArray;
+begin
+  Result := nil;
+  arr := TasksArray;
+  for i := 0 to arr.Count - 1 do
+  begin
+    if TaskID = arr[i].GetPath('id').AsInteger then
+      exit(arr[i]);
   end;
 end;
 
