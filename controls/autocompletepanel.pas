@@ -60,8 +60,11 @@ end;
 
 procedure TAutoCompletePanel.OnEditEnter(Sender: TObject);
 begin
-  FListBox.Items.Clear;
-  FOnSearch(Self, FEdit.Caption, FListBox.Items);
+  if Assigned(FOnSearch) then
+  begin
+    FListBox.Items.Clear;
+    FOnSearch(Self, FEdit.Caption, FListBox.Items);
+  end;
   ShowListBox;
 end;
 
@@ -167,6 +170,8 @@ constructor TAutoCompletePanel.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   BevelOuter := bvNone;
+  BorderWidth := 0;
+  Caption := '';
   // ListBox
   FListBox := TListBox.Create(Self);
   FListBox.Align := alTop;
@@ -188,6 +193,7 @@ begin
   FLabel.Parent := Self;
   FLabel.ShowHint := True;
   OnExit := @OnEditExit;
+  SetInitialBounds(0, 0, 200, FLabel.Height + FEdit.Height);
 end;
 
 destructor TAutoCompletePanel.Destroy;

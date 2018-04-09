@@ -327,7 +327,9 @@ end;
 
 procedure TfrmTimeEntry.FormClick(Sender: TObject);
 begin
-
+  acTask.HideListBox;
+  acProject.HideListBox;
+  acTaskList.HideListBox;
 end;
 
 procedure TfrmTimeEntry.FormCreate(Sender: TObject);
