@@ -108,6 +108,7 @@ type
     procedure timerRefreshTimer(Sender: TObject);
     procedure tiTrayClick(Sender: TObject);
     procedure hideMenu(Sender: TObject);
+    procedure wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
   private
     Tasks: TTaskList;
     procedure WMMove(var Message: TLMMove); message LM_MOVE;
@@ -228,8 +229,6 @@ begin
   frmTimeEntry.Data := nil;
   frmTimeEntry.ShowData;
   frmTimeEntry.Show;
-  frmTimeEntry.editSearchProject.Clear;
-  frmTimeEntry.editSearchProject.SetFocus;
 end;
 
 procedure TfrmMain.btnSettingsClick(Sender: TObject);
@@ -349,6 +348,7 @@ end;
 
 procedure TfrmMain.FormClose(Sender: TObject; var CloseAction: TCloseAction);
 begin
+  timerRefresh.Enabled := False;
   tiTray.Hide;
 end;
 
@@ -444,6 +444,10 @@ end;
 
 procedure TfrmMain.timerRefreshTimer(Sender: TObject);
 begin
+  if Assigned(frmTimeEntry) and (frmTimeEntry.Visible) then
+    frmTimeEntry.Enabled := False;
+  if frmMain.Visible then
+    frmMain.Enabled := False;
   DownloadCompany.Start;
   DownloadProjects.Start;
   DownloadTasks.Start;
@@ -465,6 +469,17 @@ begin
   pnlTime.Enabled := True;
   if Assigned(Tasks) then
     Tasks.Enabled := True;
+end;
+
+procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
+begin
+  if Assigned(frmTimeEntry) then
+  begin
+    if (frmTimeEntry.Visible) then
+      frmTimeEntry.ShowData(True);
+    frmTimeEntry.Enabled := True;
+  end;
+  frmMain.Enabled := True;
 end;
 
 procedure TfrmMain.WMMove(var Message: TLMMove);

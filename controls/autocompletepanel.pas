@@ -17,6 +17,7 @@ type
   TAutoCompletePanel = class(TCustomPanel)
   private
     FOnSearch: TAutocompleteEvent;
+    FOnSelectionChange: TNotifyEvent;
     FSelectedObject: TObject;
     FSelectedObjectText: string;
     FLabel: TLabel;
@@ -41,6 +42,9 @@ type
       write SetFSelectedObjectText;
   published
     property OnSearch: TAutocompleteEvent read FOnSearch write FOnSearch;
+    property OnSelectionChange: TNotifyEvent read FOnSelectionChange write FOnSelectionChange;
+    property TabOrder;
+    property Anchors;
   end;
 
 procedure Register;
@@ -127,6 +131,8 @@ begin
     SelectedObjectText := FListBox.Items[FListBox.ItemIndex];
     FSelectedObject := FListBox.Items.Objects[FListBox.ItemIndex];
     HideListBox;
+    if Assigned(FOnSelectionChange) then
+      FOnSelectionChange(Self);
   end;
 end;
 
@@ -147,6 +153,7 @@ end;
 procedure TAutoCompletePanel.ShowListBox;
 begin
   Height := FLabel.Height + FEdit.Height + FListBox.Height;
+  Self.BringToFront;
 end;
 
 procedure TAutoCompletePanel.HideListBox;
@@ -170,6 +177,7 @@ begin
   FEdit.OnEnter := @OnEditEnter;
   FEdit.OnKeyDown := @OnEditKeyDown;
   FEdit.OnChange := @OnEditChange;
+  FEdit.OnClick := @OnEditEnter;
   FEdit.Align := alTop;
   FEdit.Parent := Self;
   // Label

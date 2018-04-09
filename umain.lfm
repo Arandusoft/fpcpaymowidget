@@ -280,7 +280,7 @@ object frmMain: TfrmMain
       Left = 232
       Height = 44
       Top = 0
-      Width = 38
+      Width = 30
       AutoSize = True
       Constraints.MinHeight = 40
       Caption = '←'
@@ -364,7 +364,7 @@ object frmMain: TfrmMain
       Left = 38
       Height = 16
       Top = 24
-      Width = 41
+      Width = 38
       Caption = 'Project'
       Font.Color = 4805637
       Font.Height = 16
@@ -393,7 +393,7 @@ object frmMain: TfrmMain
       Left = 99
       Height = 53
       Top = 128
-      Width = 182
+      Width = 156
       Caption = '00:00:00'
       Font.Color = clWhite
       Font.Height = 53
@@ -434,7 +434,7 @@ object frmMain: TfrmMain
       Left = 16
       Height = 23
       Top = 64
-      Width = 181
+      Width = 160
       Caption = 'Show time in app icon'
       Font.Height = 19
       Font.Name = 'Nunito Sans'
@@ -487,7 +487,7 @@ object frmMain: TfrmMain
       Left = 16
       Height = 44
       Top = 8
-      Width = 38
+      Width = 30
       AutoSize = True
       Constraints.MinHeight = 40
       Caption = '←'
@@ -959,6 +959,7 @@ object frmMain: TfrmMain
     }
   end
   object wcThreadDownloader: TWCThread
+    OnAllTasksFinished = wcThreadDownloaderAllTasksFinished
     Left = 280
     Top = 176
     object DownloadCompany: TTask
@@ -1506,6 +1507,9 @@ object frmMain: TfrmMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000
+    }
+    BitmapAdv = {
+      4C6900000000
     }
   end
   object JSONPropStorage1: TJSONPropStorage
