@@ -191,6 +191,7 @@ var
   search: string;
 begin
   lbProjects.Clear;
+  lbProjects.ItemIndex := -1;
   projects := PaymoInstance.ProjectsArray;
 
   if Data <> nil then
@@ -231,8 +232,15 @@ begin
   if lbProjects.Items.Count = 0 then
     exit;
   tasklists := PaymoInstance.TaskListsArray;
+  if lbProjects.ItemIndex > -1 then
+    try
+      proj_id := TJSONData(lbProjects.Items.Objects[lbProjects.ItemIndex]).GetPath('id').AsInteger
 
-  proj_id := TJSONData(lbProjects.Items.Objects[lbProjects.ItemIndex]).GetPath('id').AsInteger;
+    except
+      proj_id := 0;
+    end
+  else
+    proj_id := 0;
   pass1 := UTF8Length(editSearchTaskLists.Text) = 0;
   search := UTF8LowerCase(editSearchTaskLists.Text);
   for i := 0 to tasklists.Count - 1 do
@@ -268,7 +276,14 @@ begin
   if lbProjects.Items.Count = 0 then
     exit;
   tasks := PaymoInstance.TasksArray;
-  proj_id := TJSONData(lbProjects.Items.Objects[lbProjects.ItemIndex]).GetPath('id').AsInteger;
+  if lbProjects.ItemIndex > -1 then
+    try
+      proj_id := TJSONData(lbProjects.Items.Objects[lbProjects.ItemIndex]).GetPath('id').AsInteger
+    except
+      proj_id := 0;
+    end
+  else
+    proj_id := 0;
 
   if (Data <> nil) and (FromData) then
   begin
@@ -303,9 +318,9 @@ begin
       editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex]
     else
       editSearchTasks.Text := '';
-    if lbProjectTasks.ItemIndex>=0 then
-       chkCompletedTask.Checked :=
-             TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
+    if lbProjectTasks.ItemIndex >= 0 then
+      chkCompletedTask.Checked :=
+        TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
   end;
 end;
 
@@ -616,9 +631,9 @@ begin
   if lbProjectTasks.ItemIndex > -1 then
   begin
     editSearchTasks.Text := lbProjectTasks.Items[lbProjectTasks.ItemIndex];
-    if lbProjectTasks.ItemIndex>=0 then
-       chkCompletedTask.Checked :=
-          TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
+    if lbProjectTasks.ItemIndex >= 0 then
+      chkCompletedTask.Checked :=
+        TJSONData(lbProjectTasks.Items.Objects[lbProjectTasks.ItemIndex]).GetPath('complete').AsBoolean;
   end;
 end;
 
@@ -701,8 +716,10 @@ begin
   // required fields
   canSave := (time_start_hh.Text <> '') and (time_start_mm.Text <> '') and
     (time_end_hh.Text <> '') and (time_end_mm.Text <> '') and
-    (lbProjects.ItemIndex >= 0) and (lbProjects.ItemIndex < lbProjects.Count) and (lbProjectTaskLists.ItemIndex >= 0) and (lbProjectTaskLists.ItemIndex < lbProjectTaskLists.Count) and
-    (lbProjectTasks.ItemIndex >= 0) and (lbProjectTasks.ItemIndex < lbProjectTasks.Count);
+    (lbProjects.ItemIndex >= 0) and (lbProjects.ItemIndex < lbProjects.Count) and
+    (lbProjectTaskLists.ItemIndex >= 0) and (lbProjectTaskLists.ItemIndex <
+    lbProjectTaskLists.Count) and (lbProjectTasks.ItemIndex >= 0) and
+    (lbProjectTasks.ItemIndex < lbProjectTasks.Count);
   if not CanSave then
   begin
     ShowMessage(rsPleaseFillAllFields);
@@ -800,7 +817,9 @@ begin
   if memoDescription.Visible then
   begin
     // required fields
-    canSave := (lbProjects.ItemIndex >= 0) and (lbProjectTaskLists.ItemIndex >= 0);
+    canSave := (lbProjects.ItemIndex >= 0) and (lbProjects.ItemIndex <
+      lbProjects.Count) and (lbProjectTaskLists.ItemIndex >= 0) and
+      (lbProjectTaskLists.ItemIndex < lbProjectTaskLists.Count);
     if not CanSave then
     begin
       ShowMessage(rsPleaseFillAllFields);
@@ -815,8 +834,11 @@ begin
   else
   begin
     // required fields
-    canSave := (lbProjects.ItemIndex >= 0) and (lbProjectTaskLists.ItemIndex >= 0) and
-      (lbProjectTasks.ItemIndex >= 0);
+    canSave := (lbProjects.ItemIndex >= 0) and (lbProjects.ItemIndex <
+      lbProjects.Count) and (lbProjectTaskLists.ItemIndex >= 0) and
+      (lbProjectTaskLists.ItemIndex < lbProjectTaskLists.Count) and
+      (lbProjectTasks.ItemIndex >= 0) and (lbProjectTasks.ItemIndex <
+      lbProjectTasks.Count);
     if not CanSave then
     begin
       ShowMessage(rsPleaseFillAllFields);
