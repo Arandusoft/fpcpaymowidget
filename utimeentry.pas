@@ -269,6 +269,7 @@ begin
       begin
         acTask.SelectedObject := task[i];
         acTask.SelectedObjectText := task[i].GetPath('name').AsString;
+        chkCompletedTask.Checked := task[i].GetPath('complete').AsBoolean;
         break;
       end;
     end;

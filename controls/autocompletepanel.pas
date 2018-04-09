@@ -148,6 +148,7 @@ begin
   if FSelectedObjectText = AValue then Exit;
   FSelectedObjectText := AValue;
   FLabel.Caption := FSelectedObjectText;
+  FLabel.Hint := FSelectedObjectText;
 end;
 
 procedure TAutoCompletePanel.ShowListBox;
@@ -185,6 +186,7 @@ begin
   FLabel.Align := alTop;
   FLabel.Caption := ' ';
   FLabel.Parent := Self;
+  FLabel.ShowHint := True;
   OnExit := @OnEditExit;
 end;
 
