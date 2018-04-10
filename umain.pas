@@ -42,6 +42,7 @@ type
     miShow: TMenuItem;
     miAbout: TMenuItem;
     miQuit: TMenuItem;
+    pbRefresh: TProgressBar;
     pnlSettings: TPanel;
     pnlMenu: TAnimatedPanel;
     pnlMenuCompany: TLabel;
@@ -57,7 +58,6 @@ type
     DownloadRunningTimer: TTask;
     pnlTime: TPanel;
     lblTask: TLabel;
-    pbRefresh: TProgressBar;
     timerEntry: TTimer;
     timerRefresh: TTimer;
     tiTray: TTrayIcon;
@@ -463,7 +463,8 @@ begin
     frmTimeEntry.Enabled := False;
   if frmMain.Visible then
     frmMain.Enabled := False;
-  DownloadCompany.Start;
+  if not Assigned(Paymo.CompanyData) then
+    DownloadCompany.Start;
   DownloadProjects.Start;
   DownloadTasks.Start;
   DownloadRunningTimer.Start;

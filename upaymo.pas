@@ -160,6 +160,7 @@ end;
 
 function TPaymo.CompanyData: TJSONData;
 begin
+  if not Assigned(FCompany) then exit(nil);
   FCompany.Find('company', Result);
 end;
 

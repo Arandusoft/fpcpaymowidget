@@ -380,7 +380,7 @@ object frmMain: TfrmMain
   object pnlTime: TPanel
     Left = 0
     Height = 222
-    Top = 50
+    Top = 70
     Width = 360
     Align = alTop
     BevelOuter = bvNone
@@ -451,16 +451,6 @@ object frmMain: TfrmMain
       ParentColor = False
       ParentFont = False
       OnClick = lblStopClick
-    end
-    object pbRefresh: TProgressBar
-      Left = 0
-      Height = 20
-      Top = 0
-      Width = 360
-      Align = alTop
-      Style = pbstMarquee
-      TabOrder = 0
-      Visible = False
     end
   end
   object pnlSettings: TPanel
@@ -559,6 +549,16 @@ object frmMain: TfrmMain
       StateDisabled.BorderColor = 2365715
       StateDisabled.BorderWidth = 0
     end
+  end
+  object pbRefresh: TProgressBar
+    Left = 0
+    Height = 20
+    Top = 50
+    Width = 360
+    Align = alTop
+    Style = pbstMarquee
+    TabOrder = 4
+    Visible = False
   end
   object tiTray: TTrayIcon
     PopUpMenu = pmTray
