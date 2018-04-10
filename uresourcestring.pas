@@ -26,6 +26,8 @@ resourcestring
     'Error: Can''t start timer. Try stopping current timer first.';
   rsStartTimer = 'Start Timer';
   rsSaveEntry = 'Save Entry';
+  rsDeleteEntry = 'Delete Entry';
+  rsCreateTask = 'Create Task';
   rsErrorCantCreateTask = 'Error: Can''t create task.';
   rsPleaseEnterTaskDescription = 'Please enter task description.';
   rsTaskIsComplete = 'Task is complete';

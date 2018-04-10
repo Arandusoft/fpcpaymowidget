@@ -32,11 +32,11 @@ msgstr "Salir"
 
 #: tfrmmain.btnreset.caption
 msgid "Reset"
-msgstr ""
+msgstr "Resetear"
 
 #: tfrmmain.btnsettings.caption
 msgid "Settings"
-msgstr ""
+msgstr "Configuración"
 
 #: tfrmmain.btnsettingsexit.caption
 msgctxt "tfrmmain.btnsettingsexit.caption"
@@ -49,7 +49,7 @@ msgstr "FPC Paymo Widget"
 
 #: tfrmmain.cbshowtimeinappicon.caption
 msgid "Show time in app icon"
-msgstr ""
+msgstr "Mostrar tiempo en icono de app"
 
 #: tfrmmain.lblproject.caption
 msgid "Project"
@@ -69,7 +69,7 @@ msgstr ""
 
 #: tfrmmain.leapiurl.editlabel.caption
 msgid "API URL"
-msgstr ""
+msgstr "API URL"
 
 #: tfrmmain.miabout.caption
 msgctxt "tfrmmain.miabout.caption"
@@ -98,6 +98,7 @@ msgid "Timesheet"
 msgstr "Horas trabajadas"
 
 #: tfrmtimeentry.btndeleteentry.caption
+msgctxt "tfrmtimeentry.btndeleteentry.caption"
 msgid "Delete Entry"
 msgstr "Eliminar Entrada"
 
@@ -200,6 +201,15 @@ msgstr ""
 msgid "‒"
 msgstr ""
 
+#: uresourcestring.rscreatetask
+msgid "Create Task"
+msgstr "Crear Tarea"
+
+#: uresourcestring.rsdeleteentry
+msgctxt "uresourcestring.rsdeleteentry"
+msgid "Delete Entry"
+msgstr "Eliminar Entrada"
+
 #: uresourcestring.rserrorcantcreatetask
 msgid "Error: Can't create task."
 msgstr "Error: No se puede crear la tarea."
@@ -238,7 +248,7 @@ msgstr "Error: No se puede actualizar la entrada de tiempo."
 
 #: uresourcestring.rsnointernettryagainsoon
 msgid "Apparently there is no Internet connection. Try again soon."
-msgstr ""
+msgstr "Aparentemente no hay conexión a Internet. Intenta de nuevo pronto."
 
 #: uresourcestring.rspleaseentertaskdescription
 msgid "Please enter task description."
@@ -276,4 +286,3 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
-

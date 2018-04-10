@@ -88,6 +88,7 @@ msgid "Timesheet"
 msgstr ""
 
 #: tfrmtimeentry.btndeleteentry.caption
+msgctxt "tfrmtimeentry.btndeleteentry.caption"
 msgid "Delete Entry"
 msgstr ""
 
@@ -188,6 +189,15 @@ msgstr ""
 
 #: tfrmtimeentry.time_start_separator1.caption
 msgid "‒"
+msgstr ""
+
+#: uresourcestring.rscreatetask
+msgid "Create Task"
+msgstr ""
+
+#: uresourcestring.rsdeleteentry
+msgctxt "uresourcestring.rsdeleteentry"
+msgid "Delete Entry"
 msgstr ""
 
 #: uresourcestring.rserrorcantcreatetask

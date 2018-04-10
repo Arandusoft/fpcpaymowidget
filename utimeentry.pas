@@ -59,6 +59,7 @@ type
     procedure btnSet45Click(Sender: TObject);
     procedure btnSetNowClick(Sender: TObject);
     procedure btnStartTimer(Sender: TObject);
+    procedure btnCreateTask(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -197,7 +198,9 @@ begin
   if Data = nil then
   begin
     acTask.Visible := False;
-    btnDeleteEntry.Visible := False;
+    btnDeleteEntry.Visible := True;
+    btnDeleteEntry.Caption := rsCreateTask;
+    btnDeleteEntry.OnClick := @btnCreateTask;
     lbl_date.Visible := False;
     time_start_hh.Visible := True;
     time_start_separator.Visible := True;
@@ -226,6 +229,8 @@ begin
     // Workaround to set size
     acTask.HideListBox;
     btnDeleteEntry.Visible := True;
+    btnDeleteEntry.Caption := rsDeleteEntry;
+    btnDeleteEntry.OnClick := @btnDeleteEntryClick;
     lbl_date.Visible := True;
     time_start_hh.Visible := True;
     time_start_separator.Visible := True;
@@ -541,6 +546,41 @@ begin
     ShowMessage(rsErrorCantCreateTask);
 end;
 
+procedure TfrmTimeEntry.btnCreateTask(Sender: TObject);
+var
+  task: TJSONData;
+  r: TPaymoResponseStatus;
+  canSave: boolean;
+  s_hh, s_mm: string;
+  t_start: TDateTime;
+begin
+  if (frmMain.pnlMenu.Width <> 0) and (not frmMain.pnlMenu.Timer.Enabled) then
+    frmMain.hideMenu(nil);
+  // required fields
+  canSave := (acProject.SelectedObject <> nil) and (acTaskList.SelectedObject <> nil);
+  if not CanSave then
+  begin
+    ShowMessage(rsPleaseFillAllFields);
+    exit();
+  end;
+  if memoDescription.Lines.Text = '' then
+  begin
+    ShowMessage(rsPleaseEnterTaskDescription);
+    exit();
+  end;
+  case PaymoInstance.CreateTask(memoDescription.Lines.Text, '',
+      TJSONData(acTaskList.SelectedObject).GetPath('id').AsInteger, task) of
+    prOK:
+    begin
+      Self.Close;
+    end;
+    prERROR, prTRYAGAIN:
+    begin
+      ShowMessage(rsErrorCantCreateTask);
+    end;
+  end;
+end;
+
 procedure TfrmTimeEntry.btnDeleteEntryClick(Sender: TObject);
 begin
   case PaymoInstance.DeleteTimeEntry(Data.GetPath('id').AsString) of
@@ -669,6 +709,7 @@ begin
   lblDescription3.Visible := True;
   lblDescription.Visible := False;
   memoDescription.Visible := False;
+  btnDeleteEntry.Visible := False;
 end;
 
 end.
