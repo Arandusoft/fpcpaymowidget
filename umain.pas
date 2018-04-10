@@ -230,6 +230,10 @@ procedure TfrmMain.btnAddTaskClick(Sender: TObject);
 begin
   frmTimeEntry.PaymoInstance := Paymo;
   frmTimeEntry.Data := nil;
+  frmTimeEntry.selected_project := 0;
+  frmTimeEntry.selected_task := 0;
+  frmTimeEntry.selected_tasklist := 0;
+  frmTimeEntry.selected_data := 0;
   frmTimeEntry.ShowData;
   frmTimeEntry.Show;
 end;
