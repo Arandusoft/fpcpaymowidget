@@ -405,7 +405,7 @@ begin
   end;
   // time entry
   r := PaymoInstance.UpdateTimeEntry(Data.GetPath('id').AsInteger,
-    t_end, TJSONData(acProject.SelectedObject).GetPath('id').AsInteger,
+    t_start, t_end, TJSONData(acProject.SelectedObject).GetPath('id').AsInteger,
     TJSONData(acTask.SelectedObject).GetPath('id').AsInteger,
     TJSONData(acTaskList.SelectedObject).GetPath('id').AsInteger);
   case r of

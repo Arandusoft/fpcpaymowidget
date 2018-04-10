@@ -74,7 +74,7 @@ type
     function StartRunningTimer(task_id: integer;
       start_time: TDateTime): TPaymoResponseStatus;
     function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
-    function UpdateTimeEntry(TimeEntryID: integer; end_time: TDateTime;
+    function UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
       project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
   public
     procedure LoadSettings;
@@ -553,7 +553,7 @@ begin
   Result := Delete('entries/' + TimeEntryID, response);
 end;
 
-function TPaymo.UpdateTimeEntry(TimeEntryID: integer; end_time: TDateTime;
+function TPaymo.UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
   project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
 var
   response: string;
@@ -562,6 +562,8 @@ var
   r: TPaymoResponseStatus;
 begin
   jObj := TJSONObject.Create;
+  jObj.Add('start_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
+    LocalTimeToUniversal(start_time)));
   jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
     LocalTimeToUniversal(end_time)));
   jObj.Add('project_id', project_id);
