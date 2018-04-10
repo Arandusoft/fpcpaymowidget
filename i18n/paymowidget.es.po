@@ -30,6 +30,10 @@ msgctxt "tfrmmain.btnquit.caption"
 msgid "Quit"
 msgstr "Salir"
 
+#: tfrmmain.btnrefresh.caption
+msgid "Refresh"
+msgstr "Recargar"
+
 #: tfrmmain.btnreset.caption
 msgid "Reset"
 msgstr "Resetear"

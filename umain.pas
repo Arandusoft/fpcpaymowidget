@@ -20,6 +20,7 @@ type
     btnAbout: TColorSpeedButton;
     btnMenu: TColorSpeedButton;
     btnAddTask: TColorSpeedButton;
+    btnRefresh: TColorSpeedButton;
     btnSettingsExit: TColorSpeedButton;
     btnOpenPaymoApp: TColorSpeedButton;
     btnMenuExit: TColorSpeedButton;
@@ -60,6 +61,7 @@ type
     timerRefresh: TTimer;
     tiTray: TTrayIcon;
     wcThreadDownloader: TWCThread;
+    procedure btnRefreshClick(Sender: TObject);
     procedure btnResetClick(Sender: TObject);
     procedure btnSettingsClick(Sender: TObject);
     procedure btnAddTaskClick(Sender: TObject);
@@ -243,6 +245,13 @@ end;
 procedure TfrmMain.btnResetClick(Sender: TObject);
 begin
   leAPIURL.Text := PAYMOAPIBASEURL;
+end;
+
+procedure TfrmMain.btnRefreshClick(Sender: TObject);
+begin
+  frmMain.timerRefresh.Enabled := False;
+  frmMain.timerRefreshTimer(nil);
+  frmMain.timerRefresh.Enabled := True;
 end;
 
 procedure TfrmMain.btnOpenPaymoAppClick(Sender: TObject);

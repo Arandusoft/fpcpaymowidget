@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
   Left = 556
-  Height = 540
+  Height = 737
   Top = 126
-  Width = 360
+  Width = 653
   Caption = 'FPC Paymo Widget'
-  ClientHeight = 540
-  ClientWidth = 360
+  ClientHeight = 737
+  ClientWidth = 653
   Color = clWhite
   Constraints.MinHeight = 540
   Constraints.MinWidth = 360
@@ -24,12 +24,12 @@ object frmMain: TfrmMain
     Left = 0
     Height = 50
     Top = 0
-    Width = 360
+    Width = 653
     Align = alTop
     BevelOuter = bvNone
     Caption = 'Timesheet'
     ClientHeight = 50
-    ClientWidth = 360
+    ClientWidth = 653
     Color = 13348638
     Constraints.MinHeight = 50
     Font.Color = clWhite
@@ -67,7 +67,7 @@ object frmMain: TfrmMain
     end
     object btnAddTask: TColorSpeedButton
       Cursor = crHandPoint
-      Left = 326
+      Left = 619
       Height = 17
       Top = 17
       Width = 17
@@ -147,7 +147,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 151
+      Top = 191
       Width = 270
       Align = alTop
       AutoSize = True
@@ -181,7 +181,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 242
+      Top = 282
       Width = 270
       Align = alTop
       AutoSize = True
@@ -213,7 +213,7 @@ object frmMain: TfrmMain
     object pnlSpacer1: TPanel
       Left = 30
       Height = 1
-      Top = 236
+      Top = 276
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -262,7 +262,7 @@ object frmMain: TfrmMain
     object pnlSpacer2: TPanel
       Left = 30
       Height = 1
-      Top = 145
+      Top = 185
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -313,7 +313,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 191
+      Top = 231
       Width = 270
       Align = alTop
       AutoSize = True
@@ -342,16 +342,50 @@ object frmMain: TfrmMain
       StateDisabled.BorderColor = 2365715
       StateDisabled.BorderWidth = 0
     end
+    object btnRefresh: TColorSpeedButton
+      Tag = -14
+      Cursor = crHandPoint
+      Left = 0
+      Height = 40
+      Top = 140
+      Width = 270
+      Align = alTop
+      AutoSize = True
+      Constraints.MinHeight = 40
+      Caption = 'Refresh'
+      Font.Color = 10260359
+      Font.Height = 19
+      Font.Name = 'Nunito Sans'
+      OnClick = btnRefreshClick
+      OnMouseEnter = btnOpenPaymoAppMouseEnter
+      OnMouseLeave = btnOpenPaymoAppMouseLeave
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 2365715
+      StateNormal.BorderColor = 2365715
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 2102801
+      StateHover.BorderColor = 2102801
+      StateHover.BorderWidth = 0
+      StateActive.Color = 5131537
+      StateActive.BorderColor = 5131537
+      StateActive.BorderWidth = 1
+      StateDisabled.Color = 2365715
+      StateDisabled.BorderColor = 2365715
+      StateDisabled.BorderWidth = 0
+    end
   end
   object pnlTime: TPanel
     Left = 0
     Height = 222
     Top = 50
-    Width = 360
+    Width = 653
     Align = alTop
     BevelOuter = bvNone
     ClientHeight = 222
-    ClientWidth = 360
+    ClientWidth = 653
     Color = 16182455
     Constraints.MinHeight = 50
     Font.Color = clWhite
@@ -377,7 +411,7 @@ object frmMain: TfrmMain
       Left = 38
       Height = 80
       Top = 48
-      Width = 284
+      Width = 577
       Anchors = [akTop, akLeft, akRight]
       AutoSize = False
       Caption = 'Task'
@@ -420,9 +454,9 @@ object frmMain: TfrmMain
     end
   end
   object pnlSettings: TPanel
-    Left = 8
+    Left = 296
     Height = 184
-    Top = 312
+    Top = 488
     Width = 336
     BevelOuter = bvNone
     ClientHeight = 184

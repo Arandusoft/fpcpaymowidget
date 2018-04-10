@@ -20,6 +20,10 @@ msgctxt "tfrmmain.btnquit.caption"
 msgid "Quit"
 msgstr ""
 
+#: tfrmmain.btnrefresh.caption
+msgid "Refresh"
+msgstr ""
+
 #: tfrmmain.btnreset.caption
 msgid "Reset"
 msgstr ""
