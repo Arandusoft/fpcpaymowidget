@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
   Left = 556
-  Height = 737
+  Height = 540
   Top = 126
-  Width = 653
+  Width = 360
   Caption = 'FPC Paymo Widget'
-  ClientHeight = 737
-  ClientWidth = 653
+  ClientHeight = 540
+  ClientWidth = 360
   Color = clWhite
   Constraints.MinHeight = 540
   Constraints.MinWidth = 360
@@ -24,12 +24,12 @@ object frmMain: TfrmMain
     Left = 0
     Height = 50
     Top = 0
-    Width = 653
+    Width = 360
     Align = alTop
     BevelOuter = bvNone
     Caption = 'Timesheet'
     ClientHeight = 50
-    ClientWidth = 653
+    ClientWidth = 360
     Color = 13348638
     Constraints.MinHeight = 50
     Font.Color = clWhite
@@ -67,7 +67,7 @@ object frmMain: TfrmMain
     end
     object btnAddTask: TColorSpeedButton
       Cursor = crHandPoint
-      Left = 619
+      Left = 326
       Height = 17
       Top = 17
       Width = 17
@@ -381,11 +381,11 @@ object frmMain: TfrmMain
     Left = 0
     Height = 222
     Top = 50
-    Width = 653
+    Width = 360
     Align = alTop
     BevelOuter = bvNone
     ClientHeight = 222
-    ClientWidth = 653
+    ClientWidth = 360
     Color = 16182455
     Constraints.MinHeight = 50
     Font.Color = clWhite
@@ -411,7 +411,7 @@ object frmMain: TfrmMain
       Left = 38
       Height = 80
       Top = 48
-      Width = 577
+      Width = 284
       Anchors = [akTop, akLeft, akRight]
       AutoSize = False
       Caption = 'Task'
@@ -452,11 +452,21 @@ object frmMain: TfrmMain
       ParentFont = False
       OnClick = lblStopClick
     end
+    object pbRefresh: TProgressBar
+      Left = 0
+      Height = 20
+      Top = 0
+      Width = 360
+      Align = alTop
+      Style = pbstMarquee
+      TabOrder = 0
+      Visible = False
+    end
   end
   object pnlSettings: TPanel
-    Left = 296
+    Left = 8
     Height = 184
-    Top = 488
+    Top = 328
     Width = 336
     BevelOuter = bvNone
     ClientHeight = 184

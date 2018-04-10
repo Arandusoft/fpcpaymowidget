@@ -9,7 +9,7 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes, PropertyStorage;
+  BGRABitmapTypes, PropertyStorage, ComCtrls;
 
 type
 
@@ -57,6 +57,7 @@ type
     DownloadRunningTimer: TTask;
     pnlTime: TPanel;
     lblTask: TLabel;
+    pbRefresh: TProgressBar;
     timerEntry: TTimer;
     timerRefresh: TTimer;
     tiTray: TTrayIcon;
@@ -249,9 +250,7 @@ end;
 
 procedure TfrmMain.btnRefreshClick(Sender: TObject);
 begin
-  frmMain.timerRefresh.Enabled := False;
   frmMain.timerRefreshTimer(nil);
-  frmMain.timerRefresh.Enabled := True;
 end;
 
 procedure TfrmMain.btnOpenPaymoAppClick(Sender: TObject);
@@ -453,6 +452,9 @@ end;
 
 procedure TfrmMain.timerRefreshTimer(Sender: TObject);
 begin
+  timerRefresh.Enabled := False;
+  pbRefresh.Visible := True;
+  Application.ProcessMessages;
   if Assigned(frmTimeEntry) and (frmTimeEntry.Visible) then
     frmTimeEntry.Enabled := False;
   if frmMain.Visible then
@@ -489,6 +491,8 @@ begin
     frmTimeEntry.Enabled := True;
   end;
   frmMain.Enabled := True;
+  pbRefresh.Visible := False;
+  timerRefresh.Enabled := True;
 end;
 
 procedure TfrmMain.WMMove(var Message: TLMMove);
