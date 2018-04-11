@@ -91,6 +91,110 @@ msgstr ""
 msgid "Timesheet"
 msgstr ""
 
+#: tfrmtimeentry.btndeleteentry.caption
+msgctxt "tfrmtimeentry.btndeleteentry.caption"
+msgid "Delete Entry"
+msgstr ""
+
+#: tfrmtimeentry.btnexistingtask.caption
+msgid "Use Existing Task"
+msgstr ""
+
+#: tfrmtimeentry.btnsaveentry.caption
+msgctxt "tfrmtimeentry.btnsaveentry.caption"
+msgid "Save Entry"
+msgstr ""
+
+#: tfrmtimeentry.btnset15.caption
+msgid "-15"
+msgstr ""
+
+#: tfrmtimeentry.btnset1h.caption
+msgid "-1h"
+msgstr ""
+
+#: tfrmtimeentry.btnset30.caption
+msgid "-30"
+msgstr ""
+
+#: tfrmtimeentry.btnset45.caption
+msgid "-45"
+msgstr ""
+
+#: tfrmtimeentry.btnsetnow.caption
+msgid "Now"
+msgstr ""
+
+#: tfrmtimeentry.caption
+msgid "Edit Time Entry"
+msgstr ""
+
+#: tfrmtimeentry.chkcompletedtask.caption
+msgid "Completed Task"
+msgstr ""
+
+#: tfrmtimeentry.dlgdate.cancelcaption
+msgid "Cancel"
+msgstr ""
+
+#: tfrmtimeentry.dlgdate.okcaption
+msgid "&OK"
+msgstr ""
+
+#: tfrmtimeentry.lbldescription.caption
+msgid "Task description:"
+msgstr ""
+
+#: tfrmtimeentry.lbldescription1.caption
+msgid "Project:"
+msgstr ""
+
+#: tfrmtimeentry.lbldescription2.caption
+msgid "Task List:"
+msgstr ""
+
+#: tfrmtimeentry.lbldescription3.caption
+msgid "Task:"
+msgstr ""
+
+#: tfrmtimeentry.lbl_date.caption
+msgid "Date"
+msgstr ""
+
+#: tfrmtimeentry.time_end_hh.text
+msgctxt "tfrmtimeentry.time_end_hh.text"
+msgid "00"
+msgstr ""
+
+#: tfrmtimeentry.time_end_mm.text
+msgctxt "tfrmtimeentry.time_end_mm.text"
+msgid "00"
+msgstr ""
+
+#: tfrmtimeentry.time_end_separator.caption
+msgctxt "tfrmtimeentry.time_end_separator.caption"
+msgid ":"
+msgstr ""
+
+#: tfrmtimeentry.time_start_hh.text
+msgctxt "tfrmtimeentry.time_start_hh.text"
+msgid "00"
+msgstr ""
+
+#: tfrmtimeentry.time_start_mm.text
+msgctxt "tfrmtimeentry.time_start_mm.text"
+msgid "00"
+msgstr ""
+
+#: tfrmtimeentry.time_start_separator.caption
+msgctxt "tfrmtimeentry.time_start_separator.caption"
+msgid ":"
+msgstr ""
+
+#: tfrmtimeentry.time_start_separator1.caption
+msgid "‒"
+msgstr ""
+
 #: uresourcestring.rscreatetask
 msgid "Create Task"
 msgstr ""
