@@ -169,11 +169,14 @@ begin
   Left := (Screen.Width - Width) div 2;
   Top := (Screen.Height - Height) div 2;
   // Restore position (only works with Position = poDesigned)
-  if ForceDirectories(GetAppConfigDir(False)) then
+  {$IFNDEF DARWIN}
+  if (ForceDirectories(GetAppConfigDir(False)))
+     and (fileexists(GetAppConfigDir(False) + 'settings.json')) then
   begin
-    JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
-    JSONPropStorage1.Restore;
+    //JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
+    //JSONPropStorage1.Restore;
   end;
+  {$ENDIF}
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -391,6 +394,8 @@ begin
   tiTray.Icons := ilTrayNormalMac;
   tiTray.Animate := True;
   {$ENDIF}
+  timerEntry.enabled:=true;
+  timerRefresh.enabled:=true;
 end;
 
 procedure TfrmMain.JSONPropStorage1RestoreProperties(Sender: TObject);
