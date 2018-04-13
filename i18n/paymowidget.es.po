@@ -254,6 +254,10 @@ msgstr "Error: No se puede actualizar la entrada de tiempo."
 msgid "Apparently there is no Internet connection. Try again soon."
 msgstr "Aparentemente no hay conexión a Internet. Intenta de nuevo pronto."
 
+#: uresourcestring.rspendingtasks
+msgid "PENDING TASKS"
+msgstr "TAREAS PENDIENTES"
+
 #: uresourcestring.rspleaseentertaskdescription
 msgid "Please enter task description."
 msgstr "Por favor ingrese la descripción de la tarea."

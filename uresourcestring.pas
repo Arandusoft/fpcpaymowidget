@@ -15,6 +15,7 @@ resourcestring
   rsErrorCantLogin = 'Can''t login.';
   rsToday = 'TODAY';
   rsYesterday = 'YESTERDAY';
+  rsPendingTasks = 'PENDING TASKS';
   rsErrorCantStopTimer = 'Error: Can''t stop timer.';
   rsPleaseFillAllFields = 'Please fill all fields.';
   rsThereMustBeAtLeastAMinuteOfDifferenceBetweenStartAndEndTime =

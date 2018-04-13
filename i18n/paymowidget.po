@@ -244,6 +244,10 @@ msgstr ""
 msgid "Apparently there is no Internet connection. Try again soon."
 msgstr ""
 
+#: uresourcestring.rspendingtasks
+msgid "PENDING TASKS"
+msgstr ""
+
 #: uresourcestring.rspleaseentertaskdescription
 msgid "Please enter task description."
 msgstr ""

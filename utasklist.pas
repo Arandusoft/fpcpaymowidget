@@ -571,6 +571,129 @@ begin
   end;
   sl.Free;
 
+  // day panel
+  d := TAnimatedPanel.Create(Self);
+  d.Style := apsTopBottom;
+  d.UseAutoSize := True;
+  d.Font.Name := FONTNAME;
+  d.BevelOuter := bvNone;
+  d.Align := alTop;
+  d.BorderSpacing.Top := ScaleX(20, 96);
+  d.AutoSize := False;
+  //d.OnClick := @DayClick;
+  d.Parent := Self;
+  // Pending Tasks
+  for i := 0 to arr.Count - 1 do
+  begin
+    if not arr[i].GetPath('complete').AsBoolean then
+    begin
+      // task container
+      p := TPanel.Create(d);
+      p.Font.Name := FONTNAME;
+      p.BevelOuter := bvNone;
+      p.BorderSpacing.Left := ScaleX(30, 96);
+      p.BorderSpacing.Right := ScaleX(30, 96);
+      p.BorderSpacing.Bottom := ScaleX(20, 96);
+      p.Align := alTop;
+      p.AutoSize := True;
+      p.Parent := d;
+      // title and arrow container
+      pc := TPanel.Create(p);
+      pc.Font.Name := FONTNAME;
+      //pc.Cursor := crHandPoint;
+      pc.BevelOuter := bvNone;
+      pc.Align := alTop;
+      pc.AutoSize := True;
+      pc.Name := 'arrow_container';
+      pc.Caption := '';
+      //pc.OnClick := @OnClickItem;
+      pc.Parent := p;
+      // project title
+      l := TLabel.Create(pc);
+      l.Font.Name := FONTNAME;
+      l.BorderSpacing.Left := ScaleX(30, 96);
+      //l.Cursor := crHandPoint;
+      l.Font.Color := clGray;
+      l.Font.Size := FONTSIZESMALL;
+      l.Align := alLeft;
+      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger);
+      //l.OnClick := @OnClickItemParent;
+      l.Parent := pc;
+      // play button
+      play := TPanel.Create(p);
+      play.Font.Name := FONTNAME;
+      play.BevelOuter := bvNone;
+      play.Font.Color := RGBToColor(221, 221, 221);
+      play.Align := alLeft;
+      play.Width := ScaleX(30, 96);
+      play.Font.Size := FONTSIZEBIG;
+      play.Caption := '▶';
+      play.Cursor := crHandPoint;
+      play.OnClick := @OnClickPlay;
+      if not arr[i].GetPath('complete').AsBoolean then
+      begin
+        play.OnMouseEnter := @OnEnterPlay;
+        play.OnMouseLeave := @OnLeavePlay;
+        // task id
+        play.Tag := arr[i].GetPath('id').AsInteger;
+      end
+      else
+      begin
+        play.ShowHint := True;
+        play.Hint := rsTaskIsComplete;
+        play.Tag := 0;
+      end;
+      play.Parent := p;
+      // task name
+      l := TLabel.Create(p);
+      l.Font.Name := FONTNAME;
+      //l.Cursor := crHandPoint;
+      l.Font.Color := clBlack;
+      l.Font.Size := FONTSIZEMEDIUM;
+      l.Align := alClient;
+      l.WordWrap := True;
+      if arr[i].GetPath('complete').AsBoolean then
+        l.Font.Style := [fsStrikeOut];
+      l.Caption := arr[i].GetPath('name').AsString;
+      //l.OnClick := @OnClickItem;
+      l.Parent := p;
+    end;
+  end;
+  // day and date container
+  pc := TPanel.Create(p);
+  pc.Font.Name := FONTNAME;
+  pc.BevelOuter := bvNone;
+  pc.Align := alTop;
+  pc.AutoSize := True;
+  pc.ChildSizing.ControlsPerLine := 4;
+  pc.ChildSizing.Layout := cclLeftToRightThenTopToBottom;
+  pc.ChildSizing.HorizontalSpacing := ScaleX(5, 96);
+  pc.Parent := p;
+  // day label
+  l := TLabel.Create(pc);
+  l.Font.Name := FONTNAMEBOLD;
+  l.Cursor := crHandPoint;
+  l.OnClick := @DayClickParent;
+  l.Font.Size := FONTSIZESMALL;
+  l.BorderSpacing.Top := ScaleX(10, 96);
+  l.BorderSpacing.Bottom := ScaleX(10, 96);
+  l.Parent := pc;
+  l.Caption := rsPendingTasks;
+  l.Font.Color := RGBToColor(99, 213, 120);
+  // arrow
+  l := TLabel.Create(pc);
+  l.Font.Name := FONTNAMEFIXED;
+  l.Cursor := crHandPoint;
+  l.Font.Color := clGray;
+  l.Font.Size := FONTSIZESMALL;
+  l.Name := 'arrow';
+  l.Caption := '˅';
+  l.OnClick := @DayClickParent;
+  l.Parent := pc;
+  // min height of container (label height + border spacing)
+  d.Constraints.MinHeight := l.Height + ScaleX(20, 96);
+  d.Height := d.Constraints.MinHeight;
+
   // Revert to original sorting
   arr.Sort(@NameSort);
 end;
