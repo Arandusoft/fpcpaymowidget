@@ -173,8 +173,8 @@ begin
   if (ForceDirectories(GetAppConfigDir(False)))
      and (fileexists(GetAppConfigDir(False) + 'settings.json')) then
   begin
-    //JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
-    //JSONPropStorage1.Restore;
+    JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
+    JSONPropStorage1.Restore;
   end;
   {$ENDIF}
 end;

@@ -16,7 +16,7 @@ object frmMain: TfrmMain
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
-  SessionProperties = 'Height;Left;Top;Width;cbShowTimeInAppIcon.Checked;leAPIURL.Text'
+  SessionProperties = 'cbShowTimeInAppIcon.Checked;Height;leAPIURL.Text;Left;Top;Width;WindowState'
   ShowInTaskBar = stNever
   LCLVersion = '1.9.0.0'
   object pnlTop: TPanel
@@ -113,7 +113,7 @@ object frmMain: TfrmMain
     object pnlMenuUser: TLabel
       Tag = -16
       Left = 80
-      Height = 25
+      Height = 21
       Top = 40
       Width = 190
       Align = alTop
@@ -129,8 +129,8 @@ object frmMain: TfrmMain
     object pnlMenuCompany: TLabel
       Tag = -14
       Left = 80
-      Height = 23
-      Top = 65
+      Height = 19
+      Top = 61
       Width = 190
       Align = alTop
       BorderSpacing.Left = 80
@@ -147,7 +147,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 199
+      Top = 191
       Width = 270
       Align = alTop
       AutoSize = True
@@ -181,7 +181,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 290
+      Top = 282
       Width = 270
       Align = alTop
       AutoSize = True
@@ -213,7 +213,7 @@ object frmMain: TfrmMain
     object pnlSpacer1: TPanel
       Left = 30
       Height = 1
-      Top = 284
+      Top = 276
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -230,7 +230,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 108
+      Top = 100
       Width = 270
       Align = alTop
       AutoSize = True
@@ -262,7 +262,7 @@ object frmMain: TfrmMain
     object pnlSpacer2: TPanel
       Left = 30
       Height = 1
-      Top = 193
+      Top = 185
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -278,9 +278,9 @@ object frmMain: TfrmMain
       Tag = -30
       Cursor = crHandPoint
       Left = 232
-      Height = 52
+      Height = 44
       Top = 0
-      Width = 44
+      Width = 30
       AutoSize = True
       Constraints.MinHeight = 40
       Caption = '←'
@@ -313,7 +313,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 239
+      Top = 231
       Width = 270
       Align = alTop
       AutoSize = True
@@ -347,7 +347,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 148
+      Top = 140
       Width = 270
       Align = alTop
       AutoSize = True
@@ -396,9 +396,9 @@ object frmMain: TfrmMain
     object lblProject: TLabel
       Tag = -12
       Left = 38
-      Height = 19
+      Height = 16
       Top = 24
-      Width = 54
+      Width = 38
       Caption = 'Project'
       Font.Color = 4805637
       Font.Height = 16
@@ -425,9 +425,9 @@ object frmMain: TfrmMain
     object lblTime: TLabel
       Tag = -40
       Left = 99
-      Height = 63
+      Height = 53
       Top = 128
-      Width = 235
+      Width = 156
       Caption = '00:00:00'
       Font.Color = clWhite
       Font.Height = 53
@@ -466,9 +466,9 @@ object frmMain: TfrmMain
     object cbShowTimeInAppIcon: TCheckBox
       Tag = -14
       Left = 16
-      Height = 27
+      Height = 23
       Top = 64
-      Width = 229
+      Width = 160
       Caption = 'Show time in app icon'
       Font.Height = 19
       Font.Name = 'Nunito Sans'
@@ -478,7 +478,7 @@ object frmMain: TfrmMain
     object leAPIURL: TLabeledEdit
       Tag = -14
       Left = 16
-      Height = 21
+      Height = 27
       Top = 120
       Width = 224
       Anchors = [akTop, akLeft, akRight]
@@ -488,8 +488,8 @@ object frmMain: TfrmMain
       EditLabel.AnchorSideRight.Side = asrBottom
       EditLabel.AnchorSideBottom.Control = leAPIURL
       EditLabel.Left = 16
-      EditLabel.Height = 16
-      EditLabel.Top = 101
+      EditLabel.Height = 15
+      EditLabel.Top = 102
       EditLabel.Width = 224
       EditLabel.Caption = 'API URL'
       EditLabel.ParentColor = False
@@ -519,9 +519,9 @@ object frmMain: TfrmMain
       Tag = -30
       Cursor = crHandPoint
       Left = 16
-      Height = 52
+      Height = 44
       Top = 8
-      Width = 44
+      Width = 30
       AutoSize = True
       Constraints.MinHeight = 40
       Caption = '←'
@@ -1552,6 +1552,9 @@ object frmMain: TfrmMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000
+    }
+    BitmapAdv = {
+      4C6900000000
     }
   end
   object JSONPropStorage1: TJSONPropStorage
