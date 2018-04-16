@@ -39,6 +39,9 @@ type
     lblStop: TLabel;
     lblProject: TLabel;
     leAPIURL: TLabeledEdit;
+    miOpenPaymoApp: TMenuItem;
+    miRefresh: TMenuItem;
+    miSettings: TMenuItem;
     miShow: TMenuItem;
     miAbout: TMenuItem;
     miQuit: TMenuItem;
@@ -243,6 +246,8 @@ end;
 
 procedure TfrmMain.btnSettingsClick(Sender: TObject);
 begin
+  Self.ShowInTaskBar := stDefault;
+  Self.Show;
   hideMenu(nil);
   pnlSettings.BringToFront;
   pnlSettings.Left := 0;
@@ -257,6 +262,8 @@ end;
 
 procedure TfrmMain.btnRefreshClick(Sender: TObject);
 begin
+  Self.ShowInTaskBar := stDefault;
+  Self.Show;
   frmMain.timerRefreshTimer(nil);
 end;
 

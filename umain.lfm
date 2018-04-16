@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 102
+  Left = 377
   Height = 540
-  Top = 86
+  Top = 68
   Width = 360
   Caption = 'FPC Paymo Widget'
   ClientHeight = 540
@@ -398,7 +398,7 @@ object frmMain: TfrmMain
       Left = 38
       Height = 16
       Top = 24
-      Width = 38
+      Width = 34
       Caption = 'Project'
       Font.Color = 4805637
       Font.Height = 16
@@ -427,7 +427,7 @@ object frmMain: TfrmMain
       Left = 99
       Height = 53
       Top = 128
-      Width = 156
+      Width = 154
       Caption = '00:00:00'
       Font.Color = clWhite
       Font.Height = 53
@@ -456,7 +456,7 @@ object frmMain: TfrmMain
   object pnlSettings: TPanel
     Left = 8
     Height = 184
-    Top = 328
+    Top = 320
     Width = 336
     BevelOuter = bvNone
     ClientHeight = 184
@@ -468,7 +468,7 @@ object frmMain: TfrmMain
       Left = 16
       Height = 23
       Top = 64
-      Width = 160
+      Width = 156
       Caption = 'Show time in app icon'
       Font.Height = 19
       Font.Name = 'Nunito Sans'
@@ -488,8 +488,8 @@ object frmMain: TfrmMain
       EditLabel.AnchorSideRight.Side = asrBottom
       EditLabel.AnchorSideBottom.Control = leAPIURL
       EditLabel.Left = 16
-      EditLabel.Height = 15
-      EditLabel.Top = 102
+      EditLabel.Height = 16
+      EditLabel.Top = 101
       EditLabel.Width = 224
       EditLabel.Caption = 'API URL'
       EditLabel.ParentColor = False
@@ -573,6 +573,18 @@ object frmMain: TfrmMain
     object miShow: TMenuItem
       Caption = 'Show'
       OnClick = tiTrayClick
+    end
+    object miOpenPaymoApp: TMenuItem
+      Caption = 'Open Paymo App'
+      OnClick = btnOpenPaymoAppClick
+    end
+    object miRefresh: TMenuItem
+      Caption = 'Refresh'
+      OnClick = btnRefreshClick
+    end
+    object miSettings: TMenuItem
+      Caption = 'Settings'
+      OnClick = btnSettingsClick
     end
     object miAbout: TMenuItem
       Caption = 'About'

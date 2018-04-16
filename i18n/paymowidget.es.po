@@ -22,6 +22,7 @@ msgid "←"
 msgstr ""
 
 #: tfrmmain.btnopenpaymoapp.caption
+msgctxt "tfrmmain.btnopenpaymoapp.caption"
 msgid "Open Paymo App"
 msgstr "Abrir Paymo App"
 
@@ -31,6 +32,7 @@ msgid "Quit"
 msgstr "Salir"
 
 #: tfrmmain.btnrefresh.caption
+msgctxt "tfrmmain.btnrefresh.caption"
 msgid "Refresh"
 msgstr "Recargar"
 
@@ -39,6 +41,7 @@ msgid "Reset"
 msgstr "Resetear"
 
 #: tfrmmain.btnsettings.caption
+msgctxt "tfrmmain.btnsettings.caption"
 msgid "Settings"
 msgstr "Configuración"
 
@@ -80,10 +83,28 @@ msgctxt "tfrmmain.miabout.caption"
 msgid "About"
 msgstr "Acerca de"
 
+#: tfrmmain.miopenpaymoapp.caption
+#, fuzzy
+msgctxt "tfrmmain.miopenpaymoapp.caption"
+msgid "Open Paymo App"
+msgstr "Abrir Paymo App"
+
 #: tfrmmain.miquit.caption
 msgctxt "tfrmmain.miquit.caption"
 msgid "Quit"
 msgstr "Salir"
+
+#: tfrmmain.mirefresh.caption
+#, fuzzy
+msgctxt "tfrmmain.mirefresh.caption"
+msgid "Refresh"
+msgstr "Recargar"
+
+#: tfrmmain.misettings.caption
+#, fuzzy
+msgctxt "tfrmmain.misettings.caption"
+msgid "Settings"
+msgstr "Configuración"
 
 #: tfrmmain.mishow.caption
 msgid "Show"
@@ -294,3 +315,4 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
+
