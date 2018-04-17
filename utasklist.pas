@@ -255,7 +255,19 @@ var
   sl: TStringList;
   tempstr: string;
   t: TDateTime;
+  ui_status: TStringList;
 begin
+  ui_status := TStringList.Create;
+  for i := Self.ControlCount - 1 downto 0 do
+  begin
+    if Self.Controls[i] is TAnimatedPanel then
+    begin
+      if TAnimatedPanel(Self.Controls[i]).Caption <> '' then
+        ui_status.Values[TAnimatedPanel(Self.Controls[i]).Caption] :=
+          BoolToStr(TAnimatedPanel(Self.Controls[i]).AutoSize, 'true', 'false');
+    end;
+  end;
+
   for i := Self.ControlCount - 1 downto 0 do
     Self.Controls[i].Free;
 
@@ -308,6 +320,20 @@ begin
     d.AutoSize := True;
     //d.OnClick := @DayClick;
     d.Parent := Self;
+    d.Caption := sl[k];
+    d.Font.Color := clWhite;
+
+    if ui_status.Values[d.Caption] <> '' then
+      case ui_status.Values[d.Caption] of
+        'true':
+        begin
+          d.AutoSize := True;
+        end;
+        'false':
+        begin
+          d.AutoSize := False;
+        end;
+      end;
 
     for i := 0 to arr.Count - 1 do
     begin
@@ -379,7 +405,10 @@ begin
       l.Align := alRight;
       l.Alignment := taRightJustify;
       l.Name := 'arrow';
-      l.Caption := '˅';
+      if p.AutoSize then
+        l.Caption := '˅'
+      else
+        l.Caption := '˄';
       l.OnClick := @OnClickItemParent;
       l.Parent := pc;
       // play button
@@ -543,6 +572,8 @@ begin
     end;
     // min height of container (label height + border spacing)
     d.Constraints.MinHeight := l.Height + ScaleX(20, 96);
+    if not d.AutoSize then
+      d.Height := d.Constraints.MinHeight;
     // arrow
     l := TLabel.Create(pc);
     l.Font.Name := FONTNAMEFIXED;
@@ -550,7 +581,10 @@ begin
     l.Font.Color := clGray;
     l.Font.Size := FONTSIZESMALL;
     l.Name := 'arrow';
-    l.Caption := '˄';
+    if not d.AutoSize then
+      l.Caption := '˅'
+    else
+      l.Caption := '˄';
     l.OnClick := @DayClickParent;
     l.Parent := pc;
     // total time container
@@ -582,6 +616,21 @@ begin
   d.AutoSize := False;
   //d.OnClick := @DayClick;
   d.Parent := Self;
+  d.Caption := 'PENDINGTASKS';
+  d.Font.Color := clWhite;
+
+  if ui_status.Values[d.Caption] <> '' then
+    case ui_status.Values[d.Caption] of
+      'true':
+      begin
+        d.AutoSize := True;
+      end;
+      'false':
+      begin
+        d.AutoSize := False;
+      end;
+    end;
+
   // Pending Tasks
   for i := 0 to arr.Count - 1 do
   begin
@@ -687,15 +736,22 @@ begin
   l.Font.Color := clGray;
   l.Font.Size := FONTSIZESMALL;
   l.Name := 'arrow';
-  l.Caption := '˅';
   l.OnClick := @DayClickParent;
   l.Parent := pc;
   // min height of container (label height + border spacing)
   d.Constraints.MinHeight := l.Height + ScaleX(20, 96);
-  d.Height := d.Constraints.MinHeight;
+  if not d.AutoSize then
+  begin
+    l.Caption := '˅';
+    d.Height := d.Constraints.MinHeight;
+  end
+  else
+    l.Caption := '˄';
 
   // Revert to original sorting
   arr.Sort(@NameSort);
+
+  ui_status.Free;
 end;
 
 constructor TTaskList.Create(AOwner: TComponent);
