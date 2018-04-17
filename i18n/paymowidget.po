@@ -73,24 +73,9 @@ msgctxt "tfrmmain.miabout.caption"
 msgid "About"
 msgstr ""
 
-#: tfrmmain.miopenpaymoapp.caption
-msgctxt "tfrmmain.miopenpaymoapp.caption"
-msgid "Open Paymo App"
-msgstr ""
-
 #: tfrmmain.miquit.caption
 msgctxt "tfrmmain.miquit.caption"
 msgid "Quit"
-msgstr ""
-
-#: tfrmmain.mirefresh.caption
-msgctxt "tfrmmain.mirefresh.caption"
-msgid "Refresh"
-msgstr ""
-
-#: tfrmmain.misettings.caption
-msgctxt "tfrmmain.misettings.caption"
-msgid "Settings"
 msgstr ""
 
 #: tfrmmain.mishow.caption
