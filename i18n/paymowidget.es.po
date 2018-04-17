@@ -84,7 +84,6 @@ msgid "About"
 msgstr "Acerca de"
 
 #: tfrmmain.miopenpaymoapp.caption
-#, fuzzy
 msgctxt "tfrmmain.miopenpaymoapp.caption"
 msgid "Open Paymo App"
 msgstr "Abrir Paymo App"
@@ -95,13 +94,11 @@ msgid "Quit"
 msgstr "Salir"
 
 #: tfrmmain.mirefresh.caption
-#, fuzzy
 msgctxt "tfrmmain.mirefresh.caption"
 msgid "Refresh"
 msgstr "Recargar"
 
 #: tfrmmain.misettings.caption
-#, fuzzy
 msgctxt "tfrmmain.misettings.caption"
 msgid "Settings"
 msgstr "Configuración"
@@ -315,4 +312,3 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
-
