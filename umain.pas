@@ -9,7 +9,7 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes, PropertyStorage, ComCtrls;
+  BGRABitmapTypes, PropertyStorage, ComCtrls, LazUTF8;
 
 type
 
@@ -27,6 +27,7 @@ type
     btnQuit: TColorSpeedButton;
     btnReset: TButton;
     cbShowTimeInAppIcon: TCheckBox;
+    edSearch: TEdit;
     ilTrayAnimWin: TImageList;
     ilTrayAnimMac: TImageList;
     ilTrayOfflineMac: TImageList;
@@ -96,6 +97,7 @@ type
       var Param: variant);
     procedure DownloadTasksFinish(const Sender: TTask; const Msg: word;
       const Param: variant);
+    procedure edSearchChange(Sender: TObject);
     procedure FormClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -163,7 +165,7 @@ begin
   if Paymo.LoggedIn then
   begin
     try
-      timerRefresh.Enabled:=true;
+      timerRefresh.Enabled := True;
       timerRefreshTimer(self);
     except
     end;
@@ -211,6 +213,7 @@ begin
   pnlMenu.Animate();
   // change style to disabled
   pnlTop.Enabled := False;
+  edSearch.Enabled := False;
   pnlTime.Enabled := False;
   if Assigned(Tasks) then
     Tasks.Enabled := False;
@@ -360,6 +363,45 @@ begin
     ListTasks();
 end;
 
+procedure TfrmMain.edSearchChange(Sender: TObject);
+var
+  i, j: integer;
+  comp, comp2, comp3: TComponent;
+  s, search: string;
+  _show: boolean;
+begin
+  search := UTF8LowerCase(edSearch.Text);
+  if search = '' then
+    _show := True
+  else
+    _show := False;
+  // days
+  //ShowMessage(Tasks.ComponentCount.ToString());
+  for i := 0 to Tasks.ComponentCount - 1 do
+  begin
+    // tasks
+    comp := Tasks.Components[i];
+    for j := 0 to comp.ComponentCount - 1 do
+    begin
+      comp2 := nil;
+      comp2 := comp.FindComponent('taskc' + j.ToString());
+      if Assigned(comp2) then
+      begin
+        comp3 := nil;
+        comp3 := comp2.FindComponent('taskl');
+        if Assigned(comp3) then
+        begin
+          s := UTF8LowerCase(TLabel(comp3).Caption);
+          if (UTF8Pos(search, s) <> 0) or _show then
+            TControl(comp3).Visible := True
+          else
+            TControl(comp3).Visible := False;
+        end;
+      end;
+    end;
+  end;
+end;
+
 procedure TfrmMain.FormClick(Sender: TObject);
 begin
   hideMenu(Self);
@@ -398,8 +440,8 @@ begin
   tiTray.Icons := ilTrayNormalMac;
   tiTray.Animate := True;
   {$ENDIF}
-  timerEntry.enabled:=true;
-  timerRefresh.enabled:=true;
+  timerEntry.Enabled := True;
+  timerRefresh.Enabled := True;
 end;
 
 procedure TfrmMain.JSONPropStorage1RestoreProperties(Sender: TObject);
@@ -491,6 +533,7 @@ begin
   pnlMenu.Animate();
   // change style back to enabled
   pnlTop.Enabled := True;
+  edSearch.Enabled := True;
   pnlTime.Enabled := True;
   if Assigned(Tasks) then
     Tasks.Enabled := True;

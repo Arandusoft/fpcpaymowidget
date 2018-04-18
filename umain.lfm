@@ -380,7 +380,7 @@ object frmMain: TfrmMain
   object pnlTime: TPanel
     Left = 0
     Height = 222
-    Top = 70
+    Top = 93
     Width = 360
     Align = alTop
     BevelOuter = bvNone
@@ -559,6 +559,16 @@ object frmMain: TfrmMain
     Style = pbstMarquee
     TabOrder = 4
     Visible = False
+  end
+  object edSearch: TEdit
+    Left = 0
+    Height = 23
+    Top = 70
+    Width = 360
+    Align = alTop
+    Enabled = False
+    OnChange = edSearchChange
+    TabOrder = 5
   end
   object tiTray: TTrayIcon
     PopUpMenu = pmTray

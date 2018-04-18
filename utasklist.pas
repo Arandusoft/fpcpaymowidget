@@ -247,7 +247,7 @@ end;
 
 procedure TTaskList.RefreshItems;
 var
-  i, j, k, sum, sec, sumDay: integer;
+  i, j, k, sum, sec, sumDay, id: integer;
   d, e: TAnimatedPanel;
   p, pc, play: TPanel;
   l, lt: TLabel;
@@ -335,6 +335,7 @@ begin
         end;
       end;
 
+    id := 0;
     for i := 0 to arr.Count - 1 do
     begin
       // all time entries
@@ -374,6 +375,8 @@ begin
       p.Align := alTop;
       p.AutoSize := True;
       p.Parent := d;
+      p.Name := 'taskc' + id.ToString();
+      p.Font.Color := clWhite;
       // title and arrow container
       pc := TPanel.Create(p);
       pc.Font.Name := FONTNAME;
@@ -449,6 +452,8 @@ begin
       l.Caption := arr[i].GetPath('name').AsString;
       l.OnClick := @OnClickItem;
       l.Parent := p;
+      l.Name := 'taskl';
+      Inc(id);
       // sum of time entries container
       pc := TPanel.Create(p);
       pc.Font.Name := FONTNAME;
