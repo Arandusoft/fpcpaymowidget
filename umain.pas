@@ -173,12 +173,8 @@ begin
   Top := (Screen.Height - Height) div 2;
   // Restore position (only works with Position = poDesigned)
   {$IFNDEF DARWIN}
-  if (ForceDirectories(GetAppConfigDir(False)))
-     and (fileexists(GetAppConfigDir(False) + 'settings.json')) then
-  begin
-    JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
-    JSONPropStorage1.Restore;
-  end;
+  ForceDirectories(GetAppConfigDir(False));
+  JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
   {$ENDIF}
 end;
 

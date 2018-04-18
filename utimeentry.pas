@@ -341,11 +341,9 @@ procedure TfrmTimeEntry.FormCreate(Sender: TObject);
 begin
   frmMain.SetFonts(Self);
   // Restore position (only works with Position = poDesigned)
-  if ForceDirectories(GetAppConfigDir(False)) then
-  begin
-    JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
-    JSONPropStorage1.Restore;
-  end;
+  {$IFNDEF DARWIN}
+  JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
+  {$ENDIF}
   acProject.Width := Width - acProject.Left - ScaleX(20, 96);
   acTask.Width := Width - acTask.Left - ScaleX(20, 96);
   acTaskList.Width := Width - acTaskList.Left - ScaleX(20, 96);
