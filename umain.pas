@@ -393,9 +393,9 @@ begin
         begin
           s := UTF8LowerCase(TLabel(comp3).Caption);
           if (UTF8Pos(search, s) <> 0) or _show then
-            TControl(comp3).Visible := True
+            TControl(comp3).Parent.Visible := True
           else
-            TControl(comp3).Visible := False;
+            TControl(comp3).Parent.Visible := False;
         end;
       end;
     end;
