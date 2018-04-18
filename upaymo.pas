@@ -13,6 +13,7 @@ const
   PAYMOAPIKEYURL = 'https://app.paymoapp.com/#Paymo.module.myaccount/';
 
 function NameSort(Item1, Item2: Pointer): integer;
+function SeqSort(Item1, Item2: Pointer): integer;
 function InverseNameSort(Item1, Item2: Pointer): integer;
 
 type
@@ -91,6 +92,19 @@ begin
   if UTF8LowerCase(TJSONData(Item1).GetPath('name').AsString) <
     UTF8LowerCase(TJSONData(Item2).GetPath('name').AsString) then
     exit(-1);
+  exit(0);
+end;
+
+function SeqSort(Item1, Item2: Pointer): integer;
+begin
+  if TJSONData(Item1).GetPath('project_id').AsInteger > TJSONData(Item2).GetPath('project_id').AsInteger then
+    exit(-1);
+  if TJSONData(Item1).GetPath('project_id').AsInteger < TJSONData(Item2).GetPath('project_id').AsInteger then
+    exit(1);
+  if TJSONData(Item1).GetPath('seq').AsInteger > TJSONData(Item2).GetPath('seq').AsInteger then
+    exit(-1);
+  if TJSONData(Item1).GetPath('seq').AsInteger < TJSONData(Item2).GetPath('seq').AsInteger then
+    exit(1);
   exit(0);
 end;
 

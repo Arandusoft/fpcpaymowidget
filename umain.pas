@@ -345,6 +345,7 @@ end;
 procedure TfrmMain.DownloadTasksFinish(const Sender: TTask; const Msg: word;
   const Param: variant);
 begin
+  //ShowMessage(Paymo.TasksArray.formatJSON());
   if not Assigned(Tasks) then
   begin
     Tasks := TTaskList.Create(Self);

@@ -605,6 +605,8 @@ begin
   end;
   sl.Free;
 
+  arr.Sort(@SeqSort);
+
   // day panel
   d := TAnimatedPanel.Create(Self);
   d.Style := apsTopBottom;
@@ -665,7 +667,9 @@ begin
       l.Font.Color := clGray;
       l.Font.Size := FONTSIZESMALL;
       l.Align := alLeft;
-      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger);
+      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger) +
+        '  [' + UTF8UpperCase(FormatDateTime('ddddd',
+        StringToDateTime(arr[i].GetPath('created_on').AsString))) + ']';
       //l.OnClick := @OnClickItemParent;
       l.Parent := pc;
       // play button
@@ -706,6 +710,22 @@ begin
       l.Caption := arr[i].GetPath('name').AsString;
       //l.OnClick := @OnClickItem;
       l.Parent := p;
+      {// total time container
+      pc := TPanel.Create(p);
+      pc.Font.Name := FONTNAME;
+      pc.BevelOuter := bvNone;
+      pc.Align := alRight;
+      pc.AutoSize := True;
+      pc.Parent := p;
+      // total time of day
+      lt := TLabel.Create(pc);
+      lt.Font.Name := FONTNAMELIGHT;
+      lt.Font.Size := FONTSIZEBIG2;
+      lt.Align := alTop;
+      lt.Font.Color := clBlack;
+      lt.Caption := UTF8UpperCase(FormatDateTime('ddddd',
+        StringToDateTime(arr[i].GetPath('created_on').AsString)));
+      lt.Parent := pc;}
     end;
   end;
   // day and date container

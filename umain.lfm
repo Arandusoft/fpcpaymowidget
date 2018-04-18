@@ -489,7 +489,7 @@ object frmMain: TfrmMain
       EditLabel.AnchorSideBottom.Control = leAPIURL
       EditLabel.Left = 16
       EditLabel.Height = 15
-      EditLabel.Top = 103
+      EditLabel.Top = 102
       EditLabel.Width = 224
       EditLabel.Caption = 'API URL'
       EditLabel.ParentColor = False
