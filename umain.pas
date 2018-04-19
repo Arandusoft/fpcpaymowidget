@@ -368,36 +368,51 @@ var
   i, j: integer;
   comp, comp2, comp3: TComponent;
   s, search: string;
-  _show: boolean;
+  _hide: boolean;
 begin
+  if not Assigned(Tasks) then exit;
   search := UTF8LowerCase(edSearch.Text);
   if search = '' then
-    _show := True
-  else
-    _show := False;
-  // days
+  begin
+    ListTasks();
+    exit;
+  end;
   //ShowMessage(Tasks.ComponentCount.ToString());
   for i := 0 to Tasks.ComponentCount - 1 do
   begin
-    // tasks
+    _hide := True;
+    comp := nil;
+    // day
     comp := Tasks.Components[i];
     for j := 0 to comp.ComponentCount - 1 do
     begin
       comp2 := nil;
+      // task container
       comp2 := comp.FindComponent('taskc' + j.ToString());
       if Assigned(comp2) then
       begin
         comp3 := nil;
+        // task description
         comp3 := comp2.FindComponent('taskl');
         if Assigned(comp3) then
         begin
           s := UTF8LowerCase(TLabel(comp3).Caption);
-          if (UTF8Pos(search, s) <> 0) or _show then
-            TControl(comp3).Parent.Visible := True
+          if (UTF8Pos(search, s) <> 0) then
+          begin
+            _hide := False;
+            TControl(comp2).Visible := True;
+          end
           else
-            TControl(comp3).Parent.Visible := False;
+            TControl(comp2).Visible := False;
         end;
       end;
+    end;
+    if _hide then
+      TControl(comp).Visible := False
+    else
+    begin
+      TControl(comp).Visible := True;
+      TControl(comp).AutoSize := True;
     end;
   end;
 end;
@@ -628,6 +643,8 @@ procedure TfrmMain.ListTasks();
 begin
   Tasks.Visible := False;
   Tasks.RefreshItems;
+  if edSearch.Text <> '' then
+    edSearchChange(nil);
   //SetFonts(Tasks);
   Tasks.Visible := True;
 end;

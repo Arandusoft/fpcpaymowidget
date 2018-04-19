@@ -72,6 +72,7 @@ type
     procedure OnClickItem(Sender: TObject);
     procedure OnClickItemParent(Sender: TObject);
     procedure DayClick(Sender: TObject);
+    procedure DayClickHeader(Sender: TObject);
     procedure DayClickParent(Sender: TObject);
   public
     class function SecondsToString(Seconds: integer): string;
@@ -396,7 +397,9 @@ begin
       l.Font.Color := clGray;
       l.Font.Size := FONTSIZESMALL;
       l.Align := alLeft;
-      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger);
+      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger) +
+        '  [' + UTF8UpperCase(FormatDateTime('ddddd',
+        StringToDateTime(arr[i].GetPath('created_on').AsString))) + ']';
       l.OnClick := @OnClickItemParent;
       l.Parent := pc;
       // task right arrow
@@ -538,15 +541,19 @@ begin
     pc.BevelOuter := bvNone;
     pc.Align := alTop;
     pc.AutoSize := True;
+    pc.BorderSpacing.Left := ScaleX(40, 96);
+    pc.BorderSpacing.Right := ScaleX(30, 96);
+    pc.BorderSpacing.Bottom := ScaleX(40, 96);
     pc.ChildSizing.ControlsPerLine := 4;
     pc.ChildSizing.Layout := cclLeftToRightThenTopToBottom;
     pc.ChildSizing.HorizontalSpacing := ScaleX(5, 96);
-    pc.Parent := p;
+    pc.Font.Color := clWhite;
+    pc.Parent := d;
     // day label
     l := TLabel.Create(pc);
     l.Font.Name := FONTNAMEBOLD;
     l.Cursor := crHandPoint;
-    l.OnClick := @DayClickParent;
+    l.OnClick := @DayClickHeader;
     l.Font.Size := FONTSIZESMALL;
     l.BorderSpacing.Top := ScaleX(10, 96);
     l.BorderSpacing.Bottom := ScaleX(10, 96);
@@ -569,16 +576,12 @@ begin
       lt := TLabel.Create(pc);
       lt.Font.Name := FONTNAME;
       lt.Cursor := crHandPoint;
-      lt.OnClick := @DayClickParent;
+      lt.OnClick := @DayClickHeader;
       lt.Font.Size := FONTSIZESMALL;
       lt.Font.Color := clGray;
       lt.Caption := UTF8UpperCase(FormatDateTime('ddddd', t));
       lt.Parent := pc;
     end;
-    // min height of container (label height + border spacing)
-    d.Constraints.MinHeight := l.Height + ScaleX(20, 96);
-    if not d.AutoSize then
-      d.Height := d.Constraints.MinHeight;
     // arrow
     l := TLabel.Create(pc);
     l.Font.Name := FONTNAMEFIXED;
@@ -590,7 +593,7 @@ begin
       l.Caption := '˅'
     else
       l.Caption := '˄';
-    l.OnClick := @DayClickParent;
+    l.OnClick := @DayClickHeader;
     l.Parent := pc;
     // total time container
     p := TPanel.Create(pc);
@@ -607,6 +610,10 @@ begin
     lt.Font.Color := clBlack;
     lt.Caption := SecondsToString(sumDay);
     lt.Parent := p;
+    // min height of container (label height + border spacing)
+    d.Constraints.MinHeight := p.Height; // + ScaleX(20, 96);
+    if not d.AutoSize then
+      d.Height := d.Constraints.MinHeight;
   end;
   sl.Free;
 
@@ -639,6 +646,7 @@ begin
     end;
 
   // Pending Tasks
+  id := 0;
   for i := 0 to arr.Count - 1 do
   begin
     if not arr[i].GetPath('complete').AsBoolean then
@@ -652,7 +660,10 @@ begin
       p.BorderSpacing.Bottom := ScaleX(20, 96);
       p.Align := alTop;
       p.AutoSize := True;
+      p.Name := 'taskc' + id.ToString();
+      p.Font.Color := clWhite;
       p.Parent := d;
+      Inc(id);
       // title and arrow container
       pc := TPanel.Create(p);
       pc.Font.Name := FONTNAME;
@@ -714,6 +725,7 @@ begin
         l.Font.Style := [fsStrikeOut];
       l.Caption := arr[i].GetPath('name').AsString;
       //l.OnClick := @OnClickItem;
+      l.Name := 'taskl';
       l.Parent := p;
       {// total time container
       pc := TPanel.Create(p);
@@ -739,15 +751,18 @@ begin
   pc.BevelOuter := bvNone;
   pc.Align := alTop;
   pc.AutoSize := True;
+  pc.BorderSpacing.Left := ScaleX(40, 96);
+  pc.BorderSpacing.Right := ScaleX(30, 96);
+  pc.BorderSpacing.Bottom := ScaleX(40, 96);
   pc.ChildSizing.ControlsPerLine := 4;
   pc.ChildSizing.Layout := cclLeftToRightThenTopToBottom;
   pc.ChildSizing.HorizontalSpacing := ScaleX(5, 96);
-  pc.Parent := p;
+  pc.Parent := d;
   // day label
   l := TLabel.Create(pc);
   l.Font.Name := FONTNAMEBOLD;
   l.Cursor := crHandPoint;
-  l.OnClick := @DayClickParent;
+  l.OnClick := @DayClickHeader;
   l.Font.Size := FONTSIZESMALL;
   l.BorderSpacing.Top := ScaleX(10, 96);
   l.BorderSpacing.Bottom := ScaleX(10, 96);
@@ -761,10 +776,10 @@ begin
   l.Font.Color := clGray;
   l.Font.Size := FONTSIZESMALL;
   l.Name := 'arrow';
-  l.OnClick := @DayClickParent;
+  l.OnClick := @DayClickHeader;
   l.Parent := pc;
   // min height of container (label height + border spacing)
-  d.Constraints.MinHeight := l.Height + ScaleX(20, 96);
+  d.Constraints.MinHeight := pc.Height;// + ScaleX(20, 96);
   if not d.AutoSize then
   begin
     l.Caption := '˅';
@@ -794,6 +809,21 @@ var
 begin
   p := TAnimatedPanel(TControl(Sender));
   p.Animate();
+end;
+
+procedure TTaskList.DayClickHeader(Sender: TObject);
+var
+  p: TAnimatedPanel;
+  c: TControl;
+begin
+  p := TAnimatedPanel(TControl(Sender).Parent.Parent);
+  p.Animate();
+
+  c := TControl(TControl(Sender).Parent.FindComponent('arrow'));
+  if c.Caption = '˅' then
+    c.Caption := '˄'
+  else
+    c.Caption := '˅';
 end;
 
 end.

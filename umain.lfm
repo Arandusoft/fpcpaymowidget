@@ -3,6 +3,7 @@ object frmMain: TfrmMain
   Height = 540
   Top = 68
   Width = 360
+  ActiveControl = edSearch
   Caption = 'FPC Paymo Widget'
   ClientHeight = 540
   ClientWidth = 360
@@ -566,7 +567,6 @@ object frmMain: TfrmMain
     Top = 70
     Width = 360
     Align = alTop
-    Enabled = False
     OnChange = edSearchChange
     TabOrder = 5
   end
