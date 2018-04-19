@@ -2,7 +2,7 @@
 [Paymo](https://www.paymoapp.com/) Widget made with Free Pascal
 
 # Download
-[Download FPC Paymo Widget 1.0.9 (Windows)](https://github.com/Arandusoft/fpcpaymowidget/releases/download/v1.0.9/fpcpaymowidget_1.0.9.exe)
+[Download FPC Paymo Widget](https://github.com/Arandusoft/fpcpaymowidget/releases/)
 
 # macOS
 On macOS, you need to upgrade SSL in order to work.
