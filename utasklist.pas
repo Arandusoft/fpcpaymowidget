@@ -617,7 +617,9 @@ begin
   end;
   sl.Free;
 
-  arr.Sort(@SeqSort);
+  PAYMO_SORT_INSTANCE := PaymoInstance;
+  arr.Sort(@SeqSortProjectName);
+  PAYMO_SORT_INSTANCE := nil;
 
   // day panel
   d := TAnimatedPanel.Create(Self);

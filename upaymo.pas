@@ -14,6 +14,7 @@ const
 
 function NameSort(Item1, Item2: Pointer): integer;
 function SeqSort(Item1, Item2: Pointer): integer;
+function SeqSortProjectName(Item1, Item2: Pointer): integer;
 function InverseNameSort(Item1, Item2: Pointer): integer;
 
 type
@@ -82,6 +83,9 @@ type
     procedure SaveSettings;
   end;
 
+var
+  PAYMO_SORT_INSTANCE: TPaymo;
+
 implementation
 
 function NameSort(Item1, Item2: Pointer): integer;
@@ -100,6 +104,19 @@ begin
   if TJSONData(Item1).GetPath('project_id').AsInteger > TJSONData(Item2).GetPath('project_id').AsInteger then
     exit(-1);
   if TJSONData(Item1).GetPath('project_id').AsInteger < TJSONData(Item2).GetPath('project_id').AsInteger then
+    exit(1);
+  if TJSONData(Item1).GetPath('seq').AsInteger > TJSONData(Item2).GetPath('seq').AsInteger then
+    exit(-1);
+  if TJSONData(Item1).GetPath('seq').AsInteger < TJSONData(Item2).GetPath('seq').AsInteger then
+    exit(1);
+  exit(0);
+end;
+
+function SeqSortProjectName(Item1, Item2: Pointer): integer;
+begin
+  if UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(TJSONData(Item1).GetPath('project_id').AsInteger)) > UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(TJSONData(Item2).GetPath('project_id').AsInteger)) then
+    exit(-1);
+  if UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(TJSONData(Item1).GetPath('project_id').AsInteger)) < UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(TJSONData(Item2).GetPath('project_id').AsInteger)) then
     exit(1);
   if TJSONData(Item1).GetPath('seq').AsInteger > TJSONData(Item2).GetPath('seq').AsInteger then
     exit(-1);
