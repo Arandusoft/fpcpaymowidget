@@ -557,6 +557,8 @@ procedure TfrmMain.tiTrayClick(Sender: TObject);
 begin
   Self.ShowInTaskBar := stDefault;
   Self.Show;
+  // if application is minimized
+  Application.Restore;
 end;
 
 procedure TfrmMain.hideMenu(Sender: TObject);
