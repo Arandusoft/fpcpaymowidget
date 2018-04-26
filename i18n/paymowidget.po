@@ -16,6 +16,11 @@ msgctxt "tfrmmain.btnopenpaymoapp.caption"
 msgid "Open Paymo App"
 msgstr ""
 
+#: tfrmmain.btnopensettingsfolder.caption
+msgctxt "tfrmmain.btnopensettingsfolder.caption"
+msgid "Open Settings Folder..."
+msgstr ""
+
 #: tfrmmain.btnquit.caption
 msgctxt "tfrmmain.btnquit.caption"
 msgid "Quit"

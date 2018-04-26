@@ -26,6 +26,7 @@ type
     btnMenuExit: TColorSpeedButton;
     btnQuit: TColorSpeedButton;
     btnReset: TButton;
+    btnOpenSettingsFolder: TButton;
     cbShowTimeInAppIcon: TCheckBox;
     edSearch: TEdit;
     ilTrayAnimWin: TImageList;
@@ -79,6 +80,7 @@ type
     procedure btnOpenPaymoAppMouseEnter(Sender: TObject);
     procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
     procedure btnSettingsExitClick(Sender: TObject);
+    procedure btnOpenSettingsFolderClick(Sender: TObject);
     procedure DownloadCompanyExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure DownloadCompanyFinish(const Sender: TTask; const Msg: word;
@@ -287,6 +289,11 @@ end;
 procedure TfrmMain.btnSettingsExitClick(Sender: TObject);
 begin
   pnlSettings.Visible := False;
+end;
+
+procedure TfrmMain.btnOpenSettingsFolderClick(Sender: TObject);
+begin
+  OpenDocument(ExtractFilePath(JSONPropStorage1.JSONFileName));
 end;
 
 procedure TfrmMain.DownloadCompanyExecute(const Sender: TTask;

@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, fphttpclient, jsonConf, fpjson, jsonparser,
-  Dialogs, DateUtils, LazUTF8;
+  Dialogs, DateUtils, LazUTF8, udebug;
 
 const
   PAYMOAPIBASEURL = 'https://app.paymoapp.com/api/';
@@ -317,11 +317,18 @@ begin
       if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
         Result := prOK
       else if (client.ResponseStatusCode = 429) then
+      begin
+        DebugLog('', 'Get/' + Endpoint, 'prTRYAGAIN');
         Result := prTRYAGAIN
+      end
       else
+      begin
+        DebugLog('', 'Get/' + Endpoint, 'prERROR');
         Result := prERROR;
+      end;
     except on e:exception do
     begin
+      DebugLog('', 'Post/' + Endpoint, 'Exception: ' + e.message);
       if (Pos('HOST NAME RESOLUTION',UpperCase(e.message))>0) then
           Result := prNOInternet
       else
@@ -449,11 +456,21 @@ begin
       if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
         Result := prOK
       else if (client.ResponseStatusCode = 429) then
+      begin
+        DebugLog('', 'Post/' + Endpoint, 'prTRYAGAIN');
         Result := prTRYAGAIN
+      end
       else
+      begin
+        DebugLog('', 'Post/' + Endpoint, 'prERROR');
         Result := prERROR;
+      end;
     except
-      Result := prERROR;
+      on e: exception do
+      begin
+        DebugLog('', 'Post/' + Endpoint, 'Exception: ' + e.message);
+        Result := prERROR;
+      end;
     end;
   finally
     ss.Free;
@@ -476,11 +493,21 @@ begin
       if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
         Result := prOK
       else if (client.ResponseStatusCode = 429) then
+      begin
+        DebugLog('', 'Delete/' + Endpoint, 'prTRYAGAIN');
         Result := prTRYAGAIN
+      end
       else
+      begin
+        DebugLog('', 'Delete/' + Endpoint, 'prERROR');
         Result := prERROR;
+      end;
     except
-      Result := prERROR;
+      on e: exception do
+      begin
+        DebugLog('', 'Delete/' + Endpoint, 'Exception: ' + e.message);
+        Result := prERROR;
+      end;
     end;
   finally
     client.Free;

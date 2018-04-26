@@ -575,6 +575,18 @@ object frmMain: TfrmMain
       ParentColor = False
       ParentFont = False
     end
+    object btnOpenSettingsFolder: TButton
+      Tag = -14
+      Left = 16
+      Height = 25
+      Top = 224
+      Width = 160
+      Caption = 'Open Settings Folder...'
+      Font.Height = 19
+      OnClick = btnOpenSettingsFolderClick
+      ParentFont = False
+      TabOrder = 4
+    end
   end
   object pbRefresh: TProgressBar
     Left = 0
