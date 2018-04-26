@@ -16,6 +16,11 @@ msgctxt "tfrmmain.btnopenpaymoapp.caption"
 msgid "Open Paymo App"
 msgstr ""
 
+#: tfrmmain.btnopensettingsfolder.caption
+msgctxt "tfrmmain.btnopensettingsfolder.caption"
+msgid "Open Settings Folder..."
+msgstr ""
+
 #: tfrmmain.btnquit.caption
 msgctxt "tfrmmain.btnquit.caption"
 msgid "Quit"
@@ -50,6 +55,10 @@ msgstr ""
 
 #: tfrmmain.lblproject.caption
 msgid "Project"
+msgstr ""
+
+#: tfrmmain.lblrefreshinterval.caption
+msgid "Refresh data interval (in seconds)"
 msgstr ""
 
 #: tfrmmain.lblstop.caption

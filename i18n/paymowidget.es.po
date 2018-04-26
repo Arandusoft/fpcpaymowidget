@@ -26,6 +26,11 @@ msgctxt "tfrmmain.btnopenpaymoapp.caption"
 msgid "Open Paymo App"
 msgstr "Abrir Paymo App"
 
+#: tfrmmain.btnopensettingsfolder.caption
+msgctxt "tfrmmain.btnopensettingsfolder.caption"
+msgid "Open Settings Folder..."
+msgstr "Carpeta Configuración..."
+
 #: tfrmmain.btnquit.caption
 msgctxt "tfrmmain.btnquit.caption"
 msgid "Quit"
@@ -61,6 +66,10 @@ msgstr "Mostrar tiempo en icono de app"
 #: tfrmmain.lblproject.caption
 msgid "Project"
 msgstr "Proyecto"
+
+#: tfrmmain.lblrefreshinterval.caption
+msgid "Refresh data interval (in seconds)"
+msgstr "Intervalo de refresco de datos (en segundos)"
 
 #: tfrmmain.lblstop.caption
 msgid "■"
