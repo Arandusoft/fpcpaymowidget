@@ -52,6 +52,10 @@ msgstr ""
 msgid "Project"
 msgstr ""
 
+#: tfrmmain.lblrefreshinterval.caption
+msgid "Refresh data interval (in seconds)"
+msgstr ""
+
 #: tfrmmain.lblstop.caption
 msgid "■"
 msgstr ""

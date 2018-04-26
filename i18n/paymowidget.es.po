@@ -62,6 +62,10 @@ msgstr "Mostrar tiempo en icono de app"
 msgid "Project"
 msgstr "Proyecto"
 
+#: tfrmmain.lblrefreshinterval.caption
+msgid "Refresh data interval (in seconds)"
+msgstr "Intervalo de refresco de datos (en segundos)"
+
 #: tfrmmain.lblstop.caption
 msgid "■"
 msgstr ""

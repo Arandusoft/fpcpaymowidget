@@ -1,11 +1,11 @@
 object frmMain: TfrmMain
   Left = 377
-  Height = 540
-  Top = 68
+  Height = 541
+  Top = 67
   Width = 360
   ActiveControl = edSearch
   Caption = 'FPC Paymo Widget'
-  ClientHeight = 540
+  ClientHeight = 541
   ClientWidth = 360
   Color = clWhite
   Constraints.MinHeight = 540
@@ -17,7 +17,7 @@ object frmMain: TfrmMain
   OnDestroy = FormDestroy
   OnResize = FormResize
   OnShow = FormShow
-  SessionProperties = 'cbShowTimeInAppIcon.Checked;Height;leAPIURL.Text;Left;Top;Width;WindowState'
+  SessionProperties = 'cbShowTimeInAppIcon.Checked;Height;leAPIURL.Text;Left;Top;Width;WindowState;seRefreshInterval.Value'
   ShowInTaskBar = stNever
   LCLVersion = '1.9.0.0'
   object pnlTop: TPanel
@@ -456,11 +456,11 @@ object frmMain: TfrmMain
   end
   object pnlSettings: TPanel
     Left = 8
-    Height = 184
-    Top = 320
+    Height = 320
+    Top = 220
     Width = 336
     BevelOuter = bvNone
-    ClientHeight = 184
+    ClientHeight = 320
     ClientWidth = 336
     TabOrder = 3
     Visible = False
@@ -549,6 +549,31 @@ object frmMain: TfrmMain
       StateDisabled.Color = clWhite
       StateDisabled.BorderColor = 2365715
       StateDisabled.BorderWidth = 0
+    end
+    object seRefreshInterval: TSpinEdit
+      Tag = -14
+      Left = 16
+      Height = 27
+      Top = 184
+      Width = 98
+      Font.Height = 19
+      MaxValue = 3600
+      MinValue = 30
+      OnEditingDone = seRefreshIntervalEditingDone
+      ParentFont = False
+      TabOrder = 3
+      Value = 60
+    end
+    object lblRefreshInterval: TLabel
+      Tag = -14
+      Left = 16
+      Height = 19
+      Top = 160
+      Width = 201
+      Caption = 'Refresh data interval (in seconds)'
+      Font.Height = 19
+      ParentColor = False
+      ParentFont = False
     end
   end
   object pbRefresh: TProgressBar
@@ -1574,9 +1599,6 @@ object frmMain: TfrmMain
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000
-    }
-    BitmapAdv = {
-      4C6900000000
     }
   end
   object JSONPropStorage1: TJSONPropStorage

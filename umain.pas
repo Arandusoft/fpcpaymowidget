@@ -9,7 +9,7 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes, PropertyStorage, ComCtrls, LazUTF8;
+  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8;
 
 type
 
@@ -36,6 +36,7 @@ type
     ilTrayOfflineWin: TImageList;
     ilApplication: TImageList;
     JSONPropStorage1: TJSONPropStorage;
+    lblRefreshInterval: TLabel;
     lblTime: TLabel;
     lblStop: TLabel;
     lblProject: TLabel;
@@ -62,6 +63,7 @@ type
     DownloadRunningTimer: TTask;
     pnlTime: TPanel;
     lblTask: TLabel;
+    seRefreshInterval: TSpinEdit;
     timerEntry: TTimer;
     timerRefresh: TTimer;
     tiTray: TTrayIcon;
@@ -112,6 +114,7 @@ type
     procedure miQuitClick(Sender: TObject);
     procedure DownloadTaskListsExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
+    procedure seRefreshIntervalEditingDone(Sender: TObject);
     procedure timerEntryTimer(Sender: TObject);
     procedure timerRefreshTimer(Sender: TObject);
     procedure tiTrayClick(Sender: TObject);
@@ -463,6 +466,7 @@ procedure TfrmMain.JSONPropStorage1RestoreProperties(Sender: TObject);
 begin
   if leAPIURL.Text = '' then
     leAPIURL.Text := PAYMOAPIBASEURL;
+  TimerRefresh.Interval := seRefreshInterval.Value * 1000;
 end;
 
 procedure TfrmMain.lblStopClick(Sender: TObject);
@@ -513,6 +517,18 @@ procedure TfrmMain.DownloadTaskListsExecute(const Sender: TTask;
 begin
   if not Sender.Terminated then
     Paymo.GetTaskLists();
+end;
+
+procedure TfrmMain.seRefreshIntervalEditingDone(Sender: TObject);
+begin
+  if (seRefreshInterval.Value >= seRefreshInterval.MinValue) and (seRefreshInterval.Value <= seRefreshInterval.MaxValue) then
+    timerRefresh.Interval := seRefreshInterval.Value * 1000
+  else
+  begin
+    // default value if data is invalid
+    seRefreshInterval.Value := 60;
+    timerRefresh.Interval := 60000;
+  end;
 end;
 
 procedure TfrmMain.timerEntryTimer(Sender: TObject);
