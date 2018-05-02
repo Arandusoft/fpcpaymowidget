@@ -339,6 +339,10 @@ end;
 
 procedure TfrmTimeEntry.FormCreate(Sender: TObject);
 begin
+  // prevent flickering
+  {$ifdef windows}
+  DoubleBuffered:=True;
+  {$endif}
   frmMain.SetFonts(Self);
   // Restore position (only works with Position = poDesigned)
   {$IFNDEF DARWIN}

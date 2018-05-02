@@ -154,6 +154,10 @@ uses
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  // prevent flickering
+  {$ifdef windows}
+  DoubleBuffered:=True;
+  {$endif}
   SetFonts(Self);
   pnlMenu.AnimWidth := ScaleX(pnlMenu.AnimWidth, 96);
   DoubleBuffered := True;
