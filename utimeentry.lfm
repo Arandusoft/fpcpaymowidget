@@ -1,7 +1,7 @@
 object frmTimeEntry: TfrmTimeEntry
-  Left = 299
+  Left = 433
   Height = 632
-  Top = 16
+  Top = 33
   Width = 360
   BorderIcons = [biSystemMenu]
   Caption = 'Edit Time Entry'
@@ -44,306 +44,6 @@ object frmTimeEntry: TfrmTimeEntry
     OnSelectionChange = acTaskSelectionChange
     TabOrder = 2
     Anchors = [akTop, akLeft, akRight]
-  end
-  object pnlGroup: TPanel
-    Left = 37
-    Height = 88
-    Top = 336
-    Width = 297
-    Anchors = [akTop]
-    BevelOuter = bvNone
-    ClientHeight = 88
-    ClientWidth = 297
-    TabOrder = 5
-    object lbl_date: TLabel
-      Tag = -16
-      Cursor = crIBeam
-      Left = 53
-      Height = 21
-      Top = 0
-      Width = 32
-      Caption = 'Date'
-      Font.Color = clWhite
-      Font.Height = 21
-      Font.Name = 'Nunito Sans'
-      ParentColor = False
-      ParentFont = False
-      OnClick = lbl_dateClick
-    end
-    object time_start_hh: TEdit
-      Tag = -16
-      Left = 48
-      Height = 29
-      Top = 59
-      Width = 32
-      Alignment = taCenter
-      AutoSize = False
-      BorderStyle = bsNone
-      Font.Color = clWhite
-      Font.Height = 21
-      Font.Name = 'Nunito Sans'
-      MaxLength = 2
-      NumbersOnly = True
-      OnChange = time_end_hhChange
-      ParentColor = True
-      ParentFont = False
-      TabOrder = 0
-      Text = '00'
-    end
-    object time_start_mm: TEdit
-      Tag = -16
-      Left = 88
-      Height = 29
-      Top = 59
-      Width = 32
-      Alignment = taCenter
-      AutoSize = False
-      BorderStyle = bsNone
-      Font.Color = clWhite
-      Font.Height = 21
-      Font.Name = 'Nunito Sans'
-      MaxLength = 2
-      NumbersOnly = True
-      OnChange = time_end_mmChange
-      ParentColor = True
-      ParentFont = False
-      TabOrder = 1
-      Text = '00'
-    end
-    object time_start_separator1: TLabel
-      Tag = -16
-      Left = 144
-      Height = 21
-      Top = 59
-      Width = 9
-      Caption = '‒'
-      Font.Color = clWhite
-      Font.Height = 21
-      Font.Name = 'Nunito Sans'
-      ParentColor = False
-      ParentFont = False
-    end
-    object time_end_hh: TEdit
-      Tag = -16
-      Left = 184
-      Height = 29
-      Top = 59
-      Width = 32
-      Alignment = taCenter
-      AutoSize = False
-      BorderStyle = bsNone
-      Font.Color = clWhite
-      Font.Height = 21
-      Font.Name = 'Nunito Sans'
-      MaxLength = 2
-      NumbersOnly = True
-      OnChange = time_end_hhChange
-      ParentColor = True
-      ParentFont = False
-      TabOrder = 2
-      Text = '00'
-    end
-    object time_end_mm: TEdit
-      Tag = -16
-      Left = 224
-      Height = 29
-      Top = 59
-      Width = 32
-      Alignment = taCenter
-      AutoSize = False
-      BorderStyle = bsNone
-      Font.Color = clWhite
-      Font.Height = 21
-      Font.Name = 'Nunito Sans'
-      MaxLength = 2
-      NumbersOnly = True
-      OnChange = time_end_mmChange
-      ParentColor = True
-      ParentFont = False
-      TabOrder = 3
-      Text = '00'
-    end
-    object time_end_separator: TLabel
-      Tag = -16
-      Left = 218
-      Height = 21
-      Top = 59
-      Width = 4
-      Caption = ':'
-      Font.Color = clWhite
-      Font.Height = 21
-      Font.Name = 'Nunito Sans'
-      ParentColor = False
-      ParentFont = False
-    end
-    object time_start_separator: TLabel
-      Tag = -16
-      Left = 82
-      Height = 21
-      Top = 59
-      Width = 4
-      Caption = ':'
-      Font.Color = clWhite
-      Font.Height = 21
-      Font.Name = 'Nunito Sans'
-      ParentColor = False
-      ParentFont = False
-    end
-    object pnlSetTime: TPanel
-      Left = 48
-      Height = 32
-      Top = 32
-      Width = 225
-      BevelOuter = bvNone
-      ClientHeight = 32
-      ClientWidth = 225
-      TabOrder = 4
-      object btnSetNow: TColorSpeedButton
-        Tag = -14
-        Left = 0
-        Height = 24
-        Top = 0
-        Width = 51
-        Caption = 'Now'
-        Font.Color = 3883776
-        Font.Height = 19
-        Font.Name = 'Nunito Sans'
-        Font.Style = [fsBold]
-        OnClick = btnSetNowClick
-        ParentFont = False
-        Toggle = False
-        Pressed = False
-        PopupMode = False
-        StateNormal.Color = clWhite
-        StateNormal.BorderColor = 11382189
-        StateNormal.BorderWidth = 0
-        StateHover.Color = 16185824
-        StateHover.BorderColor = 14120960
-        StateHover.BorderWidth = 0
-        StateActive.Color = 15003043
-        StateActive.BorderColor = 10048512
-        StateActive.BorderWidth = 0
-        StateDisabled.Color = 12566463
-        StateDisabled.BorderColor = clBlack
-        StateDisabled.BorderWidth = 1
-      end
-      object btnSet15: TColorSpeedButton
-        Tag = -14
-        Left = 59
-        Height = 24
-        Top = 0
-        Width = 32
-        Caption = '-15'
-        Font.Color = 3883776
-        Font.Height = 19
-        Font.Name = 'Nunito Sans'
-        Font.Style = [fsBold]
-        OnClick = btnSet15Click
-        ParentFont = False
-        Toggle = False
-        Pressed = False
-        PopupMode = False
-        StateNormal.Color = clWhite
-        StateNormal.BorderColor = 11382189
-        StateNormal.BorderWidth = 0
-        StateHover.Color = 16185824
-        StateHover.BorderColor = 14120960
-        StateHover.BorderWidth = 0
-        StateActive.Color = 15003043
-        StateActive.BorderColor = 10048512
-        StateActive.BorderWidth = 0
-        StateDisabled.Color = 12566463
-        StateDisabled.BorderColor = clBlack
-        StateDisabled.BorderWidth = 1
-      end
-      object btnSet30: TColorSpeedButton
-        Tag = -14
-        Left = 99
-        Height = 24
-        Top = 0
-        Width = 32
-        Caption = '-30'
-        Font.Color = 3883776
-        Font.Height = 19
-        Font.Name = 'Nunito Sans'
-        Font.Style = [fsBold]
-        OnClick = btnSet30Click
-        ParentFont = False
-        Toggle = False
-        Pressed = False
-        PopupMode = False
-        StateNormal.Color = clWhite
-        StateNormal.BorderColor = 11382189
-        StateNormal.BorderWidth = 0
-        StateHover.Color = 16185824
-        StateHover.BorderColor = 14120960
-        StateHover.BorderWidth = 0
-        StateActive.Color = 15003043
-        StateActive.BorderColor = 10048512
-        StateActive.BorderWidth = 0
-        StateDisabled.Color = 12566463
-        StateDisabled.BorderColor = clBlack
-        StateDisabled.BorderWidth = 1
-      end
-      object btnSet45: TColorSpeedButton
-        Tag = -14
-        Left = 139
-        Height = 24
-        Top = 0
-        Width = 32
-        Caption = '-45'
-        Font.Color = 3883776
-        Font.Height = 19
-        Font.Name = 'Nunito Sans'
-        Font.Style = [fsBold]
-        OnClick = btnSet45Click
-        ParentFont = False
-        Toggle = False
-        Pressed = False
-        PopupMode = False
-        StateNormal.Color = clWhite
-        StateNormal.BorderColor = 11382189
-        StateNormal.BorderWidth = 0
-        StateHover.Color = 16185824
-        StateHover.BorderColor = 14120960
-        StateHover.BorderWidth = 0
-        StateActive.Color = 15003043
-        StateActive.BorderColor = 10048512
-        StateActive.BorderWidth = 0
-        StateDisabled.Color = 12566463
-        StateDisabled.BorderColor = clBlack
-        StateDisabled.BorderWidth = 1
-      end
-      object btnSet1h: TColorSpeedButton
-        Tag = -14
-        Left = 179
-        Height = 24
-        Top = 0
-        Width = 32
-        Caption = '-1h'
-        Font.Color = 3883776
-        Font.Height = 19
-        Font.Name = 'Nunito Sans'
-        Font.Style = [fsBold]
-        OnClick = btnSet1hClick
-        ParentFont = False
-        Toggle = False
-        Pressed = False
-        PopupMode = False
-        StateNormal.Color = clWhite
-        StateNormal.BorderColor = 11382189
-        StateNormal.BorderWidth = 0
-        StateHover.Color = 16185824
-        StateHover.BorderColor = 14120960
-        StateHover.BorderWidth = 0
-        StateActive.Color = 15003043
-        StateActive.BorderColor = 10048512
-        StateActive.BorderWidth = 0
-        StateDisabled.Color = 12566463
-        StateDisabled.BorderColor = clBlack
-        StateDisabled.BorderWidth = 1
-      end
-    end
   end
   object btnSaveEntry: TColorSpeedButton
     Tag = -14
@@ -423,7 +123,7 @@ object frmTimeEntry: TfrmTimeEntry
     Left = 16
     Height = 19
     Top = 205
-    Width = 104
+    Width = 98
     Caption = 'Task description:'
     Font.Color = 3883776
     Font.Height = 19
@@ -436,7 +136,7 @@ object frmTimeEntry: TfrmTimeEntry
     Left = 16
     Height = 19
     Top = 8
-    Width = 47
+    Width = 44
     Caption = 'Project:'
     Font.Color = 3883776
     Font.Height = 19
@@ -449,7 +149,7 @@ object frmTimeEntry: TfrmTimeEntry
     Left = 16
     Height = 19
     Top = 72
-    Width = 58
+    Width = 53
     Caption = 'Task List:'
     Font.Color = 3883776
     Font.Height = 19
@@ -462,7 +162,7 @@ object frmTimeEntry: TfrmTimeEntry
     Left = 16
     Height = 19
     Top = 129
-    Width = 31
+    Width = 30
     Caption = 'Task:'
     Font.Color = 3883776
     Font.Height = 19
@@ -506,13 +206,345 @@ object frmTimeEntry: TfrmTimeEntry
     Left = 64
     Height = 23
     Top = 304
-    Width = 120
+    Width = 121
     Caption = 'Completed Task'
     Font.Color = clWhite
     Font.Height = 19
     Font.Name = 'Nunito Sans'
     ParentFont = False
     TabOrder = 4
+  end
+  object pnlGroup1: TPanel
+    Left = 64
+    Height = 84
+    Top = 336
+    Width = 235
+    Anchors = [akTop, akLeft, akRight]
+    BevelOuter = bvNone
+    ClientHeight = 84
+    ClientWidth = 235
+    TabOrder = 5
+    object pnlSetTime: TPanel
+      Left = 0
+      Height = 23
+      Top = 21
+      Width = 235
+      Align = alTop
+      AutoSize = True
+      BevelOuter = bvNone
+      ChildSizing.HorizontalSpacing = 8
+      ChildSizing.EnlargeHorizontal = crsScaleChilds
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 5
+      ClientHeight = 23
+      ClientWidth = 235
+      TabOrder = 0
+      object btnSetNow: TColorSpeedButton
+        Tag = -14
+        Left = 0
+        Height = 23
+        Top = 0
+        Width = 51
+        Caption = 'Now'
+        Font.Color = 3883776
+        Font.Height = 19
+        Font.Name = 'Nunito Sans'
+        Font.Style = [fsBold]
+        OnClick = btnSetNowClick
+        ParentFont = False
+        Toggle = False
+        Pressed = False
+        PopupMode = False
+        StateNormal.Color = clWhite
+        StateNormal.BorderColor = 11382189
+        StateNormal.BorderWidth = 0
+        StateHover.Color = 16185824
+        StateHover.BorderColor = 14120960
+        StateHover.BorderWidth = 0
+        StateActive.Color = 15003043
+        StateActive.BorderColor = 10048512
+        StateActive.BorderWidth = 0
+        StateDisabled.Color = 12566463
+        StateDisabled.BorderColor = clBlack
+        StateDisabled.BorderWidth = 1
+      end
+      object btnSet15: TColorSpeedButton
+        Tag = -14
+        Left = 59
+        Height = 23
+        Top = 0
+        Width = 38
+        Caption = '-15'
+        Font.Color = 3883776
+        Font.Height = 19
+        Font.Name = 'Nunito Sans'
+        Font.Style = [fsBold]
+        OnClick = btnSet15Click
+        ParentFont = False
+        Toggle = False
+        Pressed = False
+        PopupMode = False
+        StateNormal.Color = clWhite
+        StateNormal.BorderColor = 11382189
+        StateNormal.BorderWidth = 0
+        StateHover.Color = 16185824
+        StateHover.BorderColor = 14120960
+        StateHover.BorderWidth = 0
+        StateActive.Color = 15003043
+        StateActive.BorderColor = 10048512
+        StateActive.BorderWidth = 0
+        StateDisabled.Color = 12566463
+        StateDisabled.BorderColor = clBlack
+        StateDisabled.BorderWidth = 1
+      end
+      object btnSet30: TColorSpeedButton
+        Tag = -14
+        Left = 105
+        Height = 23
+        Top = 0
+        Width = 38
+        Caption = '-30'
+        Font.Color = 3883776
+        Font.Height = 19
+        Font.Name = 'Nunito Sans'
+        Font.Style = [fsBold]
+        OnClick = btnSet30Click
+        ParentFont = False
+        Toggle = False
+        Pressed = False
+        PopupMode = False
+        StateNormal.Color = clWhite
+        StateNormal.BorderColor = 11382189
+        StateNormal.BorderWidth = 0
+        StateHover.Color = 16185824
+        StateHover.BorderColor = 14120960
+        StateHover.BorderWidth = 0
+        StateActive.Color = 15003043
+        StateActive.BorderColor = 10048512
+        StateActive.BorderWidth = 0
+        StateDisabled.Color = 12566463
+        StateDisabled.BorderColor = clBlack
+        StateDisabled.BorderWidth = 1
+      end
+      object btnSet45: TColorSpeedButton
+        Tag = -14
+        Left = 151
+        Height = 23
+        Top = 0
+        Width = 38
+        Caption = '-45'
+        Font.Color = 3883776
+        Font.Height = 19
+        Font.Name = 'Nunito Sans'
+        Font.Style = [fsBold]
+        OnClick = btnSet45Click
+        ParentFont = False
+        Toggle = False
+        Pressed = False
+        PopupMode = False
+        StateNormal.Color = clWhite
+        StateNormal.BorderColor = 11382189
+        StateNormal.BorderWidth = 0
+        StateHover.Color = 16185824
+        StateHover.BorderColor = 14120960
+        StateHover.BorderWidth = 0
+        StateActive.Color = 15003043
+        StateActive.BorderColor = 10048512
+        StateActive.BorderWidth = 0
+        StateDisabled.Color = 12566463
+        StateDisabled.BorderColor = clBlack
+        StateDisabled.BorderWidth = 1
+      end
+      object btnSet1h: TColorSpeedButton
+        Tag = -14
+        Left = 197
+        Height = 23
+        Top = 0
+        Width = 38
+        Caption = '-1h'
+        Font.Color = 3883776
+        Font.Height = 19
+        Font.Name = 'Nunito Sans'
+        Font.Style = [fsBold]
+        OnClick = btnSet1hClick
+        ParentFont = False
+        Toggle = False
+        Pressed = False
+        PopupMode = False
+        StateNormal.Color = clWhite
+        StateNormal.BorderColor = 11382189
+        StateNormal.BorderWidth = 0
+        StateHover.Color = 16185824
+        StateHover.BorderColor = 14120960
+        StateHover.BorderWidth = 0
+        StateActive.Color = 15003043
+        StateActive.BorderColor = 10048512
+        StateActive.BorderWidth = 0
+        StateDisabled.Color = 12566463
+        StateDisabled.BorderColor = clBlack
+        StateDisabled.BorderWidth = 1
+      end
+    end
+    object Panel1: TPanel
+      Left = 0
+      Height = 21
+      Top = 0
+      Width = 235
+      Align = alTop
+      AutoSize = True
+      BevelOuter = bvNone
+      ClientHeight = 21
+      ClientWidth = 235
+      TabOrder = 1
+      object lbl_date: TLabel
+        Tag = -16
+        Cursor = crIBeam
+        Left = 0
+        Height = 21
+        Top = 0
+        Width = 32
+        Caption = 'Date'
+        Font.Color = clWhite
+        Font.Height = 21
+        Font.Name = 'Nunito Sans'
+        ParentColor = False
+        ParentFont = False
+        OnClick = lbl_dateClick
+      end
+    end
+    object pnlGroup: TPanel
+      Left = 0
+      Height = 21
+      Top = 63
+      Width = 235
+      Align = alBottom
+      BevelOuter = bvNone
+      ChildSizing.EnlargeHorizontal = crsScaleChilds
+      ChildSizing.ShrinkHorizontal = crsScaleChilds
+      ChildSizing.Layout = cclLeftToRightThenTopToBottom
+      ChildSizing.ControlsPerLine = 7
+      ClientHeight = 21
+      ClientWidth = 235
+      TabOrder = 2
+      object time_start_hh: TEdit
+        Tag = -16
+        Left = 0
+        Height = 21
+        Top = 0
+        Width = 56
+        Alignment = taCenter
+        BorderStyle = bsNone
+        Font.Color = clWhite
+        Font.Height = 21
+        Font.Name = 'Nunito Sans'
+        MaxLength = 2
+        NumbersOnly = True
+        OnChange = time_end_hhChange
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 0
+        Text = '00'
+      end
+      object time_start_separator: TLabel
+        Tag = -16
+        Left = 56
+        Height = 21
+        Top = 0
+        Width = 2
+        Caption = ':'
+        Font.Color = clWhite
+        Font.Height = 21
+        Font.Name = 'Nunito Sans'
+        ParentColor = False
+        ParentFont = False
+      end
+      object time_start_mm: TEdit
+        Tag = -16
+        Left = 58
+        Height = 21
+        Top = 0
+        Width = 56
+        Alignment = taCenter
+        BorderStyle = bsNone
+        Font.Color = clWhite
+        Font.Height = 21
+        Font.Name = 'Nunito Sans'
+        MaxLength = 2
+        NumbersOnly = True
+        OnChange = time_end_mmChange
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 1
+        Text = '00'
+      end
+      object time_start_separator1: TLabel
+        Tag = -16
+        Left = 114
+        Height = 21
+        Top = 0
+        Width = 6
+        Caption = '‒'
+        Font.Color = clWhite
+        Font.Height = 21
+        Font.Name = 'Nunito Sans'
+        ParentColor = False
+        ParentFont = False
+      end
+      object time_end_hh: TEdit
+        Tag = -16
+        Left = 120
+        Height = 21
+        Top = 0
+        Width = 56
+        Alignment = taCenter
+        AutoSize = False
+        BorderStyle = bsNone
+        Font.Color = clWhite
+        Font.Height = 21
+        Font.Name = 'Nunito Sans'
+        MaxLength = 2
+        NumbersOnly = True
+        OnChange = time_end_hhChange
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 2
+        Text = '00'
+      end
+      object time_end_separator: TLabel
+        Tag = -16
+        Left = 176
+        Height = 21
+        Top = 0
+        Width = 2
+        Caption = ':'
+        Font.Color = clWhite
+        Font.Height = 21
+        Font.Name = 'Nunito Sans'
+        ParentColor = False
+        ParentFont = False
+      end
+      object time_end_mm: TEdit
+        Tag = -16
+        Left = 178
+        Height = 21
+        Top = 0
+        Width = 57
+        Alignment = taCenter
+        AutoSize = False
+        BorderStyle = bsNone
+        Font.Color = clWhite
+        Font.Height = 21
+        Font.Name = 'Nunito Sans'
+        MaxLength = 2
+        NumbersOnly = True
+        OnChange = time_end_mmChange
+        ParentColor = True
+        ParentFont = False
+        TabOrder = 3
+        Text = '00'
+      end
+    end
   end
   object dlgDate: TCalendarDialog
     DialogPosition = poOwnerFormCenter
@@ -525,6 +557,7 @@ object frmTimeEntry: TfrmTimeEntry
   object JSONPropStorage1: TJSONPropStorage
     StoredValues = <>
     Formatted = False
+    OnRestoreProperties = JSONPropStorage1RestoreProperties
     Left = 224
     Top = 280
   end

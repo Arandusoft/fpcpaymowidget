@@ -9,7 +9,7 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8;
+  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType;
 
 type
 
@@ -478,6 +478,8 @@ begin
   if leAPIURL.Text = '' then
     leAPIURL.Text := PAYMOAPIBASEURL;
   TimerRefresh.Interval := seRefreshInterval.Value * 1000;
+  Width := MulDiv(Width, 96, Screen.PixelsPerInch);
+  Height := MulDiv(Height, 96, Screen.PixelsPerInch);
 end;
 
 procedure TfrmMain.lblStopClick(Sender: TObject);
