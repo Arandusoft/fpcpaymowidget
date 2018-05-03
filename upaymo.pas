@@ -328,7 +328,7 @@ begin
       end;
     except on e:exception do
     begin
-      DebugLog('', 'Post/' + Endpoint, 'Exception: ' + e.message);
+      DebugLog('', 'Get/' + Endpoint, 'Exception: ' + e.message);
       if (Pos('HOST NAME RESOLUTION',UpperCase(e.message))>0) then
           Result := prNOInternet
       else
