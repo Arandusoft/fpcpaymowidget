@@ -1615,7 +1615,7 @@ object frmMain: TfrmMain
   end
   object JSONPropStorage1: TJSONPropStorage
     StoredValues = <>
-    Formatted = False
+    Formatted = True
     OnRestoreProperties = JSONPropStorage1RestoreProperties
     Left = 200
     Top = 104

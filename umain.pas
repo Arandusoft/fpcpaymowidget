@@ -1,6 +1,7 @@
 unit umain;
 
 {$mode objfpc}{$H+}
+{ $define debugoffline}
 
 interface
 
@@ -163,7 +164,21 @@ begin
   DoubleBuffered := True;
   pnlMenu.Left := 0;
   pnlMenu.Top := 0;
+  // Default position (center of the screen)
+  Left := (Screen.Width - Width) div 2;
+  Top := (Screen.Height - Height) div 2;
+  // Restore position (only works with Position = poDesigned)
+  {$IFNDEF DARWIN}
+  ForceDirectories(GetAppConfigDir(False));
+  JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
+  {$ENDIF}
   Paymo := TPaymo.Create;
+  Paymo.SettingsFolder := GetAppConfigDir(False);
+  Paymo.SettingsFile := GetAppConfigFile(False);
+  {$ifdef debugoffline}
+  Paymo.Offline := True;
+  pnlTop.Caption := pnlTop.Caption + ' - Offline';
+  {$endif}
   Paymo.LoadSettings;
   //try
   Login;
@@ -179,14 +194,7 @@ begin
     except
     end;
   end;
-  // Default position (center of the screen)
-  Left := (Screen.Width - Width) div 2;
-  Top := (Screen.Height - Height) div 2;
-  // Restore position (only works with Position = poDesigned)
-  {$IFNDEF DARWIN}
-  ForceDirectories(GetAppConfigDir(False));
-  JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
-  {$ENDIF}
+
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);

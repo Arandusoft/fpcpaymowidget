@@ -556,7 +556,7 @@ object frmTimeEntry: TfrmTimeEntry
   end
   object JSONPropStorage1: TJSONPropStorage
     StoredValues = <>
-    Formatted = False
+    Formatted = True
     OnRestoreProperties = JSONPropStorage1RestoreProperties
     Left = 224
     Top = 280

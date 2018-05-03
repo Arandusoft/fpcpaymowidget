@@ -29,15 +29,22 @@ type
     FAPIURL: string;
     FLoggedIn: boolean;
     FMe: TJSONObject;
+    FOffline: boolean;
     FProjects: TJSONObject;
     FRunningTimer: TJSONObject;
+    FSettingsFile: string;
+    FSettingsFolder: string;
     FTaskLists: TJSONObject;
     FTasks: TJSONObject;
     FCompany: TJSONObject;
+    FOfflineData: TJSONArray;
     procedure SetFAPIKey(AValue: string);
     procedure SetFAPIKeyURL(AValue: string);
     procedure SetFAPIURL(AValue: string);
     procedure SetFLoggedIn(AValue: boolean);
+    procedure SetFOffline(AValue: boolean);
+    procedure SetFSettingsFile(AValue: string);
+    procedure SetFSettingsFolder(AValue: string);
   public
     function ProjectsArray: TJSONArray;
     function TasksArray: TJSONArray;
@@ -79,8 +86,15 @@ type
     function UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
       project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
   public
+    function SaveJSON(FileName: string; sJSON: string): TPaymoResponseStatus;
+    function LoadJSON(FileName: string; var response: string): TPaymoResponseStatus;
+  public
     procedure LoadSettings;
     procedure SaveSettings;
+    procedure POST_Offline(Endpoint: string; sJSON: TJSONStringType; var Response: string);
+    property Offline: boolean read FOffline write SetFOffline;
+    property SettingsFolder: string read FSettingsFolder write SetFSettingsFolder;
+    property SettingsFile: string read FSettingsFile write SetFSettingsFile;
   end;
 
 var
@@ -164,6 +178,24 @@ begin
   if FLoggedIn = AValue then
     Exit;
   FLoggedIn := AValue;
+end;
+
+procedure TPaymo.SetFOffline(AValue: boolean);
+begin
+  if FOffline=AValue then Exit;
+  FOffline:=AValue;
+end;
+
+procedure TPaymo.SetFSettingsFile(AValue: string);
+begin
+  if FSettingsFile=AValue then Exit;
+  FSettingsFile:=AValue;
+end;
+
+procedure TPaymo.SetFSettingsFolder(AValue: string);
+begin
+  if FSettingsFolder=AValue then Exit;
+  FSettingsFolder:=AValue;
 end;
 
 function TPaymo.ProjectsArray: TJSONArray;
@@ -273,6 +305,8 @@ begin
   inherited Create;
   APIKeyURL := PAYMOAPIKEYURL;
   APIURL := PAYMOAPIBASEURL;
+  FOffline := False;
+  FOfflineData := TJSONArray.Create;
 end;
 
 destructor TPaymo.Destroy;
@@ -289,6 +323,8 @@ begin
     FRunningTimer.Free;
   if Assigned(FCompany) then
     FCompany.Free;
+  if Assigned(FOfflineData) then
+    FOfflineData.Free;
   inherited Destroy;
 end;
 
@@ -344,7 +380,10 @@ function TPaymo.GetTasks(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('tasks?where=mytasks=true&include=entries', response);
+  if not FOffline then
+    Result := Get('tasks?where=mytasks=true&include=entries', response)
+  else
+    Result := LoadJSON('tasks.json', response);
   case Result of
     prOK:
     begin
@@ -352,6 +391,7 @@ begin
         FTasks.Free;
       FTasks := TJSONObject(GetJSON(response));
       TasksArray.Sort(@NameSort);
+      SaveJSON('tasks.json', FTasks.FormatJSON());
     end;
   end;
 end;
@@ -360,7 +400,10 @@ function TPaymo.GetProjects(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('projects', response);
+  if not FOffline then
+    Result := Get('projects', response)
+  else
+    Result := LoadJSON('projects.json', response);
   case Result of
     prOK:
     begin
@@ -368,6 +411,7 @@ begin
         FProjects.Free;
       FProjects := TJSONObject(GetJSON(response));
       ProjectsArray.Sort(@NameSort);
+      SaveJSON('projects.json', FProjects.FormatJSON());
     end;
   end;
 end;
@@ -376,7 +420,10 @@ function TPaymo.GetTaskLists(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('tasklists', response);
+  if not FOffline then
+    Result := Get('tasklists', response)
+  else
+    Result := LoadJSON('tasklists.json', response);
   case Result of
     prOK:
     begin
@@ -384,6 +431,7 @@ begin
         FTaskLists.Free;
       FTaskLists := TJSONObject(GetJSON(response));
       TaskListsArray.Sort(@NameSort);
+      SaveJSON('tasklists.json', FTaskLists.FormatJSON());
     end;
   end;
 end;
@@ -392,13 +440,17 @@ function TPaymo.GetMe(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('me', response);
+  if not FOffline then
+    Result := Get('me', response)
+  else
+    Result := LoadJSON('me.json', response);
   case Result of
     prOK:
     begin
       if Assigned(FMe) then
         FMe.Free;
       FMe := TJSONObject(GetJSON(response));
+      SaveJSON('me.json', FMe.FormatJSON());
     end;
   end;
 end;
@@ -407,14 +459,18 @@ function TPaymo.GetRunningTimer(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('entries?where=user_id=' + MyData.GetPath('id').AsString +
-    '%20and%20end_time=null', response);
+  if not FOffline then
+    Result := Get('entries?where=user_id=' + MyData.GetPath('id').AsString +
+      '%20and%20end_time=null', response)
+  else
+    Result := LoadJSON('runningtimer.json', response);
   case Result of
     prOK:
     begin
       if Assigned(FRunningTimer) then
         FRunningTimer.Free;
       FRunningTimer := TJSONObject(GetJSON(response));
+      SaveJSON('runningtimer.json', FRunningTimer.FormatJSON());
     end;
   end;
 end;
@@ -423,13 +479,17 @@ function TPaymo.GetCompany(): TPaymoResponseStatus;
 var
   response: string;
 begin
-  Result := Get('company', response);
+  if not FOffline then
+    Result := Get('company', response)
+  else
+    Result := LoadJSON('company.json', response);
   case Result of
     prOK:
     begin
       if Assigned(FCompany) then
         FCompany.Free;
       FCompany := TJSONObject(GetJSON(response));
+      SaveJSON('company.json', FCompany.FormatJSON());
     end;
   end;
 end;
@@ -451,26 +511,33 @@ begin
     ss.Write(Pointer(sJSON)^, length(sJSON));
     ss.Position := 0;
     client.RequestBody := ss;
-    try
-      Response := client.Post(APIURL + Endpoint);
-      if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
-        Result := prOK
-      else if (client.ResponseStatusCode = 429) then
-      begin
-        DebugLog('', 'Post/' + Endpoint, 'prTRYAGAIN');
-        Result := prTRYAGAIN
-      end
-      else
-      begin
-        DebugLog('', 'Post/' + Endpoint, 'prERROR');
-        Result := prERROR;
+    if not FOffline then
+    begin
+      try
+        Response := client.Post(APIURL + Endpoint);
+        if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
+          Result := prOK
+        else if (client.ResponseStatusCode = 429) then
+        begin
+          DebugLog('', 'Post/' + Endpoint, 'prTRYAGAIN');
+          Result := prTRYAGAIN
+        end
+        else
+        begin
+          DebugLog('', 'Post/' + Endpoint, 'prERROR');
+          Result := prERROR;
+        end;
+      except
+        on e: exception do
+        begin
+          DebugLog('', 'Post/' + Endpoint, 'Exception: ' + e.message);
+          Result := prERROR;
+        end;
       end;
-    except
-      on e: exception do
-      begin
-        DebugLog('', 'Post/' + Endpoint, 'Exception: ' + e.message);
-        Result := prERROR;
-      end;
+    end
+    else
+    begin
+      POST_Offline(Endpoint, sJSON, response);
     end;
   finally
     ss.Free;
@@ -638,15 +705,55 @@ begin
   r := Post('tasks/' + task_id.ToString, sJSON, response);
 end;
 
+function TPaymo.SaveJSON(FileName: string; sJSON: string): TPaymoResponseStatus;
+var
+  s: TStringList;
+begin
+  s := TStringList.Create;
+  s.DefaultEncoding := TEncoding.UTF8;
+  try
+    try
+      s.Add(sJSON);
+      s.SaveToFile(SettingsFolder + FileName);
+      result := prOK;
+    except
+      result := prERROR;
+    end;
+  finally
+    s.Free;
+  end;
+end;
+
+function TPaymo.LoadJSON(FileName: string; var response: string
+  ): TPaymoResponseStatus;
+var
+  s: TStringList;
+begin
+  s := TStringList.Create;
+  s.DefaultEncoding := TEncoding.UTF8;
+  try
+    try
+      s.LoadFromFile(SettingsFolder + FileName);
+      response := s.Text;
+      result := prOK;
+    except
+      response := '[]';
+      result := prERROR;
+    end;
+  finally
+    s.Free;
+  end;
+end;
+
 procedure TPaymo.LoadSettings;
 var
   c: TJSONConfig;
 begin
   c := TJSONConfig.Create(nil);
   try
-    if ForceDirectories(GetAppConfigDir(False)) then
+    if ForceDirectories(SettingsFolder) then
     begin
-      c.Filename := GetAppConfigFile(False);
+      c.Filename := SettingsFile;
       APIKey := c.GetValue('apikey', '');
     end;
   finally
@@ -660,14 +767,27 @@ var
 begin
   c := TJSONConfig.Create(nil);
   try
-    if ForceDirectories(GetAppConfigDir(False)) then
+    if ForceDirectories(SettingsFolder) then
     begin
-      c.Filename := GetAppConfigFile(False);
+      c.Filename := SettingsFile;
       c.SetValue('apikey', APIKey);
     end;
   finally
     c.Free;
   end;
+end;
+
+procedure TPaymo.POST_Offline(Endpoint: string; sJSON: TJSONStringType;
+  var Response: string);
+var
+  obj: TJSONObject;
+begin
+  obj := TJSONObject.Create;
+  obj.add('Endpoint', Endpoint);
+  obj.add('Data', GetJSON(sJSON));
+  FOfflineData.Add(obj);
+  Response := '[]';
+  SaveJSON('post_offline.json', FOfflineData.FormatJSON());
 end;
 
 end.
