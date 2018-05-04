@@ -747,6 +747,11 @@ var
 begin
   jObj := TJSONObject.Create;
   jObj.Add('complete', Complete);
+  if FOffline then
+  begin
+    jObj.Add('offline', True);
+    jObj.Add('source', 'updatetaskcompletion');
+  end;
   sJSON := jObj.FormatJSON();
   jObj.Free;
   Result := Post('tasks/' + task.GetPath('id').AsString, sJSON, response);
@@ -772,6 +777,11 @@ begin
     jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
       LocalTimeToUniversal(end_time)));
     jObj.Add('description', Description);
+    if FOffline then
+    begin
+      jObj.Add('offline', True);
+      jObj.Add('source', 'stoprunningtimer');
+    end;
     sJSON := jObj.FormatJSON();
     jObj.Free;
     Result := Post('entries/' + RunningTimerData.GetPath('id').AsString,
@@ -796,6 +806,11 @@ begin
     LocalTimeToUniversal(start_time)));
   jObj.Add('user_id', MyData.GetPath('id').AsInteger);
   jObj.Add('task_id', task_id);
+  if FOffline then
+  begin
+    jObj.Add('offline', True);
+    jObj.Add('source', 'startrunningtimer');
+  end;
   //jObj.Add('description', '');
   sJSON := jObj.FormatJSON();
   jObj.Free;
@@ -824,12 +839,22 @@ begin
     LocalTimeToUniversal(end_time)));
   jObj.Add('project_id', project_id);
   jObj.Add('task_id', task_id);
+  if FOffline then
+  begin
+    jObj.Add('offline', True);
+    jObj.Add('source', 'updatetimeentry');
+  end;
   sJSON := jObj.FormatJSON();
   jObj.Free;
   Result := Post('entries/' + TimeEntryID.ToString, sJSON, response);
 
   jObj := TJSONObject.Create;
   jObj.Add('tasklist_id', tasklist_id);
+  if FOffline then
+  begin
+    jObj.Add('offline', True);
+    jObj.Add('source', 'updatetimeentry');
+  end;
   sJSON := jObj.FormatJSON();
   jObj.Free;
   r := Post('tasks/' + task_id.ToString, sJSON, response);
@@ -987,21 +1012,41 @@ var
   i: integer;
   items_err: integer = 0;
   obj: TJSONObject;
-  response: string;
+  temp_obj: TJSONData;
+  response, source: string;
 begin
   for i := 0 to FOfflineData.Count - 1 do
   begin
     obj := TJSONObject(FOfflineData.Items[i]);
     if obj.GetPath('Type').AsString = 'POST' then
     begin
-      case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
+      source := obj.GetPath('data').GetPath('source').AsString;
+      // create task and get the real id as 'real_id'
+      if (source = 'createtask') then
+      begin
+        case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
           response) of
-        prERROR, prTRYAGAIN:
-        begin
-          obj.Add('SyncError', 'True');
-          DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
-          Inc(items_err);
+          prERROR, prTRYAGAIN:
+          begin
+            //obj.Add('SyncError', 'True');
+            DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
+            Inc(items_err);
+          end;
+          prOK: begin
+            temp_obj := GetJSON(response).GetPath('tasks').Items[0];
+            // real_id available now on FOfflineData.Items[i]
+            obj.Add('real_id', temp_obj.GetPath('id').AsInt64);
+            temp_obj.Free;
+          end;
         end;
+      end;
+      // update task completion with the 'real_id'
+      if (source = 'updatetaskcompletion') then
+      begin
+        // ToDo: get task and determine if it is an online task or an offline task
+        // if is an online task do a normal post
+        // if is an offline task do a post replacing the id of the task
+        // with the id obtained with 'real_id'
       end;
     end;
     if obj.GetPath('Type').AsString = 'DELETE' then
@@ -1009,7 +1054,7 @@ begin
       case Delete(obj.GetPath('Endpoint').AsString, response) of
         prERROR, prTRYAGAIN:
         begin
-          obj.Add('SyncError', 'True');
+          //obj.Add('SyncError', 'True');
           DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
           Inc(items_err);
         end;
