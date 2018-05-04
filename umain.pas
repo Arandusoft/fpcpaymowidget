@@ -132,6 +132,7 @@ type
     stop_ok: boolean;
     IconIndex: integer;
     procedure Login;
+    procedure Sync;
     procedure ListProjects();
     procedure ListTasks();
     procedure ListTimeEntry();
@@ -157,7 +158,7 @@ procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   // prevent flickering
   {$ifdef windows}
-  DoubleBuffered:=True;
+  DoubleBuffered := True;
   {$endif}
   SetFonts(Self);
   pnlMenu.AnimWidth := ScaleX(pnlMenu.AnimWidth, 96);
@@ -188,13 +189,13 @@ begin
   //end;
   if Paymo.LoggedIn then
   begin
+    Sync;
     try
       timerRefresh.Enabled := True;
       timerRefreshTimer(self);
     except
     end;
   end;
-
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -392,7 +393,8 @@ var
   s, search: string;
   _hide: boolean;
 begin
-  if not Assigned(Tasks) then exit;
+  if not Assigned(Tasks) then
+    exit;
   search := UTF8LowerCase(edSearch.Text);
   if search = '' then
   begin
@@ -508,10 +510,14 @@ begin
         Paymo.GetTasks();
         DownloadTasksFinish(nil, 0, 0);
       end;
-      prTRYAGAIN, prERROR, prNOInternet:
+      prTRYAGAIN, prERROR:
       begin
         stop_ok := False;
         ShowMessage(rsErrorCantStopTimer);
+      end;
+      prNOInternet:
+      begin
+        ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
       end;
     end;
   end;
@@ -542,7 +548,8 @@ end;
 
 procedure TfrmMain.seRefreshIntervalEditingDone(Sender: TObject);
 begin
-  if (seRefreshInterval.Value >= seRefreshInterval.MinValue) and (seRefreshInterval.Value <= seRefreshInterval.MaxValue) then
+  if (seRefreshInterval.Value >= seRefreshInterval.MinValue) and
+    (seRefreshInterval.Value <= seRefreshInterval.MaxValue) then
     timerRefresh.Interval := seRefreshInterval.Value * 1000
   else
   begin
@@ -649,7 +656,13 @@ begin
     // api limit error
     prTRYAGAIN: ShowMessage(rsTooManyRequestsTryAgainSoon);
     //NO Internet
-    prNOInternet: ShowMessage(rsNoInternetTryAgainSoon);
+    prNOInternet:
+    begin
+      Paymo.Offline := True;
+      Paymo.Login;
+      pnlTop.Caption := pnlTop.Caption + ' - Offline';
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+    end;
     // login error
     prERROR:
     begin
@@ -669,6 +682,24 @@ begin
       finally
         frmLogin.Free;
       end;
+    end;
+  end;
+end;
+
+procedure TfrmMain.Sync;
+var
+  i: integer;
+begin
+  if not Paymo.Offline and Paymo.HasOfflineData then
+  begin
+    i := Paymo.SYNC_OfflineData;
+    if i <> 0 then
+    begin
+      ShowMessage(rsSyncCompleteWithError);
+    end
+    else
+    begin
+      ShowMessage(rsSyncCompleteSuccessfully);
     end;
   end;
 end;

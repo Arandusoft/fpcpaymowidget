@@ -38,6 +38,7 @@ type
     FTasks: TJSONObject;
     FCompany: TJSONObject;
     FOfflineData: TJSONArray;
+    function GetFHasOfflineData: boolean;
     procedure SetFAPIKey(AValue: string);
     procedure SetFAPIKeyURL(AValue: string);
     procedure SetFAPIURL(AValue: string);
@@ -91,8 +92,12 @@ type
   public
     procedure LoadSettings;
     procedure SaveSettings;
-    procedure POST_Offline(Endpoint: string; sJSON: TJSONStringType; var Response: string);
+    procedure POST_Offline(Endpoint: string; sJSON: TJSONStringType;
+      var Response: string);
+    procedure DELETE_Offline(Endpoint: string; var Response: string);
+    function SYNC_OfflineData: integer;
     property Offline: boolean read FOffline write SetFOffline;
+    property HasOfflineData: boolean read GetFHasOfflineData;
     property SettingsFolder: string read FSettingsFolder write SetFSettingsFolder;
     property SettingsFile: string read FSettingsFile write SetFSettingsFile;
   end;
@@ -115,26 +120,38 @@ end;
 
 function SeqSort(Item1, Item2: Pointer): integer;
 begin
-  if TJSONData(Item1).GetPath('project_id').AsInteger > TJSONData(Item2).GetPath('project_id').AsInteger then
+  if TJSONData(Item1).GetPath('project_id').AsInteger >
+    TJSONData(Item2).GetPath('project_id').AsInteger then
     exit(-1);
-  if TJSONData(Item1).GetPath('project_id').AsInteger < TJSONData(Item2).GetPath('project_id').AsInteger then
+  if TJSONData(Item1).GetPath('project_id').AsInteger <
+    TJSONData(Item2).GetPath('project_id').AsInteger then
     exit(1);
-  if TJSONData(Item1).GetPath('seq').AsInteger > TJSONData(Item2).GetPath('seq').AsInteger then
+  if TJSONData(Item1).GetPath('seq').AsInteger >
+    TJSONData(Item2).GetPath('seq').AsInteger then
     exit(-1);
-  if TJSONData(Item1).GetPath('seq').AsInteger < TJSONData(Item2).GetPath('seq').AsInteger then
+  if TJSONData(Item1).GetPath('seq').AsInteger <
+    TJSONData(Item2).GetPath('seq').AsInteger then
     exit(1);
   exit(0);
 end;
 
 function SeqSortProjectName(Item1, Item2: Pointer): integer;
 begin
-  if UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(TJSONData(Item1).GetPath('project_id').AsInteger)) > UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(TJSONData(Item2).GetPath('project_id').AsInteger)) then
+  if UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(
+    TJSONData(Item1).GetPath('project_id').AsInteger)) >
+    UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(
+    TJSONData(Item2).GetPath('project_id').AsInteger)) then
     exit(-1);
-  if UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(TJSONData(Item1).GetPath('project_id').AsInteger)) < UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(TJSONData(Item2).GetPath('project_id').AsInteger)) then
+  if UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(
+    TJSONData(Item1).GetPath('project_id').AsInteger)) <
+    UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(
+    TJSONData(Item2).GetPath('project_id').AsInteger)) then
     exit(1);
-  if TJSONData(Item1).GetPath('seq').AsInteger > TJSONData(Item2).GetPath('seq').AsInteger then
+  if TJSONData(Item1).GetPath('seq').AsInteger >
+    TJSONData(Item2).GetPath('seq').AsInteger then
     exit(-1);
-  if TJSONData(Item1).GetPath('seq').AsInteger < TJSONData(Item2).GetPath('seq').AsInteger then
+  if TJSONData(Item1).GetPath('seq').AsInteger <
+    TJSONData(Item2).GetPath('seq').AsInteger then
     exit(1);
   exit(0);
 end;
@@ -157,6 +174,11 @@ begin
   if FAPIKey = AValue then
     Exit;
   FAPIKey := AValue;
+end;
+
+function TPaymo.GetFHasOfflineData: boolean;
+begin
+  Result := FOfflineData.Count > 0;
 end;
 
 procedure TPaymo.SetFAPIKeyURL(AValue: string);
@@ -182,20 +204,23 @@ end;
 
 procedure TPaymo.SetFOffline(AValue: boolean);
 begin
-  if FOffline=AValue then Exit;
-  FOffline:=AValue;
+  if FOffline = AValue then
+    Exit;
+  FOffline := AValue;
 end;
 
 procedure TPaymo.SetFSettingsFile(AValue: string);
 begin
-  if FSettingsFile=AValue then Exit;
-  FSettingsFile:=AValue;
+  if FSettingsFile = AValue then
+    Exit;
+  FSettingsFile := AValue;
 end;
 
 procedure TPaymo.SetFSettingsFolder(AValue: string);
 begin
-  if FSettingsFolder=AValue then Exit;
-  FSettingsFolder:=AValue;
+  if FSettingsFolder = AValue then
+    Exit;
+  FSettingsFolder := AValue;
 end;
 
 function TPaymo.ProjectsArray: TJSONArray;
@@ -223,7 +248,8 @@ end;
 
 function TPaymo.CompanyData: TJSONData;
 begin
-  if not Assigned(FCompany) then exit(nil);
+  if not Assigned(FCompany) then
+    exit(nil);
   FCompany.Find('company', Result);
 end;
 
@@ -355,21 +381,22 @@ begin
       else if (client.ResponseStatusCode = 429) then
       begin
         DebugLog('', 'Get/' + Endpoint, 'prTRYAGAIN');
-        Result := prTRYAGAIN
+        Result := prTRYAGAIN;
       end
       else
       begin
         DebugLog('', 'Get/' + Endpoint, 'prERROR');
         Result := prERROR;
       end;
-    except on e:exception do
-    begin
-      DebugLog('', 'Get/' + Endpoint, 'Exception: ' + e.message);
-      if (Pos('HOST NAME RESOLUTION',UpperCase(e.message))>0) then
+    except
+      on e: Exception do
+      begin
+        DebugLog('', 'Get/' + Endpoint, 'Exception: ' + e.message);
+        if (Pos('HOST NAME RESOLUTION', UpperCase(e.message)) > 0) then
           Result := prNOInternet
-      else
+        else
           Result := prERROR;
-    end;
+      end;
     end;
   finally
     client.Free;
@@ -520,7 +547,7 @@ begin
         else if (client.ResponseStatusCode = 429) then
         begin
           DebugLog('', 'Post/' + Endpoint, 'prTRYAGAIN');
-          Result := prTRYAGAIN
+          Result := prTRYAGAIN;
         end
         else
         begin
@@ -528,7 +555,7 @@ begin
           Result := prERROR;
         end;
       except
-        on e: exception do
+        on e: Exception do
         begin
           DebugLog('', 'Post/' + Endpoint, 'Exception: ' + e.message);
           Result := prERROR;
@@ -538,6 +565,7 @@ begin
     else
     begin
       POST_Offline(Endpoint, sJSON, response);
+      Result := prNOInternet;
     end;
   finally
     ss.Free;
@@ -555,26 +583,34 @@ begin
     client.AddHeader('Accept', 'application/json');
     client.UserName := FAPIKey;
     client.Password := '';
-    try
-      Response := client.Delete(APIURL + Endpoint);
-      if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
-        Result := prOK
-      else if (client.ResponseStatusCode = 429) then
-      begin
-        DebugLog('', 'Delete/' + Endpoint, 'prTRYAGAIN');
-        Result := prTRYAGAIN
-      end
-      else
-      begin
-        DebugLog('', 'Delete/' + Endpoint, 'prERROR');
-        Result := prERROR;
+    if not FOffline then
+    begin
+      try
+        Response := client.Delete(APIURL + Endpoint);
+        if (client.ResponseStatusCode >= 200) and (client.ResponseStatusCode <= 300) then
+          Result := prOK
+        else if (client.ResponseStatusCode = 429) then
+        begin
+          DebugLog('', 'Delete/' + Endpoint, 'prTRYAGAIN');
+          Result := prTRYAGAIN;
+        end
+        else
+        begin
+          DebugLog('', 'Delete/' + Endpoint, 'prERROR');
+          Result := prERROR;
+        end;
+      except
+        on e: Exception do
+        begin
+          DebugLog('', 'Delete/' + Endpoint, 'Exception: ' + e.message);
+          Result := prERROR;
+        end;
       end;
-    except
-      on e: exception do
-      begin
-        DebugLog('', 'Delete/' + Endpoint, 'Exception: ' + e.message);
-        Result := prERROR;
-      end;
+    end
+    else
+    begin
+      DELETE_Offline(Endpoint, response);
+      Result := prNOInternet;
     end;
   finally
     client.Free;
@@ -715,17 +751,16 @@ begin
     try
       s.Add(sJSON);
       s.SaveToFile(SettingsFolder + FileName);
-      result := prOK;
+      Result := prOK;
     except
-      result := prERROR;
+      Result := prERROR;
     end;
   finally
     s.Free;
   end;
 end;
 
-function TPaymo.LoadJSON(FileName: string; var response: string
-  ): TPaymoResponseStatus;
+function TPaymo.LoadJSON(FileName: string; var response: string): TPaymoResponseStatus;
 var
   s: TStringList;
 begin
@@ -735,10 +770,10 @@ begin
     try
       s.LoadFromFile(SettingsFolder + FileName);
       response := s.Text;
-      result := prOK;
+      Result := prOK;
     except
       response := '[]';
-      result := prERROR;
+      Result := prERROR;
     end;
   finally
     s.Free;
@@ -748,6 +783,7 @@ end;
 procedure TPaymo.LoadSettings;
 var
   c: TJSONConfig;
+  response: string;
 begin
   c := TJSONConfig.Create(nil);
   try
@@ -758,6 +794,17 @@ begin
     end;
   finally
     c.Free;
+  end;
+  if FileExists(SettingsFolder + 'offline.json') then
+  begin
+    case LoadJSON('offline.json', response) of
+      prOK:
+      begin
+        if Assigned(FOfflineData) then
+          FOfflineData.Free;
+        FOfflineData := TJSONArray(GetJSON(response));
+      end;
+    end;
   end;
 end;
 
@@ -780,14 +827,103 @@ end;
 procedure TPaymo.POST_Offline(Endpoint: string; sJSON: TJSONStringType;
   var Response: string);
 var
+  i: integer;
   obj: TJSONObject;
+  s, t: TJSONStringType;
+  found: boolean;
 begin
   obj := TJSONObject.Create;
+  obj.add('Type', 'POST');
   obj.add('Endpoint', Endpoint);
   obj.add('Data', GetJSON(sJSON));
-  FOfflineData.Add(obj);
-  Response := '[]';
-  SaveJSON('post_offline.json', FOfflineData.FormatJSON());
+  s := obj.FormatJSON();
+  Response := '{}';
+
+  found := False;
+  for i := 0 to FOfflineData.Count - 1 do
+  begin
+    t := FOfflineData.Items[i].FormatJSON();
+    if s = t then
+    begin
+      found := True;
+      break;
+    end;
+  end;
+
+  if not found then
+  begin
+    FOfflineData.Add(obj);
+    SaveJSON('offline.json', FOfflineData.FormatJSON());
+  end;
+end;
+
+procedure TPaymo.DELETE_Offline(Endpoint: string; var Response: string);
+var
+  i: integer;
+  obj: TJSONObject;
+  s, t: TJSONStringType;
+  found: boolean;
+begin
+  obj := TJSONObject.Create;
+  obj.add('Type', 'DELETE');
+  obj.add('Endpoint', Endpoint);
+  s := obj.FormatJSON();
+  Response := '{}';
+
+  found := False;
+  for i := 0 to FOfflineData.Count - 1 do
+  begin
+    t := FOfflineData.Items[i].FormatJSON();
+    if s = t then
+    begin
+      found := True;
+      break;
+    end;
+  end;
+
+  if not found then
+  begin
+    FOfflineData.Add(obj);
+    SaveJSON('offline.json', FOfflineData.FormatJSON());
+  end;
+end;
+
+function TPaymo.SYNC_OfflineData: integer;
+var
+  i: integer;
+  items_err: integer = 0;
+  obj: TJSONObject;
+  response: string;
+begin
+  for i := 0 to FOfflineData.Count - 1 do
+  begin
+    obj := TJSONObject(FOfflineData.Items[i]);
+    if obj.GetPath('Type').AsString = 'POST' then
+    begin
+      case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON, response) of
+        prERROR, prTRYAGAIN:
+        begin
+          obj.Add('SyncError', 'True');
+          DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
+          Inc(items_err);
+        end;
+      end;
+    end;
+    if obj.GetPath('Type').AsString = 'DELETE' then
+    begin
+      case Delete(obj.GetPath('Endpoint').AsString, response) of
+        prERROR, prTRYAGAIN:
+        begin
+          obj.Add('SyncError', 'True');
+          DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
+          Inc(items_err);
+        end;
+      end;
+    end;
+  end;
+  FOfflineData.Clear;
+  SaveJSON('offline.json', FOfflineData.FormatJSON());
+  Result := items_err;
 end;
 
 end.

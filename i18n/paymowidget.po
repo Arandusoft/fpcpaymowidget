@@ -292,6 +292,14 @@ msgstr ""
 msgid "Start Timer"
 msgstr ""
 
+#: uresourcestring.rssynccompletesuccessfully
+msgid "Sync complete successfully"
+msgstr ""
+
+#: uresourcestring.rssynccompletewitherror
+msgid "Sync complete with error. Can't update some items. See debug.log for details."
+msgstr ""
+
 #: uresourcestring.rstaskiscomplete
 msgid "Task is complete"
 msgstr ""
@@ -306,6 +314,10 @@ msgstr ""
 
 #: uresourcestring.rstoomanyrequeststryagainsoon
 msgid "Too many Requests. Try again soon."
+msgstr ""
+
+#: uresourcestring.rsworkingofflinethedatawillbesavedthenexttimeyouareonline
+msgid "Working Offline: The data will be saved the next time you are online."
 msgstr ""
 
 #: uresourcestring.rsyesterday

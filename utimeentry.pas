@@ -434,6 +434,10 @@ begin
     begin
       ShowMessage(rsErrorCantUpdateTimeEntry);
     end;
+    prNOInternet:
+    begin
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+    end;
   end;
   // task completion
   if TJSONData(acTask.SelectedObject).GetPath('complete').AsBoolean <>
@@ -445,6 +449,10 @@ begin
     begin
       ShowMessage(rsErrorCantUpdateTask);
       exit;
+    end;
+    prNOInternet:
+    begin
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
     end;
   end;
   if (r = prOK) or (r2 = prOK) then
@@ -555,11 +563,19 @@ begin
           begin
             ShowMessage(rsErrorCantStartTimer);
           end;
+          prNOInternet:
+          begin
+            ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+          end;
         end;
       end;
       prTRYAGAIN, prERROR:
       begin
         ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
+      end;
+      prNOInternet:
+      begin
+        ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
       end;
     end;
   end
@@ -599,6 +615,10 @@ begin
     begin
       ShowMessage(rsErrorCantCreateTask);
     end;
+    prNOInternet:
+    begin
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+    end;
   end;
 end;
 
@@ -616,6 +636,10 @@ begin
     prTRYAGAIN, prERROR:
     begin
       ShowMessage(rsErrorCantDeleteTimeEntry);
+    end;
+    prNOInternet:
+    begin
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
     end;
   end;
 end;
