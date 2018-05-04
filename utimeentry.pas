@@ -618,6 +618,7 @@ begin
     prNOInternet:
     begin
       ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+      Self.Close;
     end;
   end;
 end;

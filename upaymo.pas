@@ -85,6 +85,8 @@ type
     function GetTask(TaskID: integer): TJSONData;
     { Returns the time entry data given the ID}
     function GetTimeEntry(EntryID: integer): TJSONData;
+    { Returns the task list data given the ID}
+    function GetTaskList(TaskListID: integer): TJSONData;
   public
     { Constructor }
     constructor Create;
@@ -385,6 +387,20 @@ begin
       if arrEntries[j].GetPath('id').AsInteger = EntryID then
         exit(arrEntries[j]);
     end;
+  end;
+end;
+
+function TPaymo.GetTaskList(TaskListID: integer): TJSONData;
+var
+  i: integer;
+  arr: TJSONArray;
+begin
+  Result := nil;
+  arr := TaskListsArray;
+  for i := 0 to arr.Count - 1 do
+  begin
+    if TaskListID = arr[i].GetPath('id').AsInteger then
+      exit(arr[i]);
   end;
 end;
 
@@ -694,6 +710,16 @@ begin
   jObj.Add('description', Description);
   jObj.Add('tasklist_id', TaskListID);
   jObj.Add('users', jArr);
+  if FOffline then
+  begin
+    // values used internally, needed even if offline
+    jObj.Add('id', 9999999); // ToDo: generate unique number
+    jObj.Add('complete', False);
+    jObj.Add('seq', 0);
+    jObj.Add('project_id', GetTaskList(TaskListID).GetPath('project_id').AsInteger);
+    // detect that this is an offline created task
+    jObj.Add('offline', True);
+  end;
   sJSON := jObj.FormatJSON();
   jObj.Free;
   Result := Post('tasks', sJSON, response);
@@ -701,6 +727,11 @@ begin
     prOK:
     begin
       task := GetJSON(response).GetPath('tasks').Items[0];
+      TasksArray.Add(task);
+    end;
+    prNOInternet:
+    begin
+      task := GetJSON(response);
       TasksArray.Add(task);
     end;
   end;
@@ -899,7 +930,7 @@ begin
   obj.add('Endpoint', Endpoint);
   obj.add('Data', GetJSON(sJSON));
   s := obj.FormatJSON();
-  Response := '{}';
+  Response := sJSON;
 
   found := False;
   for i := 0 to FOfflineData.Count - 1 do
