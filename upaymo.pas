@@ -78,7 +78,7 @@ type
     { Current running timer }
     function RunningTimerData: TJSONData;
     { Returns the name of the Project given the ID }
-    function GetProjectName(ProjectID: integer): string;
+    function GetProjectName(ProjectID: int64): string;
     { Returns the name of the Task given the ID}
     function GetTaskName(TaskID: integer): string;
     { Returns the task data given the ID}
@@ -137,7 +137,7 @@ type
     function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
     { Updates a time entry start and end time, and also project, task and tasklist related }
     function UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
-      project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
+      project_id: int64; task_id, tasklist_id: integer): TPaymoResponseStatus;
   public
     { Persists a JSON to file, used to save offline data }
     function SaveJSON(FileName: string; sJSON: string): TPaymoResponseStatus;
@@ -184,11 +184,11 @@ end;
 
 function SeqSort(Item1, Item2: Pointer): integer;
 begin
-  if TJSONData(Item1).GetPath('project_id').AsInteger >
-    TJSONData(Item2).GetPath('project_id').AsInteger then
+  if TJSONData(Item1).GetPath('project_id').AsInt64 >
+    TJSONData(Item2).GetPath('project_id').AsInt64 then
     exit(-1);
-  if TJSONData(Item1).GetPath('project_id').AsInteger <
-    TJSONData(Item2).GetPath('project_id').AsInteger then
+  if TJSONData(Item1).GetPath('project_id').AsInt64 <
+    TJSONData(Item2).GetPath('project_id').AsInt64 then
     exit(1);
   if TJSONData(Item1).GetPath('seq').AsInteger >
     TJSONData(Item2).GetPath('seq').AsInteger then
@@ -202,14 +202,14 @@ end;
 function SeqSortProjectName(Item1, Item2: Pointer): integer;
 begin
   if UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(
-    TJSONData(Item1).GetPath('project_id').AsInteger)) >
+    TJSONData(Item1).GetPath('project_id').AsInt64)) >
     UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(
-    TJSONData(Item2).GetPath('project_id').AsInteger)) then
+    TJSONData(Item2).GetPath('project_id').AsInt64)) then
     exit(-1);
   if UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(
-    TJSONData(Item1).GetPath('project_id').AsInteger)) <
+    TJSONData(Item1).GetPath('project_id').AsInt64)) <
     UTF8LowerCase(PAYMO_SORT_INSTANCE.GetProjectName(
-    TJSONData(Item2).GetPath('project_id').AsInteger)) then
+    TJSONData(Item2).GetPath('project_id').AsInt64)) then
     exit(1);
   if TJSONData(Item1).GetPath('seq').AsInteger >
     TJSONData(Item2).GetPath('seq').AsInteger then
@@ -330,7 +330,7 @@ begin
     Result := nil;
 end;
 
-function TPaymo.GetProjectName(ProjectID: integer): string;
+function TPaymo.GetProjectName(ProjectID: int64): string;
 var
   i: integer;
   arr: TJSONArray;
@@ -713,12 +713,13 @@ begin
   if FOffline then
   begin
     // values used internally, needed even if offline
-    jObj.Add('id', 9999999); // ToDo: generate unique number
+    jObj.Add('id', DateTimeToUnix(now));
     jObj.Add('complete', False);
     jObj.Add('seq', 0);
-    jObj.Add('project_id', GetTaskList(TaskListID).GetPath('project_id').AsInteger);
+    jObj.Add('project_id', GetTaskList(TaskListID).GetPath('project_id').AsInt64);
     // detect that this is an offline created task
     jObj.Add('offline', True);
+    jObj.Add('source', 'createtask');
   end;
   sJSON := jObj.FormatJSON();
   jObj.Free;
@@ -809,7 +810,7 @@ begin
 end;
 
 function TPaymo.UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
-  project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
+  project_id: int64; task_id, tasklist_id: integer): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
