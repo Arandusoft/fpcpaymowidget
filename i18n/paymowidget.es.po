@@ -302,6 +302,14 @@ msgstr "Guardar Entrada"
 msgid "Start Timer"
 msgstr "Iniciar Temporizador"
 
+#: uresourcestring.rssynccompletesuccessfully
+msgid "Sync complete successfully"
+msgstr "Sincronización completada correctamente"
+
+#: uresourcestring.rssynccompletewitherror
+msgid "Sync complete with error. Can't update some items. See debug.log for details."
+msgstr "Sincronización completada con errores. No se pudieron actualizar algunos items. Mira el debug.log para mas detalles."
+
 #: uresourcestring.rstaskiscomplete
 msgid "Task is complete"
 msgstr "Tarea completada"
@@ -317,6 +325,10 @@ msgstr "HOY"
 #: uresourcestring.rstoomanyrequeststryagainsoon
 msgid "Too many Requests. Try again soon."
 msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
+
+#: uresourcestring.rsworkingofflinethedatawillbesavedthenexttimeyouareonline
+msgid "Working Offline: The data will be saved the next time you are online."
+msgstr "Trabajando Offline: Los datos serán guardados la próxima vez que estés online."
 
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"

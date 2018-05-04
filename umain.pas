@@ -1,6 +1,7 @@
 unit umain;
 
 {$mode objfpc}{$H+}
+{ $define debugoffline}
 
 interface
 
@@ -9,7 +10,7 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8;
+  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType;
 
 type
 
@@ -131,6 +132,7 @@ type
     stop_ok: boolean;
     IconIndex: integer;
     procedure Login;
+    procedure Sync;
     procedure ListProjects();
     procedure ListTasks();
     procedure ListTimeEntry();
@@ -154,12 +156,30 @@ uses
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
+  // prevent flickering
+  {$ifdef windows}
+  DoubleBuffered := True;
+  {$endif}
   SetFonts(Self);
   pnlMenu.AnimWidth := ScaleX(pnlMenu.AnimWidth, 96);
   DoubleBuffered := True;
   pnlMenu.Left := 0;
   pnlMenu.Top := 0;
+  // Default position (center of the screen)
+  Left := (Screen.Width - Width) div 2;
+  Top := (Screen.Height - Height) div 2;
+  // Restore position (only works with Position = poDesigned)
+  {$IFNDEF DARWIN}
+  ForceDirectories(GetAppConfigDir(False));
+  JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
+  {$ENDIF}
   Paymo := TPaymo.Create;
+  Paymo.SettingsFolder := GetAppConfigDir(False);
+  Paymo.SettingsFile := GetAppConfigFile(False);
+  {$ifdef debugoffline}
+  Paymo.Offline := True;
+  pnlTop.Caption := pnlTop.Caption + ' - Offline';
+  {$endif}
   Paymo.LoadSettings;
   //try
   Login;
@@ -169,20 +189,13 @@ begin
   //end;
   if Paymo.LoggedIn then
   begin
+    Sync;
     try
       timerRefresh.Enabled := True;
       timerRefreshTimer(self);
     except
     end;
   end;
-  // Default position (center of the screen)
-  Left := (Screen.Width - Width) div 2;
-  Top := (Screen.Height - Height) div 2;
-  // Restore position (only works with Position = poDesigned)
-  {$IFNDEF DARWIN}
-  ForceDirectories(GetAppConfigDir(False));
-  JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
-  {$ENDIF}
 end;
 
 procedure TfrmMain.FormCloseQuery(Sender: TObject; var CanClose: boolean);
@@ -380,7 +393,8 @@ var
   s, search: string;
   _hide: boolean;
 begin
-  if not Assigned(Tasks) then exit;
+  if not Assigned(Tasks) then
+    exit;
   search := UTF8LowerCase(edSearch.Text);
   if search = '' then
   begin
@@ -474,6 +488,8 @@ begin
   if leAPIURL.Text = '' then
     leAPIURL.Text := PAYMOAPIBASEURL;
   TimerRefresh.Interval := seRefreshInterval.Value * 1000;
+  Width := MulDiv(Width, 96, Screen.PixelsPerInch);
+  Height := MulDiv(Height, 96, Screen.PixelsPerInch);
 end;
 
 procedure TfrmMain.lblStopClick(Sender: TObject);
@@ -494,10 +510,14 @@ begin
         Paymo.GetTasks();
         DownloadTasksFinish(nil, 0, 0);
       end;
-      prTRYAGAIN, prERROR, prNOInternet:
+      prTRYAGAIN, prERROR:
       begin
         stop_ok := False;
         ShowMessage(rsErrorCantStopTimer);
+      end;
+      prNOInternet:
+      begin
+        ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
       end;
     end;
   end;
@@ -528,7 +548,8 @@ end;
 
 procedure TfrmMain.seRefreshIntervalEditingDone(Sender: TObject);
 begin
-  if (seRefreshInterval.Value >= seRefreshInterval.MinValue) and (seRefreshInterval.Value <= seRefreshInterval.MaxValue) then
+  if (seRefreshInterval.Value >= seRefreshInterval.MinValue) and
+    (seRefreshInterval.Value <= seRefreshInterval.MaxValue) then
     timerRefresh.Interval := seRefreshInterval.Value * 1000
   else
   begin
@@ -635,7 +656,13 @@ begin
     // api limit error
     prTRYAGAIN: ShowMessage(rsTooManyRequestsTryAgainSoon);
     //NO Internet
-    prNOInternet: ShowMessage(rsNoInternetTryAgainSoon);
+    prNOInternet:
+    begin
+      Paymo.Offline := True;
+      Paymo.Login;
+      pnlTop.Caption := pnlTop.Caption + ' - Offline';
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+    end;
     // login error
     prERROR:
     begin
@@ -655,6 +682,24 @@ begin
       finally
         frmLogin.Free;
       end;
+    end;
+  end;
+end;
+
+procedure TfrmMain.Sync;
+var
+  i: integer;
+begin
+  if not Paymo.Offline and Paymo.HasOfflineData then
+  begin
+    i := Paymo.SYNC_OfflineData;
+    if i <> 0 then
+    begin
+      ShowMessage(rsSyncCompleteWithError);
+    end
+    else
+    begin
+      ShowMessage(rsSyncCompleteSuccessfully);
     end;
   end;
 end;

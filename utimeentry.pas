@@ -32,8 +32,12 @@ type
     lblDescription3: TLabel;
     lbl_date: TLabel;
     memoDescription: TMemo;
-    pnlSetTime: TPanel;
+    Panel1: TPanel;
     pnlGroup: TPanel;
+    pnlGroup1: TPanel;
+    btnDeleteEntry: TColorSpeedButton;
+    btnSaveEntry: TColorSpeedButton;
+    pnlSetTime: TPanel;
     time_end_hh: TEdit;
     time_end_mm: TEdit;
     time_end_separator: TLabel;
@@ -41,8 +45,6 @@ type
     time_start_mm: TEdit;
     time_start_separator: TLabel;
     time_start_separator1: TLabel;
-    btnDeleteEntry: TColorSpeedButton;
-    btnSaveEntry: TColorSpeedButton;
     procedure acProjectSearch(Sender: TObject; SearchText: string; Items: TStrings);
     procedure acProjectSelectionChange(Sender: TObject);
     procedure acTaskListSearch(Sender: TObject; SearchText: string;
@@ -63,6 +65,7 @@ type
     procedure FormClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure JSONPropStorage1RestoreProperties(Sender: TObject);
     procedure lbl_dateClick(Sender: TObject);
     procedure time_end_hhChange(Sender: TObject);
     procedure time_end_mmChange(Sender: TObject);
@@ -339,14 +342,15 @@ end;
 
 procedure TfrmTimeEntry.FormCreate(Sender: TObject);
 begin
+  // prevent flickering
+  {$ifdef windows}
+  DoubleBuffered:=True;
+  {$endif}
   frmMain.SetFonts(Self);
   // Restore position (only works with Position = poDesigned)
   {$IFNDEF DARWIN}
   JSONPropStorage1.JSONFileName := GetAppConfigDir(False) + 'settings.json';
   {$ENDIF}
-  acProject.Width := Width - acProject.Left - ScaleX(20, 96);
-  acTask.Width := Width - acTask.Left - ScaleX(20, 96);
-  acTaskList.Width := Width - acTaskList.Left - ScaleX(20, 96);
 end;
 
 procedure TfrmTimeEntry.FormShow(Sender: TObject);
@@ -363,6 +367,25 @@ begin
   acProject.HideListBox;
   acTask.HideListBox;
   acTaskList.HideListBox;
+end;
+
+procedure TfrmTimeEntry.JSONPropStorage1RestoreProperties(Sender: TObject);
+begin
+  Width := MulDiv(Width, 96, Screen.PixelsPerInch);
+  Height := MulDiv(Height, 96, Screen.PixelsPerInch);
+
+  // fixed right spacing
+  acProject.Width := Width - acProject.Left - ScaleX(20, 96);
+  acTask.Width := Width - acTask.Left - ScaleX(20, 96);
+  acTaskList.Width := Width - acTaskList.Left - ScaleX(20, 96);
+  btnExistingTask.Left := Width - btnExistingTask.Width - ScaleX(20, 96);
+  // left and right spacing is the same
+  memoDescription.Width := Width - memoDescription.Left - ScaleX(memoDescription.Left, 96);
+  btnSaveEntry.Width := Width - btnSaveEntry.Left * 2;
+  btnDeleteEntry.Width := Width - btnDeleteEntry.Left * 2;
+  // relative to other controls
+  pnlGroup1.Left := btnSaveEntry.Left;
+  pnlGroup1.Width := btnSaveEntry.Width;
 end;
 
 procedure TfrmTimeEntry.btnSaveEntryClick(Sender: TObject);
@@ -411,6 +434,10 @@ begin
     begin
       ShowMessage(rsErrorCantUpdateTimeEntry);
     end;
+    prNOInternet:
+    begin
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+    end;
   end;
   // task completion
   if TJSONData(acTask.SelectedObject).GetPath('complete').AsBoolean <>
@@ -422,6 +449,10 @@ begin
     begin
       ShowMessage(rsErrorCantUpdateTask);
       exit;
+    end;
+    prNOInternet:
+    begin
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
     end;
   end;
   if (r = prOK) or (r2 = prOK) then
@@ -532,11 +563,19 @@ begin
           begin
             ShowMessage(rsErrorCantStartTimer);
           end;
+          prNOInternet:
+          begin
+            ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+          end;
         end;
       end;
       prTRYAGAIN, prERROR:
       begin
         ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
+      end;
+      prNOInternet:
+      begin
+        ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
       end;
     end;
   end
@@ -576,6 +615,10 @@ begin
     begin
       ShowMessage(rsErrorCantCreateTask);
     end;
+    prNOInternet:
+    begin
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+    end;
   end;
 end;
 
@@ -593,6 +636,10 @@ begin
     prTRYAGAIN, prERROR:
     begin
       ShowMessage(rsErrorCantDeleteTimeEntry);
+    end;
+    prNOInternet:
+    begin
+      ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
     end;
   end;
 end;

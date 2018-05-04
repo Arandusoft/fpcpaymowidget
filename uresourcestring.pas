@@ -33,6 +33,9 @@ resourcestring
   rsPleaseEnterTaskDescription = 'Please enter task description.';
   rsTaskIsComplete = 'Task is complete';
   rsErrorCantUpdateTask = 'Error: Can''t update task.';
+  rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline = 'Working Offline: The data will be saved the next time you are online.';
+  rsSyncCompleteWithError = 'Sync complete with error. Can''t update some items. See debug.log for details.';
+  rsSyncCompleteSuccessfully = 'Sync complete successfully';
 
 implementation
 
