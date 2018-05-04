@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Paymo: upaymo: Class TPaymo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="PasDoc 0.15.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link rel="StyleSheet" type="text/css" href="pasdoc.css">
+</head>
+<body>
+<table class="container"><tr><td class="navigation">
+<h2>Paymo</h2><p><a href="AllUnits.html" class="navigation">Units</a></p><p><a href="ClassHierarchy.html" class="navigation">Class Hierarchy</a></p><p><a href="AllClasses.html" class="navigation">Classes, Interfaces, Objects and Records</a></p><p><a href="AllTypes.html" class="navigation">Types</a></p><p><a href="AllVariables.html" class="navigation">Variables</a></p><p><a href="AllConstants.html" class="navigation">Constants</a></p><p><a href="AllFunctions.html" class="navigation">Functions and Procedures</a></p><p><a href="AllIdentifiers.html" class="navigation">Identifiers</a></p></td><td class="content">
+<span id="TPaymo"></span><h1 class="cio">Class TPaymo</h1>
+<div class="sections">
+<div class="one_section"><a class="section" href="#PasDoc-Description">Description</a></div><div class="one_section"><a class="section" href="#PasDoc-Hierarchy">Hierarchy</a></div><div class="one_section">Fields</div><div class="one_section"><a class="section" href="#PasDoc-Methods">Methods</a></div><div class="one_section"><a class="section" href="#PasDoc-Properties">Properties</a></div></div>
+<span id="PasDoc-Description"></span><h2 class="unit">Unit</h2>
+<p class="unitlink">
+<a  href="upaymo.html">upaymo</a></p>
+<h2 class="declaration">Declaration</h2>
+<p class="declaration">
+<code>type TPaymo = class(TObject)</code></p>
+<h2 class="description">Description</h2>
+<p>
+TPaymo &ndash; Main class to interact with Paymo API</p>
+<span id="PasDoc-Hierarchy"></span><h2 class="hierarchy">Hierarchy</h2>
+<ul class="hierarchy"><li class="ancestor">TObject</li>
+<li class="thisitem">TPaymo</li></ul><h2 class="overview">Overview</h2>
+<span id="PasDoc-Methods"></span><h3 class="summary">Methods</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#ProjectsArray">ProjectsArray</a></b>: TJSONArray;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#TasksArray">TasksArray</a></b>: TJSONArray;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#TaskListsArray">TaskListsArray</a></b>: TJSONArray;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#MyData">MyData</a></b>: TJSONData;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#CompanyData">CompanyData</a></b>: TJSONData;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#RunningTimerData">RunningTimerData</a></b>: TJSONData;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetProjectName">GetProjectName</a></b>(ProjectID: integer): string;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetTaskName">GetTaskName</a></b>(TaskID: integer): string;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetTask">GetTask</a></b>(TaskID: integer): TJSONData;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetTimeEntry">GetTimeEntry</a></b>(EntryID: integer): TJSONData;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>constructor <b><a  href="upaymo.TPaymo.html#Create">Create</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>destructor <b><a  href="upaymo.TPaymo.html#Destroy">Destroy</a></b>; override;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#Login">Login</a></b>: <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#Get">Get</a></b>(Endpoint: string; var Response: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetTasks">GetTasks</a></b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetProjects">GetProjects</a></b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetTaskLists">GetTaskLists</a></b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetMe">GetMe</a></b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetRunningTimer">GetRunningTimer</a></b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#GetCompany">GetCompany</a></b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#Post">Post</a></b>(Endpoint: string; sJSON: TJSONStringType; var Response: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#Delete">Delete</a></b>(Endpoint: string; var Response: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#CreateTask">CreateTask</a></b>(Name, Description: string; TaskListID: integer; var task: TJSONData): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#UpdateTaskCompletion">UpdateTaskCompletion</a></b>(Complete: boolean; task: TJSONData): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#StopRunningTimer">StopRunningTimer</a></b>(start_time, end_time: TDateTime; Description: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#StartRunningTimer">StartRunningTimer</a></b>(task_id: integer; start_time: TDateTime): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#DeleteTimeEntry">DeleteTimeEntry</a></b>(TimeEntryID: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#UpdateTimeEntry">UpdateTimeEntry</a></b>(TimeEntryID: integer; start_time, end_time: TDateTime; project_id, task_id, tasklist_id: integer): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#SaveJSON">SaveJSON</a></b>(FileName: string; sJSON: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#LoadJSON">LoadJSON</a></b>(FileName: string; var response: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="upaymo.TPaymo.html#LoadSettings">LoadSettings</a></b>;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="upaymo.TPaymo.html#SaveSettings">SaveSettings</a></b>;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="upaymo.TPaymo.html#POST_Offline">POST_Offline</a></b>(Endpoint: string; sJSON: TJSONStringType; var Response: string);</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>procedure <b><a  href="upaymo.TPaymo.html#DELETE_Offline">DELETE_Offline</a></b>(Endpoint: string; var Response: string);</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>function <b><a  href="upaymo.TPaymo.html#SYNC_OfflineData">SYNC_OfflineData</a></b>: integer;</code></td>
+</tr>
+</table>
+<span id="PasDoc-Properties"></span><h3 class="summary">Properties</h3>
+<table class="summary wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="upaymo.TPaymo.html#APIKey">APIKey</a></b>: string read FAPIKey write SetFAPIKey;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="upaymo.TPaymo.html#APIURL">APIURL</a></b>: string read FAPIURL write SetFAPIURL;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="upaymo.TPaymo.html#APIKeyURL">APIKeyURL</a></b>: string read FAPIKeyURL write SetFAPIKeyURL;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="upaymo.TPaymo.html#LoggedIn">LoggedIn</a></b>: boolean read FLoggedIn write SetFLoggedIn;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="upaymo.TPaymo.html#Offline">Offline</a></b>: boolean read FOffline write SetFOffline;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="upaymo.TPaymo.html#HasOfflineData">HasOfflineData</a></b>: boolean read GetFHasOfflineData;</code></td>
+</tr>
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="upaymo.TPaymo.html#SettingsFolder">SettingsFolder</a></b>: string read FSettingsFolder write SetFSettingsFolder;</code></td>
+</tr>
+<tr class="list2">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><code>property <b><a  href="upaymo.TPaymo.html#SettingsFile">SettingsFile</a></b>: string read FSettingsFile write SetFSettingsFile;</code></td>
+</tr>
+</table>
+<h2 class="description">Description</h2>
+<h3 class="detail">Methods</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="ProjectsArray"></span><code>function <b>ProjectsArray</b>: TJSONArray;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+List of Projects</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="TasksArray"></span><code>function <b>TasksArray</b>: TJSONArray;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+List of Tasks</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="TaskListsArray"></span><code>function <b>TaskListsArray</b>: TJSONArray;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+List of Task Lists</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="MyData"></span><code>function <b>MyData</b>: TJSONData;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+User information</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CompanyData"></span><code>function <b>CompanyData</b>: TJSONData;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Company information</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="RunningTimerData"></span><code>function <b>RunningTimerData</b>: TJSONData;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Current running timer</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetProjectName"></span><code>function <b>GetProjectName</b>(ProjectID: integer): string;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Returns the name of the Project given the ID</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetTaskName"></span><code>function <b>GetTaskName</b>(TaskID: integer): string;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Returns the name of the Task given the ID</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetTask"></span><code>function <b>GetTask</b>(TaskID: integer): TJSONData;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Returns the task data given the ID</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetTimeEntry"></span><code>function <b>GetTimeEntry</b>(EntryID: integer): TJSONData;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Returns the time entry data given the ID</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Create"></span><code>constructor <b>Create</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Constructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Destroy"></span><code>destructor <b>Destroy</b>; override;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Destructor</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Login"></span><code>function <b>Login</b>: <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Calls GetMe() and test the response</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Get"></span><code>function <b>Get</b>(Endpoint: string; var Response: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get data from an endpoint, stores the server response in the response variable</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetTasks"></span><code>function <b>GetTasks</b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Retrieve tasks online or offline</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetProjects"></span><code>function <b>GetProjects</b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Retrieve projects online or offline</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetTaskLists"></span><code>function <b>GetTaskLists</b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Retrieve task lists online or offline</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetMe"></span><code>function <b>GetMe</b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Retrieve user information</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetRunningTimer"></span><code>function <b>GetRunningTimer</b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Retrieve current running timer</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="GetCompany"></span><code>function <b>GetCompany</b>(): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Retrieve company information</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Post"></span><code>function <b>Post</b>(Endpoint: string; sJSON: TJSONStringType; var Response: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Creates or updates data to an endpoint, providing a JSON string, stores the server response in the response variable</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Delete"></span><code>function <b>Delete</b>(Endpoint: string; var Response: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Delete the data of an endpoint, stores the server response in the response variable</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="CreateTask"></span><code>function <b>CreateTask</b>(Name, Description: string; TaskListID: integer; var task: TJSONData): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Post a new task, if went OK it adds it to the list of tasks</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="UpdateTaskCompletion"></span><code>function <b>UpdateTaskCompletion</b>(Complete: boolean; task: TJSONData): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Updates task 'complete' status</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="StopRunningTimer"></span><code>function <b>StopRunningTimer</b>(start_time, end_time: TDateTime; Description: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Persists the running timer, if time interval is less than a second the data is discarded</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="StartRunningTimer"></span><code>function <b>StartRunningTimer</b>(task_id: integer; start_time: TDateTime): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Set the running timer</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DeleteTimeEntry"></span><code>function <b>DeleteTimeEntry</b>(TimeEntryID: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Delete a time entry, given the ID</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="UpdateTimeEntry"></span><code>function <b>UpdateTimeEntry</b>(TimeEntryID: integer; start_time, end_time: TDateTime; project_id, task_id, tasklist_id: integer): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Updates a time entry start and end time, and also project, task and tasklist related</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SaveJSON"></span><code>function <b>SaveJSON</b>(FileName: string; sJSON: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Persists a JSON to file, used to save offline data</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="LoadJSON"></span><code>function <b>LoadJSON</b>(FileName: string; var response: string): <a  href="upaymo.html#TPaymoResponseStatus">TPaymoResponseStatus</a>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Loads into memory a JSON file, used to retrieve previously saved offline data</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="LoadSettings"></span><code>procedure <b>LoadSettings</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Retrieves the API Key and offline data previously saved</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SaveSettings"></span><code>procedure <b>SaveSettings</b>;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Stores the API Key</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="POST_Offline"></span><code>procedure <b>POST_Offline</b>(Endpoint: string; sJSON: TJSONStringType; var Response: string);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Stores into offline.json the data send to Post method, if the user is offline</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="DELETE_Offline"></span><code>procedure <b>DELETE_Offline</b>(Endpoint: string; var Response: string);</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Stores into offline.json the data send to Delete method, if the user is offline</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SYNC_OfflineData"></span><code>function <b>SYNC_OfflineData</b>: integer;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Creates a Post or Delete for each element stored in offline.json</p>
+</td></tr>
+</table>
+<h3 class="detail">Properties</h3>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="APIKey"></span><code>property <b>APIKey</b>: string read FAPIKey write SetFAPIKey;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+The key to connect to the API</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="APIURL"></span><code>property <b>APIURL</b>: string read FAPIURL write SetFAPIURL;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+The base URL used to connect to the API</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="APIKeyURL"></span><code>property <b>APIKeyURL</b>: string read FAPIKeyURL write SetFAPIKeyURL;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+The URL used to obtain an API Key</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="LoggedIn"></span><code>property <b>LoggedIn</b>: boolean read FLoggedIn write SetFLoggedIn;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if the user is Logged In</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="Offline"></span><code>property <b>Offline</b>: boolean read FOffline write SetFOffline;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Get / Set the Offline status</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="HasOfflineData"></span><code>property <b>HasOfflineData</b>: boolean read GetFHasOfflineData;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+Check if there is offline data loaded into memory, used to see if SYNC_OfflineData must be called</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SettingsFolder"></span><code>property <b>SettingsFolder</b>: string read FSettingsFolder write SetFSettingsFolder;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+The folder where the API Key and json files must be saved</p>
+</td></tr>
+</table>
+<table class="detail wide_list">
+<tr class="list">
+<td class="visibility"><a  href="legend.html"><img  src="public.gif" alt="Public" title="Public"></a></td>
+<td class="itemcode"><span id="SettingsFile"></span><code>property <b>SettingsFile</b>: string read FSettingsFile write SetFSettingsFile;</code></td>
+</tr>
+<tr><td colspan="2">
+<p>
+The API Key file name</p>
+</td></tr>
+</table>
+<hr><span class="appinfo"><em>Generated by <a  href="https://github.com/pasdoc/pasdoc/wiki">PasDoc 0.15.0</a>. </em>
+</span>
+</td></tr></table></body></html>

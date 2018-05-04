@@ -1,5 +1,11 @@
 unit upaymo;
 
+{< This is the core of the FPC Paymo Widget.
+   This unit contains the main class to interact with
+   the Paymo API.
+   @author(Leandro Diaz (http://lainz.github.io))
+}
+
 {$mode objfpc}{$H+}
 
 interface
@@ -9,18 +15,30 @@ uses
   Dialogs, DateUtils, LazUTF8, udebug;
 
 const
+  { URL used for GET, POST and DELETE }
   PAYMOAPIBASEURL = 'https://app.paymoapp.com/api/';
+  { URL used to get the API Key to start using the application }
   PAYMOAPIKEYURL = 'https://app.paymoapp.com/#Paymo.module.myaccount/';
 
+{ Sort function by name property, case insensitive }
 function NameSort(Item1, Item2: Pointer): integer;
+{ Sort function by 'seq' property, it allows to sort like in the Paymo website }
 function SeqSort(Item1, Item2: Pointer): integer;
+{ Sort function by 'seq' property plus sort by project name, case insensitive }
 function SeqSortProjectName(Item1, Item2: Pointer): integer;
+{ Sort function by name property, case insensitive, from bottom to top }
 function InverseNameSort(Item1, Item2: Pointer): integer;
 
 type
-  TPaymoResponseStatus = (prOK, prERROR, prTRYAGAIN, prNOInternet);
+  { Status for any GET, POST, DELETE operation }
+  TPaymoResponseStatus = (
+    prOK, //< operation went well
+    prERROR, //< operation went bad
+    prTRYAGAIN, //< server is bussy
+    prNOInternet //< offline
+    );
 
-  { TPaymo }
+  { TPaymo -- Main class to interact with Paymo API }
 
   TPaymo = class(TObject)
   private
@@ -47,62 +65,106 @@ type
     procedure SetFSettingsFile(AValue: string);
     procedure SetFSettingsFolder(AValue: string);
   public
+    { List of Projects }
     function ProjectsArray: TJSONArray;
+    { List of Tasks }
     function TasksArray: TJSONArray;
+    { List of Task Lists}
     function TaskListsArray: TJSONArray;
+    { User information }
     function MyData: TJSONData;
+    { Company information }
     function CompanyData: TJSONData;
+    { Current running timer }
     function RunningTimerData: TJSONData;
+    { Returns the name of the Project given the ID }
     function GetProjectName(ProjectID: integer): string;
+    { Returns the name of the Task given the ID}
     function GetTaskName(TaskID: integer): string;
+    { Returns the task data given the ID}
     function GetTask(TaskID: integer): TJSONData;
+    { Returns the time entry data given the ID}
     function GetTimeEntry(EntryID: integer): TJSONData;
   public
+    { Constructor }
     constructor Create;
+    { Destructor }
     destructor Destroy; override;
+    { The key to connect to the API }
     property APIKey: string read FAPIKey write SetFAPIKey;
+    { The base URL used to connect to the API}
     property APIURL: string read FAPIURL write SetFAPIURL;
+    { The URL used to obtain an API Key}
     property APIKeyURL: string read FAPIKeyURL write SetFAPIKeyURL;
+    { Check if the user is Logged In }
     property LoggedIn: boolean read FLoggedIn write SetFLoggedIn;
+    { Calls GetMe() and test the response }
     function Login: TPaymoResponseStatus;
+    { Get data from an endpoint, stores the server response in the response variable }
     function Get(Endpoint: string; var Response: string): TPaymoResponseStatus;
+    { Retrieve tasks online or offline }
     function GetTasks(): TPaymoResponseStatus;
+    { Retrieve projects online or offline }
     function GetProjects(): TPaymoResponseStatus;
+    { Retrieve task lists online or offline }
     function GetTaskLists(): TPaymoResponseStatus;
+    { Retrieve user information }
     function GetMe(): TPaymoResponseStatus;
+    { Retrieve current running timer }
     function GetRunningTimer(): TPaymoResponseStatus;
+    { Retrieve company information }
     function GetCompany(): TPaymoResponseStatus;
+    { Creates or updates data to an endpoint, providing a JSON string, stores the server response in the response variable }
     function Post(Endpoint: string; sJSON: TJSONStringType;
       var Response: string): TPaymoResponseStatus;
+    { Delete the data of an endpoint, stores the server response in the response variable }
     function Delete(Endpoint: string; var Response: string): TPaymoResponseStatus;
+    { Post a new task, if went OK it adds it to the list of tasks }
     function CreateTask(Name, Description: string; TaskListID: integer;
       var task: TJSONData): TPaymoResponseStatus;
+    { Updates task 'complete' status }
     function UpdateTaskCompletion(Complete: boolean;
       task: TJSONData): TPaymoResponseStatus;
+    { Persists the running timer, if time interval is less than a second the data is discarded }
     function StopRunningTimer(start_time, end_time: TDateTime;
       Description: string): TPaymoResponseStatus;
+    { Set the running timer }
     function StartRunningTimer(task_id: integer;
       start_time: TDateTime): TPaymoResponseStatus;
+    { Delete a time entry, given the ID }
     function DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
+    { Updates a time entry start and end time, and also project, task and tasklist related }
     function UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
       project_id, task_id, tasklist_id: integer): TPaymoResponseStatus;
   public
+    { Persists a JSON to file, used to save offline data }
     function SaveJSON(FileName: string; sJSON: string): TPaymoResponseStatus;
+    { Loads into memory a JSON file, used to retrieve previously saved offline data }
     function LoadJSON(FileName: string; var response: string): TPaymoResponseStatus;
   public
+    { Retrieves the API Key and offline data previously saved }
     procedure LoadSettings;
+    { Stores the API Key}
     procedure SaveSettings;
+    { Stores into offline.json the data send to Post method, if the user is offline }
     procedure POST_Offline(Endpoint: string; sJSON: TJSONStringType;
       var Response: string);
+    { Stores into offline.json the data send to Delete method, if the user is offline }
     procedure DELETE_Offline(Endpoint: string; var Response: string);
+    { Creates a Post or Delete for each element stored in offline.json }
     function SYNC_OfflineData: integer;
+    { Get / Set the Offline status }
     property Offline: boolean read FOffline write SetFOffline;
+    { Check if there is offline data loaded into memory, used to see if SYNC_OfflineData must be called }
     property HasOfflineData: boolean read GetFHasOfflineData;
+    { The folder where the API Key and json files must be saved }
     property SettingsFolder: string read FSettingsFolder write SetFSettingsFolder;
+    { The API Key file name }
     property SettingsFile: string read FSettingsFile write SetFSettingsFile;
   end;
 
 var
+  { Used internally by the sort function SeqSortProjectName because it requires to retrieve the names of the projects }
   PAYMO_SORT_INSTANCE: TPaymo;
 
 implementation
@@ -900,7 +962,8 @@ begin
     obj := TJSONObject(FOfflineData.Items[i]);
     if obj.GetPath('Type').AsString = 'POST' then
     begin
-      case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON, response) of
+      case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
+          response) of
         prERROR, prTRYAGAIN:
         begin
           obj.Add('SyncError', 'True');
