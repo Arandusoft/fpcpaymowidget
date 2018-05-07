@@ -429,9 +429,11 @@ var
 begin
   Result := '';
   if RunningTimerData <> nil then
-    Result := rsMainTimer + LineEnding;
+  begin
+    Result := GetProjectName(GetTask(RunningTimerData.GetPath('task_id').AsInt64).GetPath('project_id').AsInt64) + LineEnding;
+  end;
   for i:=0 to FAdditionalTimers.Count-1 do
-    Result += rsAdditional + ' ' + (i+1).ToString + LineEnding;
+    Result += GetProjectName(GetTask(FAdditionalTimers[i].GetPath('task_id').AsInt64).GetPath('project_id').AsInt64) + ' [' + (i+1).ToString + ']' + LineEnding;
 end;
 
 constructor TPaymo.Create;
