@@ -433,10 +433,10 @@ begin
     begin
       ShowMessage(rsErrorCantUpdateTimeEntry);
     end;
-    prNOInternet:
+    {prNOInternet:
     begin
       ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-    end;
+    end;}
   end;
   // task completion
   if TJSONData(acTask.SelectedObject).GetPath('complete').AsBoolean <>
@@ -449,18 +449,21 @@ begin
       ShowMessage(rsErrorCantUpdateTask);
       exit;
     end;
-    prNOInternet:
+    {prNOInternet:
     begin
       ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-    end;
+    end;}
   end;
-  if (r = prOK) or (r2 = prOK) then
+  if (r = prOK) or (r2 = prOK) or (r = prNOInternet) or (r2 = prNOInternet) then
   begin
     Self.Close;
     Application.ProcessMessages;
     // Sync for now, ToDo: change to async with tasks
-    PaymoInstance.GetTasks();
-    frmMain.DownloadTasksFinish(nil, 0, 0);
+    if not PaymoInstance.Offline then
+    begin
+      PaymoInstance.GetTasks();
+      frmMain.DownloadTasksFinish(nil, 0, 0);
+    end;
   end;
 end;
 
@@ -542,7 +545,7 @@ begin
     task := TJSONData(acTask.SelectedObject);
   end;
 
-  if (r = prOK) then
+  if (r = prOK) or (r = prNOInternet) then
   begin
     // start time
     s_hh := time_start_hh.Text;
@@ -550,10 +553,10 @@ begin
     t_start := now;
     ReplaceTime(t_start, EncodeTime(s_hh.ToInteger, s_mm.ToInteger, 0, 0));
     case PaymoInstance.StartRunningTimer(task.GetPath('id').AsInteger, t_start) of
-      prOK:
+      prOK, prNOInternet:
       begin
         case PaymoInstance.GetRunningTimer() of
-          prOK:
+          prOK, prNOInternet:
           begin
             Self.Close();
             frmMain.DownloadRunningTimerFinish(nil, 0, 0);
@@ -562,20 +565,20 @@ begin
           begin
             ShowMessage(rsErrorCantStartTimer);
           end;
-          prNOInternet:
+          {prNOInternet:
           begin
             ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-          end;
+          end;}
         end;
       end;
       prTRYAGAIN, prERROR:
       begin
         ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
       end;
-      prNOInternet:
+      {prNOInternet:
       begin
         ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-      end;
+      end;}
     end;
   end
   else
@@ -626,22 +629,25 @@ end;
 procedure TfrmTimeEntry.btnDeleteEntryClick(Sender: TObject);
 begin
   case PaymoInstance.DeleteTimeEntry(Data.GetPath('id').AsString) of
-    prOK:
+    prOK, prNOInternet:
     begin
       Self.Close;
       Application.ProcessMessages;
       // Sync for now, ToDo: change to async with tasks
-      PaymoInstance.GetTasks();
-      frmMain.DownloadTasksFinish(nil, 0, 0);
+      if not PaymoInstance.Offline then
+      begin
+        PaymoInstance.GetTasks();
+        frmMain.DownloadTasksFinish(nil, 0, 0);
+      end;
     end;
     prTRYAGAIN, prERROR:
     begin
       ShowMessage(rsErrorCantDeleteTimeEntry);
     end;
-    prNOInternet:
+    {prNOInternet:
     begin
       ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-    end;
+    end;}
   end;
 end;
 

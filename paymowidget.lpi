@@ -27,9 +27,48 @@
       <RevisionNr Value="11"/>
       <StringTable CompanyName="Arandusoft"/>
     </VersionInfo>
-    <BuildModes Count="9">
+    <BuildModes Count="10">
       <Item1 Name="Debug" Default="True"/>
-      <Item2 Name="Release">
+      <Item2 Name="Debug (no heaptrc)">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="bin\debug\$(TargetCPU)-$(TargetOS)\paymowidget"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <IncludeAssertionCode Value="True"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <Checks>
+              <IOChecks Value="True"/>
+              <RangeChecks Value="True"/>
+              <OverflowChecks Value="True"/>
+              <StackChecks Value="True"/>
+            </Checks>
+            <VerifyObjMethodCallValidity Value="True"/>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf2Set"/>
+              <TrashVariables Value="True"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item2>
+      <Item3 Name="Release">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -58,8 +97,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item2>
-      <Item3 Name="Release-win32">
+      </Item3>
+      <Item4 Name="Release-win32">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -90,8 +129,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item3>
-      <Item4 Name="Release-win64">
+      </Item4>
+      <Item5 Name="Release-win64">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -122,8 +161,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item4>
-      <Item5 Name="Release-linux32">
+      </Item5>
+      <Item6 Name="Release-linux32">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -154,8 +193,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item5>
-      <Item6 Name="Release-linux64">
+      </Item6>
+      <Item7 Name="Release-linux64">
         <CompilerOptions>
           <Version Value="11"/>
           <PathDelim Value="\"/>
@@ -186,8 +225,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item6>
-      <Item7 Name="Release-macos32">
+      </Item7>
+      <Item8 Name="Release-macos32">
         <MacroValues Count="1">
           <Macro2 Name="LCLWidgetType" Value="carbon"/>
         </MacroValues>
@@ -221,8 +260,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item7>
-      <Item8 Name="Release-macos64">
+      </Item8>
+      <Item9 Name="Release-macos64">
         <MacroValues Count="1">
           <Macro1 Name="LCLWidgetType" Value="cocoa"/>
         </MacroValues>
@@ -257,8 +296,8 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item8>
-      <Item9 Name="Release-macos64QT">
+      </Item9>
+      <Item10 Name="Release-macos64QT">
         <MacroValues Count="1">
           <Macro3 Name="LCLWidgetType" Value="qt5"/>
         </MacroValues>
@@ -293,7 +332,7 @@
             </Options>
           </Linking>
         </CompilerOptions>
-      </Item9>
+      </Item10>
       <SharedMatrixOptions Count="3">
         <Item1 ID="049651846518" Modes="Release-macos64" Type="IDEMacro" MacroName="LCLWidgetType" Value="cocoa"/>
         <Item2 ID="809623305238" Modes="Release-macos32" Type="IDEMacro" MacroName="LCLWidgetType" Value="carbon"/>

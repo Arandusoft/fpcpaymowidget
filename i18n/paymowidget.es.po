@@ -285,6 +285,10 @@ msgstr "Error: No se puede actualizar la entrada de tiempo."
 msgid "Main Timer"
 msgstr "Temporizador Principal"
 
+#: uresourcestring.rsmaintimercantbestoppedwithoutinternet
+msgid "Main timer can't be stopped without internet."
+msgstr ""
+
 #: uresourcestring.rsnointernettryagainsoon
 msgid "Apparently there is no Internet connection. Try again soon."
 msgstr "Aparentemente no hay conexión a Internet. Intenta de nuevo pronto."
@@ -341,3 +345,4 @@ msgstr "Trabajando Offline: Los datos serán guardados la próxima vez que esté
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
+
