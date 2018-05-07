@@ -133,6 +133,7 @@ type
     start_time: TDateTime;
     stop_ok: boolean;
     IconIndex: integer;
+    firstSync: boolean;
     procedure Login;
     procedure Sync;
     procedure ListProjects();
@@ -164,6 +165,8 @@ begin
   {$ifdef windows}
   DoubleBuffered := True;
   {$endif}
+  // To grab data from disk when offline
+  firstSync := True;
   SetFonts(Self);
   pnlMenu.AnimWidth := ScaleX(pnlMenu.AnimWidth, 96);
   DoubleBuffered := True;
@@ -193,7 +196,6 @@ begin
   //end;
   if Paymo.LoggedIn then
   begin
-    Sync;
     try
       timerRefresh.Enabled := True;
       timerRefreshTimer(self);
@@ -530,7 +532,7 @@ begin
           end;
           prNOInternet:
           begin
-            ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+            ShowMessage(rsMainTimerCantBeStoppedWithoutInternet);
           end;
         end;
       end;
@@ -542,24 +544,27 @@ begin
       if Paymo.RunningTimerData <> nil then
         Dec(index);
       case Paymo.StopAdditionalTimer(index, now) of
-        prOK:
+        prOK, prNOInternet:
         begin
           stop_ok := True;
           //pnlTime.Visible := False;
           Application.ProcessMessages;
           // Sync for now, ToDo: change to async with tasks
-          Paymo.GetTasks();
-          DownloadTasksFinish(nil, 0, 0);
+          if not Paymo.Offline then
+          begin
+            Paymo.GetTasks();
+            DownloadTasksFinish(nil, 0, 0);
+          end;
         end;
         prTRYAGAIN, prERROR:
         begin
           stop_ok := False;
           ShowMessage(rsErrorCantStopTimer);
         end;
-        prNOInternet:
+        {prNOInternet:
         begin
           ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-        end;
+        end;}
       end;
     end;
   end;
@@ -614,19 +619,23 @@ end;
 
 procedure TfrmMain.timerRefreshTimer(Sender: TObject);
 begin
-  timerRefresh.Enabled := False;
-  pbRefresh.Visible := True;
-  Application.ProcessMessages;
-  if Assigned(frmTimeEntry) and (frmTimeEntry.Visible) then
-    frmTimeEntry.Enabled := False;
-  if frmMain.Visible then
-    frmMain.Enabled := False;
-  if not Assigned(Paymo.CompanyData) then
-    DownloadCompany.Start;
-  DownloadProjects.Start;
-  DownloadTasks.Start;
-  DownloadRunningTimer.Start;
-  DownloadTaskLists.Start;
+  if not Paymo.Offline or firstSync then
+  begin
+    timerRefresh.Enabled := False;
+    pbRefresh.Visible := True;
+    Application.ProcessMessages;
+    if Assigned(frmTimeEntry) and (frmTimeEntry.Visible) then
+      frmTimeEntry.Enabled := False;
+    if frmMain.Visible then
+      frmMain.Enabled := False;
+    if not Assigned(Paymo.CompanyData) then
+      DownloadCompany.Start;
+    DownloadProjects.Start;
+    DownloadTasks.Start;
+    DownloadRunningTimer.Start;
+    DownloadTaskLists.Start;
+    firstSync := False;
+  end;
 end;
 
 procedure TfrmMain.tiTrayClick(Sender: TObject);
@@ -659,6 +668,7 @@ begin
   frmMain.Enabled := True;
   pbRefresh.Visible := False;
   timerRefresh.Enabled := True;
+  Sync;
 end;
 
 procedure TfrmMain.WMMove(var Message: TLMMove);

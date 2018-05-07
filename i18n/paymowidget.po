@@ -275,6 +275,10 @@ msgstr ""
 msgid "Main Timer"
 msgstr ""
 
+#: uresourcestring.rsmaintimercantbestoppedwithoutinternet
+msgid "Main timer can't be stoppoed without internet."
+msgstr ""
+
 #: uresourcestring.rsnointernettryagainsoon
 msgid "Apparently there is no Internet connection. Try again soon."
 msgstr ""

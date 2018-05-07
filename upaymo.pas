@@ -601,14 +601,14 @@ begin
     Result := Get('entries?where=user_id=' + MyData.GetPath('id').AsString +
       '%20and%20end_time=null', response)
   else
-    Result := LoadJSON('runningtimer.json', response);
+    Result := prNOInternet; //LoadJSON('runningtimer.json', response);
   case Result of
     prOK:
     begin
       if Assigned(FRunningTimer) then
         FRunningTimer.Free;
       FRunningTimer := TJSONObject(GetJSON(response));
-      SaveJSON('runningtimer.json', FRunningTimer.FormatJSON());
+      //SaveJSON('runningtimer.json', FRunningTimer.FormatJSON());
     end;
   end;
 end;
@@ -941,7 +941,7 @@ end;
 function TPaymo.StopAdditionalTimer(index: integer; end_time: TDateTime): TPaymoResponseStatus;
 begin
   Result := CreateTimeEntry(TTaskList.StringToDateTime(FAdditionalTimers[index].GetPath('start_time').AsString), end_time, FAdditionalTimers[index].GetPath('task_id').AsInt64);
-  if Result = prOK then
+  if (Result = prOK) or (Result = prNOInternet) then
   begin
     FAdditionalTimers.Remove(FAdditionalTimers[index]);
     SaveJSON('additionaltimers.json', FAdditionalTimers.FormatJSON());
@@ -1119,6 +1119,7 @@ begin
   for i := 0 to FOfflineData.Count - 1 do
   begin
     obj := TJSONObject(FOfflineData.Items[i]);
+    // POST items
     if obj.GetPath('Type').AsString = 'POST' then
     begin
       source := obj.GetPath('Data').GetPath('source').AsString;
@@ -1136,19 +1137,19 @@ begin
           prOK: begin
             temp_obj := GetJSON(response).GetPath('tasks').Items[0];
             // real id available now on stringlist
-            s.AddPair(obj.GetPath('task_id').AsString, temp_obj.GetPath('id').AsString);
+            s.AddPair(obj.GetPath('Data').GetPath('id').AsString, temp_obj.GetPath('id').AsString);
             temp_obj.Free;
           end;
         end;
-      end;
+      end
       // update task completion with the 'real_id'
-      if (source = 'updatetaskcompletion') then
+      else if (source = 'updatetaskcompletion') then
       begin
         // get task and determine if it is an online task or an offline task
         // if is an online task do a normal post
         // if is an offline task do a post replacing the id of the task
         // with the real id in the stringlist
-        task := GetTask(obj.GetPath('task_id').AsInt64);
+        task := GetTask(obj.GetPath('Data').GetPath('task_id').AsInt64);
         // online task
         if task <> nil then
         begin
@@ -1175,9 +1176,15 @@ begin
             end;
           end;
         end;
+      end
+      // additional timer time entry
+      else if (source = 'updatetaskcompletion') then
+      begin
+
       end;
-    end;
-    if obj.GetPath('Type').AsString = 'DELETE' then
+    end
+    // DELETE items
+    else if obj.GetPath('Type').AsString = 'DELETE' then
     begin
       case Delete(obj.GetPath('Endpoint').AsString, response) of
         prERROR, prTRYAGAIN:

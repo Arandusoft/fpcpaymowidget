@@ -542,7 +542,7 @@ begin
     task := TJSONData(acTask.SelectedObject);
   end;
 
-  if (r = prOK) then
+  if (r = prOK) or (r = prNOInternet) then
   begin
     // start time
     s_hh := time_start_hh.Text;
@@ -550,10 +550,10 @@ begin
     t_start := now;
     ReplaceTime(t_start, EncodeTime(s_hh.ToInteger, s_mm.ToInteger, 0, 0));
     case PaymoInstance.StartRunningTimer(task.GetPath('id').AsInteger, t_start) of
-      prOK:
+      prOK, prNOInternet:
       begin
         case PaymoInstance.GetRunningTimer() of
-          prOK:
+          prOK, prNOInternet:
           begin
             Self.Close();
             frmMain.DownloadRunningTimerFinish(nil, 0, 0);
@@ -562,20 +562,20 @@ begin
           begin
             ShowMessage(rsErrorCantStartTimer);
           end;
-          prNOInternet:
+          {prNOInternet:
           begin
             ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-          end;
+          end;}
         end;
       end;
       prTRYAGAIN, prERROR:
       begin
         ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
       end;
-      prNOInternet:
+      {prNOInternet:
       begin
         ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-      end;
+      end;}
     end;
   end
   else

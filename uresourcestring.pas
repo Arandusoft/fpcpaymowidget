@@ -38,6 +38,7 @@ resourcestring
   rsSyncCompleteSuccessfully = 'Sync complete successfully';
   rsAdditional = 'Additional';
   rsMainTimer = 'Main Timer';
+  rsMainTimerCantBeStoppedWithoutInternet = 'Main timer can''t be stopped without internet.';
 
 implementation
 
