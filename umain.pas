@@ -1,7 +1,7 @@
 unit umain;
 
 {$mode objfpc}{$H+}
-{$define debugoffline}
+{ $define debugoffline}
 
 interface
 
@@ -759,6 +759,7 @@ begin
     begin
       ShowMessage(rsSyncCompleteSuccessfully);
     end;
+    timerRefreshTimer(nil);
   end;
 end;
 

@@ -893,7 +893,7 @@ begin
   if FOffline then
   begin
     jObj.Add('offline', True);
-    jObj.Add('source', 'updatetimeentry');
+    jObj.Add('source', 'updatetimeentry_entry');
   end;
   sJSON := jObj.FormatJSON();
   jObj.Free;
@@ -904,7 +904,8 @@ begin
   if FOffline then
   begin
     jObj.Add('offline', True);
-    jObj.Add('source', 'updatetimeentry');
+    jObj.Add('source', 'updatetimeentry_task');
+    jObj.Add('task_id', task_id);
   end;
   sJSON := jObj.FormatJSON();
   jObj.Free;
@@ -1145,14 +1146,14 @@ begin
         end;
       end
       // update task completion with the 'real_id'
-      else if (source = 'updatetaskcompletion') then
+      else if ((source = 'updatetaskcompletion') or (source = 'updatetimeentry_task')) then
       begin
         // get task and determine if it is an online task or an offline task
         // if is an online task do a normal post
         // if is an offline task do a post replacing the id of the task
         // with the real id in the stringlist
         task := GetTask(obj.GetPath('Data').GetPath('task_id').AsInt64);
-        // online task
+        // with already online task
         if task <> nil then
         begin
           case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
@@ -1165,10 +1166,10 @@ begin
             end;
           end;
         end
-        // offline task
+        // with offline task
         else
         begin
-          case POST('tasks/' + s.Values[obj.GetPath('task_id').AsString], obj.GetPath('Data').AsJSON,
+          case POST('tasks/' + s.Values[obj.GetPath('Data').GetPath('task_id').AsString], obj.GetPath('Data').AsJSON,
             response) of
             prERROR, prTRYAGAIN:
             begin
@@ -1180,9 +1181,68 @@ begin
         end;
       end
       // additional timer time entry
-      else if (source = 'updatetaskcompletion') then
+      else if (source = 'createtimeentry') then
       begin
+        task := GetTask(obj.GetPath('Data').GetPath('task_id').AsInt64);
+        // with already online task
+        if task <> nil then
+        begin
+          case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
+            response) of
+            prERROR, prTRYAGAIN:
+            begin
+              //obj.Add('SyncError', 'True');
+              DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
+              Inc(items_err);
+            end;
+          end;
+        end
+        // with offline task
+        else
+        begin
+          obj.GetPath('Data').GetPath('task_id').AsString := s.Values[obj.GetPath('Data').GetPath('task_id').AsString];
+          case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
+            response) of
+            prERROR, prTRYAGAIN:
+            begin
+              //obj.Add('SyncError', 'True');
+              DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
+              Inc(items_err);
+            end;
+          end;
+        end;
+      end
 
+      // change time entry data
+      else if (source = 'updatetimeentry_entry') then
+      begin
+        task := GetTask(obj.GetPath('Data').GetPath('task_id').AsInt64);
+        // with already online task
+        if task <> nil then
+        begin
+          case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
+            response) of
+            prERROR, prTRYAGAIN:
+            begin
+              //obj.Add('SyncError', 'True');
+              DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
+              Inc(items_err);
+            end;
+          end;
+        end
+        // with offline task
+        else
+        begin
+          case POST('entries/' + s.Values[obj.GetPath('Data').GetPath('task_id').AsString], obj.GetPath('Data').AsJSON,
+            response) of
+            prERROR, prTRYAGAIN:
+            begin
+              //obj.Add('SyncError', 'True');
+              DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
+              Inc(items_err);
+            end;
+          end;
+        end;
       end;
     end
     // DELETE items

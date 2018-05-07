@@ -286,7 +286,7 @@ msgid "Main Timer"
 msgstr "Temporizador Principal"
 
 #: uresourcestring.rsmaintimercantbestoppedwithoutinternet
-msgid "Main timer can't be stoppoed without internet."
+msgid "Main timer can't be stopped without internet."
 msgstr ""
 
 #: uresourcestring.rsnointernettryagainsoon
