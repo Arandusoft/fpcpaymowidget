@@ -38,9 +38,9 @@ procedure TfrmUserList.ToolButton1Click(Sender: TObject);
 begin
   if frmMain.Paymo.GetUsers() = prOK then
   begin
-    ShowMessage('ok');
+    //ShowMessage('ok');
     //ShowMessage(frmMain.Paymo.Users.FormatJSON());
-    //ListUsers;
+    ListUsers;
   end;
 end;
 

@@ -353,7 +353,7 @@ function TPaymo.Users: TJSONArray;
 begin
   if not Assigned(FUsers) then
     exit(nil);
-  FCompany.Find('users', Result);
+  FUsers.Find('users', Result);
 end;
 
 function TPaymo.GetProjectName(ProjectID: int64): string;
@@ -662,7 +662,7 @@ begin
       if Assigned(FUsers) then
         FUsers.Free;
       FUsers := TJSONObject(GetJSON(response));
-      SaveJSON('users.json', FCompany.FormatJSON());
+      SaveJSON('users.json', FUsers.FormatJSON());
     end;
   end;
 end;
