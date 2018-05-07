@@ -1,7 +1,7 @@
 unit umain;
 
 {$mode objfpc}{$H+}
-{ $define debugoffline}
+{$define debugoffline}
 
 interface
 
@@ -143,6 +143,7 @@ type
     function StopTimeEntry(): boolean;
     procedure SetFonts(Control: TControl);
     procedure RefreshTabs;
+    procedure AssignTask;
   end;
 
 var
@@ -499,9 +500,13 @@ procedure TfrmMain.lblStopClick(Sender: TObject);
 var
   index: integer;
 begin
-  case TabControl1.TabIndex of
+  Index := TabControl1.TabIndex;
+  if (Paymo.RunningTimerData = nil) and (TabControl1.TabIndex = 0) then
+    Index := 1;
+  case Index of
     // main timer
-    0: begin
+    0:
+    begin
       if (Paymo.RunningTimerData <> nil) then
       begin
         case Paymo.StopRunningTimer(start_time, now, '') of
@@ -598,45 +603,8 @@ begin
 end;
 
 procedure TfrmMain.TabControl1Change(Sender: TObject);
-var
-  index: integer;
 begin
-  case TabControl1.TabIndex of
-    // Main Timer
-    0: begin
-      if (Paymo.RunningTimerData <> nil) then
-      begin
-        lblProject.Caption := Paymo.GetProjectName(
-          Paymo.RunningTimerData.GetPath('project_id').AsInteger);
-        lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath(
-          'task_id').AsInt64);
-        start_time := TTaskList.StringToDateTime(
-          Paymo.RunningTimerData.GetPath('start_time').AsString);
-        //pnlTime.Visible := True;
-      end
-      else
-      begin
-        lblProject.Caption := 'Project';
-        lblTask.Caption := 'Task';
-        start_time := 0;
-      end;
-    end;
-    // Additional
-    else
-    begin
-      index := TabControl1.TabIndex;
-      if Paymo.RunningTimerData <> nil then
-        Dec(index);
-      lblProject.Caption := Paymo.GetProjectName(
-      Paymo.GetAdditionalRunningTimers[index].GetPath('project_id').AsInteger);
-      lblTask.Caption := Paymo.GetTaskName(Paymo.GetAdditionalRunningTimers[index].GetPath(
-        'task_id').AsInt64);
-      start_time := TTaskList.StringToDateTime(
-        Paymo.GetAdditionalRunningTimers[index].GetPath('start_time').AsString);
-    end;
-  end;
-  // refresh time now
-  timerEntryTimer(nil);
+  AssignTask;
 end;
 
 procedure TfrmMain.timerEntryTimer(Sender: TObject);
@@ -801,18 +769,6 @@ end;
 
 procedure TfrmMain.ListTimeEntry();
 begin
-  if (Paymo.RunningTimerData <> nil) then
-  begin
-    lblProject.Caption := Paymo.GetProjectName(
-      Paymo.RunningTimerData.GetPath('project_id').AsInteger);
-    lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath(
-      'task_id').AsInt64);
-    start_time := TTaskList.StringToDateTime(
-      Paymo.RunningTimerData.GetPath('start_time').AsString);
-    //pnlTime.Visible := True;
-  end
-  {else
-    pnlTime.Visible := False};
   RefreshTabs;
 end;
 
@@ -889,7 +845,7 @@ end;
 
 procedure TfrmMain.RefreshTimeEntry();
 begin
-  if (Paymo.RunningTimerData <> nil) then
+  if (TabControl1.Visible) then
   begin
     lblTime.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now));
     Application.Title := lblTime.Caption + ' - ' + 'FPC Paymo Widget';
@@ -1012,6 +968,45 @@ procedure TfrmMain.RefreshTabs;
 begin
   TabControl1.Tabs.Text := Paymo.GetTimerTabs;
   TabControl1.Visible := TabControl1.Tabs.Count <> 0;
+  AssignTask;
+end;
+
+procedure TfrmMain.AssignTask;
+var
+  index: integer;
+begin
+  if not TabControl1.Visible then
+    exit;
+  Index := TabControl1.TabIndex;
+  if (Paymo.RunningTimerData = nil) and (TabControl1.TabIndex = 0) then
+    Index := 1;
+  case Index of
+    // Main Timer
+    0:
+    begin
+      lblProject.Caption := Paymo.GetProjectName(
+        Paymo.RunningTimerData.GetPath('project_id').AsInteger);
+      lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath(
+        'task_id').AsInt64);
+      start_time := TTaskList.StringToDateTime(
+        Paymo.RunningTimerData.GetPath('start_time').AsString);
+    end;
+    // Additional
+    else
+    begin
+      index := TabControl1.TabIndex;
+      if Paymo.RunningTimerData <> nil then
+        Dec(index);
+      lblProject.Caption := Paymo.GetProjectName(
+        Paymo.GetAdditionalRunningTimers[index].GetPath('project_id').AsInteger);
+      lblTask.Caption := Paymo.GetTaskName(
+        Paymo.GetAdditionalRunningTimers[index].GetPath('task_id').AsInt64);
+      start_time := TTaskList.StringToDateTime(
+        Paymo.GetAdditionalRunningTimers[index].GetPath('start_time').AsString);
+    end;
+  end;
+  // refresh time now
+  timerEntryTimer(nil);
 end;
 
 end.

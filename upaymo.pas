@@ -12,7 +12,7 @@ interface
 
 uses
   Classes, SysUtils, fphttpclient, jsonConf, fpjson, jsonparser,
-  Dialogs, DateUtils, LazUTF8, udebug;
+  Dialogs, DateUtils, LazUTF8, udebug, uresourcestring;
 
 const
   { URL used for GET, POST and DELETE }
@@ -429,9 +429,9 @@ var
 begin
   Result := '';
   if RunningTimerData <> nil then
-    Result := 'Main Timer' + LineEnding;
+    Result := rsMainTimer + LineEnding;
   for i:=0 to FAdditionalTimers.Count-1 do
-    Result += 'Additional ' + (i+1).ToString + LineEnding;
+    Result += rsAdditional + ' ' + (i+1).ToString + LineEnding;
 end;
 
 constructor TPaymo.Create;
@@ -847,7 +847,7 @@ begin
   end;
   //jObj.Add('description', '');
   sJSON := jObj.FormatJSON();
-  if RunningTimerData = nil then
+  if (RunningTimerData = nil) and not (FOffline) then
   begin
     Result := Post('entries', sJSON, response);
     jObj.Free;
@@ -861,6 +861,7 @@ begin
     end;
     jObj.Add('project_id', GetTask(task_id).GetPath('project_id').AsInt64);
     FAdditionalTimers.Add(jObj);
+    SaveJSON('additionaltimers.json',FAdditionalTimers.FormatJSON());
     Result := prOK;
   end;
 end;
@@ -943,6 +944,7 @@ begin
   if Result = prOK then
   begin
     FAdditionalTimers.Remove(FAdditionalTimers[index]);
+    SaveJSON('additionaltimers.json', FAdditionalTimers.FormatJSON());
   end;
 end;
 
@@ -1008,6 +1010,17 @@ begin
         if Assigned(FOfflineData) then
           FOfflineData.Free;
         FOfflineData := TJSONArray(GetJSON(response));
+      end;
+    end;
+  end;
+  if FileExists(SettingsFolder + 'additionaltimers.json') then
+  begin
+    case LoadJSON('additionaltimers.json', response) of
+      prOK:
+      begin
+        if Assigned(FAdditionalTimers) then
+          FAdditionalTimers.Free;
+        FAdditionalTimers := TJSONArray(GetJSON(response));
       end;
     end;
   end;

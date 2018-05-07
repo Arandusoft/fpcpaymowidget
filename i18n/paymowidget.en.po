@@ -222,6 +222,10 @@ msgstr ""
 msgid "‒"
 msgstr ""
 
+#: uresourcestring.rsadditional
+msgid "Additional"
+msgstr ""
+
 #: uresourcestring.rscreatetask
 msgid "Create Task"
 msgstr ""
@@ -265,6 +269,10 @@ msgstr ""
 
 #: uresourcestring.rserrorcantupdatetimeentry
 msgid "Error: Can't update time entry."
+msgstr ""
+
+#: uresourcestring.rsmaintimer
+msgid "Main Timer"
 msgstr ""
 
 #: uresourcestring.rsnointernettryagainsoon

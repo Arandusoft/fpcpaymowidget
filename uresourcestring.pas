@@ -36,6 +36,8 @@ resourcestring
   rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline = 'Working Offline: The data will be saved the next time you are online.';
   rsSyncCompleteWithError = 'Sync complete with error. Can''t update some items. See debug.log for details.';
   rsSyncCompleteSuccessfully = 'Sync complete successfully';
+  rsAdditional = 'Additional';
+  rsMainTimer = 'Main Timer';
 
 implementation
 
