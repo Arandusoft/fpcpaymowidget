@@ -1121,7 +1121,7 @@ begin
     obj := TJSONObject(FOfflineData.Items[i]);
     if obj.GetPath('Type').AsString = 'POST' then
     begin
-      source := obj.GetPath('data').GetPath('source').AsString;
+      source := obj.GetPath('Data').GetPath('source').AsString;
       // create task and get the real id
       if (source = 'createtask') then
       begin
