@@ -1,7 +1,7 @@
 unit umain;
 
 {$mode objfpc}{$H+}
-{ $define debugoffline}
+{$define debugoffline}
 
 interface
 
@@ -38,10 +38,11 @@ type
     ilTrayOfflineWin: TImageList;
     ilApplication: TImageList;
     JSONPropStorage1: TJSONPropStorage;
-    lblRefreshInterval: TLabel;
-    lblTime: TLabel;
-    lblStop: TLabel;
     lblProject: TLabel;
+    lblRefreshInterval: TLabel;
+    lblStop: TLabel;
+    lblTask: TLabel;
+    lblTime: TLabel;
     leAPIURL: TLabeledEdit;
     miOpenPaymoApp: TMenuItem;
     miRefresh: TMenuItem;
@@ -56,6 +57,7 @@ type
     pnlMenuUser: TLabel;
     pnlSpacer1: TPanel;
     pnlSpacer2: TPanel;
+    pnlTime: TPanel;
     pnlTop: TPanel;
     pmTray: TPopupMenu;
     DownloadCompany: TTask;
@@ -63,9 +65,8 @@ type
     DownloadTasks: TTask;
     DownloadTaskLists: TTask;
     DownloadRunningTimer: TTask;
-    pnlTime: TPanel;
-    lblTask: TLabel;
     seRefreshInterval: TSpinEdit;
+    TabControl1: TTabControl;
     timerEntry: TTimer;
     timerRefresh: TTimer;
     tiTray: TTrayIcon;
@@ -118,6 +119,7 @@ type
     procedure DownloadTaskListsExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure seRefreshIntervalEditingDone(Sender: TObject);
+    procedure TabControl1Change(Sender: TObject);
     procedure timerEntryTimer(Sender: TObject);
     procedure timerRefreshTimer(Sender: TObject);
     procedure tiTrayClick(Sender: TObject);
@@ -140,6 +142,8 @@ type
     procedure RefreshTimeEntry();
     function StopTimeEntry(): boolean;
     procedure SetFonts(Control: TControl);
+    procedure RefreshTabs;
+    procedure AssignTask;
   end;
 
 var
@@ -493,34 +497,73 @@ begin
 end;
 
 procedure TfrmMain.lblStopClick(Sender: TObject);
+var
+  index: integer;
 begin
-  if (Paymo.RunningTimerData <> nil) then
-  begin
-    case Paymo.StopRunningTimer(start_time, now, '') of
-      prOK:
+  Index := TabControl1.TabIndex;
+  if (Paymo.RunningTimerData = nil) and (TabControl1.TabIndex = 0) then
+    Index := 1;
+  case Index of
+    // main timer
+    0:
+    begin
+      if (Paymo.RunningTimerData <> nil) then
       begin
-        stop_ok := True;
-        pnlTime.Visible := False;
-        Application.ProcessMessages;
-        // Sync for now, ToDo: change to async with tasks
-        Paymo.GetRunningTimer();
-        DownloadRunningTimerFinish(nil, 0, 0);
-        Application.ProcessMessages;
-        // Sync for now, ToDo: change to async with tasks
-        Paymo.GetTasks();
-        DownloadTasksFinish(nil, 0, 0);
+        case Paymo.StopRunningTimer(start_time, now, '') of
+          prOK:
+          begin
+            stop_ok := True;
+            //pnlTime.Visible := False;
+            Application.ProcessMessages;
+            // Sync for now, ToDo: change to async with tasks
+            Paymo.GetRunningTimer();
+            DownloadRunningTimerFinish(nil, 0, 0);
+            Application.ProcessMessages;
+            // Sync for now, ToDo: change to async with tasks
+            Paymo.GetTasks();
+            DownloadTasksFinish(nil, 0, 0);
+          end;
+          prTRYAGAIN, prERROR:
+          begin
+            stop_ok := False;
+            ShowMessage(rsErrorCantStopTimer);
+          end;
+          prNOInternet:
+          begin
+            ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+          end;
+        end;
       end;
-      prTRYAGAIN, prERROR:
-      begin
-        stop_ok := False;
-        ShowMessage(rsErrorCantStopTimer);
-      end;
-      prNOInternet:
-      begin
-        ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+    end;
+    // additional timers
+    else
+    begin
+      index := TabControl1.TabIndex;
+      if Paymo.RunningTimerData <> nil then
+        Dec(index);
+      case Paymo.StopAdditionalTimer(index, now) of
+        prOK:
+        begin
+          stop_ok := True;
+          //pnlTime.Visible := False;
+          Application.ProcessMessages;
+          // Sync for now, ToDo: change to async with tasks
+          Paymo.GetTasks();
+          DownloadTasksFinish(nil, 0, 0);
+        end;
+        prTRYAGAIN, prERROR:
+        begin
+          stop_ok := False;
+          ShowMessage(rsErrorCantStopTimer);
+        end;
+        prNOInternet:
+        begin
+          ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+        end;
       end;
     end;
   end;
+  RefreshTabs;
 end;
 
 procedure TfrmMain.leAPIURLChange(Sender: TObject);
@@ -557,6 +600,11 @@ begin
     seRefreshInterval.Value := 60;
     timerRefresh.Interval := 60000;
   end;
+end;
+
+procedure TfrmMain.TabControl1Change(Sender: TObject);
+begin
+  AssignTask;
 end;
 
 procedure TfrmMain.timerEntryTimer(Sender: TObject);
@@ -721,18 +769,7 @@ end;
 
 procedure TfrmMain.ListTimeEntry();
 begin
-  if (Paymo.RunningTimerData <> nil) then
-  begin
-    lblProject.Caption := Paymo.GetProjectName(
-      Paymo.RunningTimerData.GetPath('project_id').AsInteger);
-    lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath(
-      'task_id').AsInteger);
-    start_time := TTaskList.StringToDateTime(
-      Paymo.RunningTimerData.GetPath('start_time').AsString);
-    pnlTime.Visible := True;
-  end
-  else
-    pnlTime.Visible := False;
+  RefreshTabs;
 end;
 
 procedure TfrmMain.ChangeIcon(const AIndex: integer);   //0: normal //1:start //2:offline
@@ -808,7 +845,7 @@ end;
 
 procedure TfrmMain.RefreshTimeEntry();
 begin
-  if (Paymo.RunningTimerData <> nil) then
+  if (TabControl1.Visible) then
   begin
     lblTime.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(start_time, now));
     Application.Title := lblTime.Caption + ' - ' + 'FPC Paymo Widget';
@@ -925,6 +962,51 @@ begin
       end;
     end;
   end;
+end;
+
+procedure TfrmMain.RefreshTabs;
+begin
+  TabControl1.Tabs.Text := Paymo.GetTimerTabs;
+  TabControl1.Visible := TabControl1.Tabs.Count <> 0;
+  AssignTask;
+end;
+
+procedure TfrmMain.AssignTask;
+var
+  index: integer;
+begin
+  if not TabControl1.Visible then
+    exit;
+  Index := TabControl1.TabIndex;
+  if (Paymo.RunningTimerData = nil) and (TabControl1.TabIndex = 0) then
+    Index := 1;
+  case Index of
+    // Main Timer
+    0:
+    begin
+      lblProject.Caption := Paymo.GetProjectName(
+        Paymo.RunningTimerData.GetPath('project_id').AsInteger);
+      lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath(
+        'task_id').AsInt64);
+      start_time := TTaskList.StringToDateTime(
+        Paymo.RunningTimerData.GetPath('start_time').AsString);
+    end;
+    // Additional
+    else
+    begin
+      index := TabControl1.TabIndex;
+      if Paymo.RunningTimerData <> nil then
+        Dec(index);
+      lblProject.Caption := Paymo.GetProjectName(
+        Paymo.GetAdditionalRunningTimers[index].GetPath('project_id').AsInteger);
+      lblTask.Caption := Paymo.GetTaskName(
+        Paymo.GetAdditionalRunningTimers[index].GetPath('task_id').AsInt64);
+      start_time := TTaskList.StringToDateTime(
+        Paymo.GetAdditionalRunningTimers[index].GetPath('start_time').AsString);
+    end;
+  end;
+  // refresh time now
+  timerEntryTimer(nil);
 end;
 
 end.

@@ -134,6 +134,7 @@ begin
   end
   else
     OnClickItem(Sender);
+  frmMain.RefreshTabs;
 end;
 
 procedure TTaskList.OnClickTimeEntry(Sender: TObject);
@@ -397,7 +398,7 @@ begin
       l.Font.Color := clGray;
       l.Font.Size := FONTSIZESMALL;
       l.Align := alLeft;
-      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger) +
+      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInt64) +
         '  [' + UTF8UpperCase(FormatDateTime('ddddd',
         StringToDateTime(arr[i].GetPath('created_on').AsString))) + ']';
       l.OnClick := @OnClickItemParent;
@@ -685,7 +686,7 @@ begin
       l.Font.Color := clGray;
       l.Font.Size := FONTSIZESMALL;
       l.Align := alLeft;
-      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInteger) +
+      l.Caption := FPaymo.GetProjectName(arr[i].GetPath('project_id').AsInt64) +
         '  [' + UTF8UpperCase(FormatDateTime('ddddd',
         StringToDateTime(arr[i].GetPath('created_on').AsString))) + ']';
       //l.OnClick := @OnClickItemParent;

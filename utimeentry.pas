@@ -77,11 +77,11 @@ type
     PaymoInstance: TPaymo;
     Data: TJSONData;
     selected_data: integer;
-    selected_project: integer;
+    selected_project: int64;
     selected_task: integer;
     selected_tasklist: integer;
     procedure ShowData(FromRefresh: boolean = False);
-    procedure SelectItems(project_id: integer; task_id: integer; tasklist_id: integer);
+    procedure SelectItems(project_id, task_id, tasklist_id: int64);
   end;
 
 var
@@ -250,15 +250,14 @@ begin
     btnExistingTask.Visible := False;
     pnlSetTime.Visible := False;
     chkCompletedTask.Visible := True;
-    SelectItems(Data.GetPath('project_id').AsInteger,
-      Data.GetPath('task_id').AsInteger, 0);
+    SelectItems(Data.GetPath('project_id').AsInt64,
+      Data.GetPath('task_id').AsInt64, 0);
     selected_data := Data.GetPath('id').AsInteger;
   end;
   FillDateAndTime;
 end;
 
-procedure TfrmTimeEntry.SelectItems(project_id: integer; task_id: integer;
-  tasklist_id: integer);
+procedure TfrmTimeEntry.SelectItems(project_id, task_id, tasklist_id: int64);
 var
   t_id: integer;
   i: integer;
@@ -268,7 +267,7 @@ begin
   project := PaymoInstance.ProjectsArray;
   for i := 0 to project.Count - 1 do
   begin
-    if project[i].GetPath('id').AsInteger = project_id then
+    if project[i].GetPath('id').AsInt64 = project_id then
     begin
       acProject.SelectedObject := project[i];
       acProject.SelectedObjectText := project[i].GetPath('name').AsString;
@@ -581,6 +580,7 @@ begin
   end
   else
     ShowMessage(rsErrorCantCreateTask);
+  frmMain.RefreshTabs;
 end;
 
 procedure TfrmTimeEntry.btnCreateTask(Sender: TObject);
@@ -618,6 +618,7 @@ begin
     prNOInternet:
     begin
       ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+      Self.Close;
     end;
   end;
 end;
@@ -683,7 +684,8 @@ end;
 procedure TfrmTimeEntry.acTaskListSearch(Sender: TObject; SearchText: string;
   Items: TStrings);
 var
-  i, proj_id: integer;
+  i: integer;
+  proj_id: int64;
   tasklists: TJSONArray;
   pass1: boolean;
   search: string;
@@ -691,12 +693,12 @@ begin
   if acProject.SelectedObject = nil then
     exit;
   tasklists := PaymoInstance.TaskListsArray;
-  proj_id := TJSONData(acProject.SelectedObject).GetPath('id').AsInteger;
+  proj_id := TJSONData(acProject.SelectedObject).GetPath('id').AsInt64;
   pass1 := UTF8Length(SearchText) = 0;
   search := UTF8LowerCase(SearchText);
   for i := 0 to tasklists.Count - 1 do
   begin
-    if (proj_id = tasklists[i].GetPath('project_id').AsInteger) and
+    if (proj_id = tasklists[i].GetPath('project_id').AsInt64) and
       ((pass1) or (UTF8Pos(search,
       UTF8LowerCase(tasklists[i].GetPath('name').AsString)) <> 0)) then
       Items.AddObject(tasklists[i].GetPath('name').AsString, tasklists[i]);
@@ -714,7 +716,8 @@ end;
 procedure TfrmTimeEntry.acTaskSearch(Sender: TObject; SearchText: string;
   Items: TStrings);
 var
-  i, proj_id: integer;
+  i: integer;
+  proj_id: int64;
   tasks: TJSONArray;
   pass1: boolean;
   search: string;
@@ -722,12 +725,12 @@ begin
   if acProject.SelectedObject = nil then
     exit;
   tasks := PaymoInstance.TasksArray;
-  proj_id := TJSONData(acProject.SelectedObject).GetPath('id').AsInteger;
+  proj_id := TJSONData(acProject.SelectedObject).GetPath('id').AsInt64;
   pass1 := UTF8Length(SearchText) = 0;
   search := UTF8LowerCase(SearchText);
   for i := 0 to tasks.Count - 1 do
   begin
-    if (proj_id = tasks[i].GetPath('project_id').AsInteger) and
+    if (proj_id = tasks[i].GetPath('project_id').AsInt64) and
       ((pass1) or (UTF8Pos(search, UTF8LowerCase(tasks[i].GetPath('name').AsString)) <>
       0)) and (not tasks[i].GetPath('complete').AsBoolean) then
       Items.AddObject(tasks[i].GetPath('name').AsString, tasks[i]);
