@@ -363,7 +363,7 @@
         <PackageName Value="LCL"/>
       </Item5>
     </RequiredPackages>
-    <Units Count="9">
+    <Units Count="10">
       <Unit0>
         <Filename Value="paymowidget.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -409,6 +409,13 @@
         <Filename Value="ulimitedstringlist.pas"/>
         <IsPartOfProject Value="True"/>
       </Unit8>
+      <Unit9>
+        <Filename Value="uuserlist.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmUserList"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+      </Unit9>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

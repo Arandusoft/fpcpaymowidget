@@ -59,6 +59,7 @@ type
     FCompany: TJSONObject;
     FOfflineData: TJSONArray;
     FAdditionalTimers: TJSONArray;
+    FUsers: TJSONObject;
     function GetFHasOfflineData: boolean;
     procedure SetFAPIKey(AValue: string);
     procedure SetFAPIKeyURL(AValue: string);
@@ -80,6 +81,8 @@ type
     function CompanyData: TJSONData;
     { Current running timer }
     function RunningTimerData: TJSONData;
+    { Company users }
+    function Users: TJSONArray;
     { Returns the name of the Project given the ID }
     function GetProjectName(ProjectID: int64): string;
     { Returns the name of the Task given the ID}
@@ -123,6 +126,8 @@ type
     function GetRunningTimer(): TPaymoResponseStatus;
     { Retrieve company information }
     function GetCompany(): TPaymoResponseStatus;
+    { Retrieve users }
+    function GetUsers(): TPaymoResponseStatus;
     { Creates or updates data to an endpoint, providing a JSON string, stores the server response in the response variable }
     function Post(Endpoint: string; sJSON: TJSONStringType;
       var Response: string): TPaymoResponseStatus;
@@ -344,6 +349,13 @@ begin
     Result := nil;
 end;
 
+function TPaymo.Users: TJSONArray;
+begin
+  if not Assigned(FUsers) then
+    exit(nil);
+  FCompany.Find('users', Result);
+end;
+
 function TPaymo.GetProjectName(ProjectID: int64): string;
 var
   i: integer;
@@ -464,6 +476,8 @@ begin
     FOfflineData.Free;
   if Assigned(FAdditionalTimers) then
     FAdditionalTimers.Free;
+  if Assigned(FUsers) then
+    FUsers.Free;
   inherited Destroy;
 end;
 
@@ -630,6 +644,25 @@ begin
         FCompany.Free;
       FCompany := TJSONObject(GetJSON(response));
       SaveJSON('company.json', FCompany.FormatJSON());
+    end;
+  end;
+end;
+
+function TPaymo.GetUsers(): TPaymoResponseStatus;
+var
+  response: string;
+begin
+  if not FOffline then
+    Result := Get('users?where=active=true', response)
+  else
+    Result := LoadJSON('users.json', response);
+  case Result of
+    prOK:
+    begin
+      if Assigned(FUsers) then
+        FUsers.Free;
+      FUsers := TJSONObject(GetJSON(response));
+      SaveJSON('users.json', FCompany.FormatJSON());
     end;
   end;
 end;

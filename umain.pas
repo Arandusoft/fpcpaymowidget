@@ -153,7 +153,7 @@ var
 implementation
 
 uses
-  utimeentry, ulogin;
+  utimeentry, ulogin, uuserlist;
 
 {$R *.lfm}
 
@@ -475,6 +475,7 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
+  uuserlist.frmUserList.Show;
   //frmTimeEntry.Show;
   tiTray.Show;
   {$IFDEF WINDOWS}

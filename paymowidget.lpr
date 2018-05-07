@@ -10,7 +10,7 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   upaymo,
   ulogin,
   uresourcestring,
-  utasklist, utimeentry, udebug, ulimitedstringlist;
+  utasklist, utimeentry, udebug, ulimitedstringlist, uuserlist;
 
 {$R *.res}
 
@@ -22,5 +22,6 @@ begin
   Application.CreateForm(TfrmMain, frmMain);
   Application.CreateForm(TfrmTimeEntry, frmTimeEntry);
   udebug.InitLog();
+  Application.CreateForm(TfrmUserList, frmUserList);
   Application.Run;
 end.
