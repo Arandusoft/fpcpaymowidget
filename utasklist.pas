@@ -134,6 +134,7 @@ begin
   end
   else
     OnClickItem(Sender);
+  frmMain.RefreshTabs;
 end;
 
 procedure TTaskList.OnClickTimeEntry(Sender: TObject);

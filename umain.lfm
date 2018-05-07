@@ -378,82 +378,6 @@ object frmMain: TfrmMain
       StateDisabled.BorderWidth = 0
     end
   end
-  object pnlTime: TPanel
-    Left = 0
-    Height = 222
-    Top = 94
-    Width = 360
-    Align = alTop
-    BevelOuter = bvNone
-    ClientHeight = 222
-    ClientWidth = 360
-    Color = 16182455
-    Constraints.MinHeight = 50
-    Font.Color = clWhite
-    ParentColor = False
-    ParentFont = False
-    TabOrder = 2
-    Visible = False
-    object lblProject: TLabel
-      Tag = -12
-      Left = 38
-      Height = 16
-      Top = 24
-      Width = 34
-      Caption = 'Project'
-      Font.Color = 4805637
-      Font.Height = 16
-      Font.Name = 'Nunito Sans'
-      ParentColor = False
-      ParentFont = False
-    end
-    object lblTask: TLabel
-      Tag = -14
-      Left = 38
-      Height = 80
-      Top = 48
-      Width = 284
-      Anchors = [akTop, akLeft, akRight]
-      AutoSize = False
-      Caption = 'Task'
-      Font.Color = 4805637
-      Font.Height = 19
-      Font.Name = 'Nunito Sans'
-      ParentColor = False
-      ParentFont = False
-      WordWrap = True
-    end
-    object lblTime: TLabel
-      Tag = -40
-      Left = 99
-      Height = 53
-      Top = 128
-      Width = 154
-      Caption = '00:00:00'
-      Font.Color = clWhite
-      Font.Height = 53
-      Font.Name = 'Nunito Sans Light'
-      ParentColor = False
-      ParentFont = False
-    end
-    object lblStop: TLabel
-      Tag = -24
-      Cursor = crHandPoint
-      Left = 38
-      Height = 40
-      Top = 136
-      Width = 36
-      Alignment = taCenter
-      AutoSize = False
-      Caption = '■'
-      Font.Color = clWhite
-      Font.Height = 32
-      Font.Name = 'Nunito Sans Light'
-      ParentColor = False
-      ParentFont = False
-      OnClick = lblStopClick
-    end
-  end
   object pnlSettings: TPanel
     Left = 8
     Height = 320
@@ -462,7 +386,7 @@ object frmMain: TfrmMain
     BevelOuter = bvNone
     ClientHeight = 320
     ClientWidth = 336
-    TabOrder = 3
+    TabOrder = 2
     Visible = False
     object cbShowTimeInAppIcon: TCheckBox
       Tag = -14
@@ -595,7 +519,7 @@ object frmMain: TfrmMain
     Width = 360
     Align = alTop
     Style = pbstMarquee
-    TabOrder = 4
+    TabOrder = 3
     Visible = False
   end
   object edSearch: TEdit
@@ -605,7 +529,96 @@ object frmMain: TfrmMain
     Width = 360
     Align = alTop
     OnChange = edSearchChange
+    TabOrder = 4
+  end
+  object TabControl1: TTabControl
+    Left = 0
+    Height = 250
+    Top = 94
+    Width = 360
+    OnChange = TabControl1Change
+    TabIndex = 0
+    Tabs.Strings = (
+      'Main Timer'
+    )
+    Align = alTop
     TabOrder = 5
+    Visible = False
+    object pnlTime: TPanel
+      Left = 2
+      Height = 222
+      Top = 23
+      Width = 356
+      Align = alTop
+      BevelOuter = bvNone
+      ClientHeight = 222
+      ClientWidth = 356
+      Color = 16182455
+      Constraints.MinHeight = 50
+      Font.Color = clWhite
+      ParentColor = False
+      ParentFont = False
+      TabOrder = 1
+      object lblProject: TLabel
+        Tag = -12
+        Left = 38
+        Height = 16
+        Top = 24
+        Width = 34
+        Caption = 'Project'
+        Font.Color = 4805637
+        Font.Height = 16
+        Font.Name = 'Nunito Sans'
+        ParentColor = False
+        ParentFont = False
+      end
+      object lblTask: TLabel
+        Tag = -14
+        Left = 38
+        Height = 80
+        Top = 48
+        Width = 280
+        Anchors = [akTop, akLeft, akRight]
+        AutoSize = False
+        Caption = 'Task'
+        Font.Color = 4805637
+        Font.Height = 19
+        Font.Name = 'Nunito Sans'
+        ParentColor = False
+        ParentFont = False
+        WordWrap = True
+      end
+      object lblTime: TLabel
+        Tag = -40
+        Left = 99
+        Height = 53
+        Top = 128
+        Width = 154
+        Caption = '00:00:00'
+        Font.Color = clWhite
+        Font.Height = 53
+        Font.Name = 'Nunito Sans Light'
+        ParentColor = False
+        ParentFont = False
+      end
+      object lblStop: TLabel
+        Tag = -24
+        Cursor = crHandPoint
+        Left = 38
+        Height = 40
+        Top = 136
+        Width = 36
+        Alignment = taCenter
+        AutoSize = False
+        Caption = '■'
+        Font.Color = clWhite
+        Font.Height = 32
+        Font.Name = 'Nunito Sans Light'
+        ParentColor = False
+        ParentFont = False
+        OnClick = lblStopClick
+      end
+    end
   end
   object tiTray: TTrayIcon
     PopUpMenu = pmTray

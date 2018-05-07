@@ -19,6 +19,8 @@ const
   PAYMOAPIBASEURL = 'https://app.paymoapp.com/api/';
   { URL used to get the API Key to start using the application }
   PAYMOAPIKEYURL = 'https://app.paymoapp.com/#Paymo.module.myaccount/';
+  { Number of max additional timers }
+  ADDITIONALTIMERS = 2;
 
 { Sort function by name property, case insensitive }
 function NameSort(Item1, Item2: Pointer): integer;
@@ -56,6 +58,7 @@ type
     FTasks: TJSONObject;
     FCompany: TJSONObject;
     FOfflineData: TJSONArray;
+    FAdditionalTimers: TJSONArray;
     function GetFHasOfflineData: boolean;
     procedure SetFAPIKey(AValue: string);
     procedure SetFAPIKeyURL(AValue: string);
@@ -87,6 +90,10 @@ type
     function GetTimeEntry(EntryID: integer): TJSONData;
     { Returns the task list data given the ID}
     function GetTaskList(TaskListID: integer): TJSONData;
+    { Returns the additional running timers }
+    function GetAdditionalRunningTimers: TJSONArray;
+    { Returns the timer tabs }
+    function GetTimerTabs: string;
   public
     { Constructor }
     constructor Create;
@@ -138,6 +145,11 @@ type
     { Updates a time entry start and end time, and also project, task and tasklist related }
     function UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
       project_id, task_id, tasklist_id: int64): TPaymoResponseStatus;
+    { Create a time entry with start and end time }
+    function CreateTimeEntry(start_time, end_time: TDateTime; task_id: int64): TPaymoResponseStatus;
+    { Stop additional timer }
+    function StopAdditionalTimer(index: integer; end_time: TDateTime
+      ): TPaymoResponseStatus;
   public
     { Persists a JSON to file, used to save offline data }
     function SaveJSON(FileName: string; sJSON: string): TPaymoResponseStatus;
@@ -170,6 +182,8 @@ var
   PAYMO_SORT_INSTANCE: TPaymo;
 
 implementation
+uses
+  utasklist;
 
 function NameSort(Item1, Item2: Pointer): integer;
 begin
@@ -404,6 +418,22 @@ begin
   end;
 end;
 
+function TPaymo.GetAdditionalRunningTimers: TJSONArray;
+begin
+  Result := FAdditionalTimers;
+end;
+
+function TPaymo.GetTimerTabs: string;
+var
+  i: integer;
+begin
+  Result := '';
+  if RunningTimerData <> nil then
+    Result := 'Main Timer' + LineEnding;
+  for i:=0 to FAdditionalTimers.Count-1 do
+    Result += 'Additional ' + (i+1).ToString + LineEnding;
+end;
+
 constructor TPaymo.Create;
 begin
   inherited Create;
@@ -411,6 +441,7 @@ begin
   APIURL := PAYMOAPIBASEURL;
   FOffline := False;
   FOfflineData := TJSONArray.Create;
+  FAdditionalTimers := TJSONArray.Create;
 end;
 
 destructor TPaymo.Destroy;
@@ -429,6 +460,8 @@ begin
     FCompany.Free;
   if Assigned(FOfflineData) then
     FOfflineData.Free;
+  if Assigned(FAdditionalTimers) then
+    FAdditionalTimers.Free;
   inherited Destroy;
 end;
 
@@ -814,8 +847,22 @@ begin
   end;
   //jObj.Add('description', '');
   sJSON := jObj.FormatJSON();
-  jObj.Free;
-  Result := Post('entries', sJSON, response);
+  if RunningTimerData = nil then
+  begin
+    Result := Post('entries', sJSON, response);
+    jObj.Free;
+  end
+  else
+  begin
+    if FAdditionalTimers.Count = ADDITIONALTIMERS then
+    begin
+      jObj.Free;
+      exit(prERROR);
+    end;
+    jObj.Add('project_id', GetTask(task_id).GetPath('project_id').AsInt64);
+    FAdditionalTimers.Add(jObj);
+    Result := prOK;
+  end;
 end;
 
 function TPaymo.DeleteTimeEntry(TimeEntryID: string): TPaymoResponseStatus;
@@ -859,6 +906,44 @@ begin
   sJSON := jObj.FormatJSON();
   jObj.Free;
   r := Post('tasks/' + task_id.ToString, sJSON, response);
+end;
+
+function TPaymo.CreateTimeEntry(start_time, end_time: TDateTime; task_id: int64
+  ): TPaymoResponseStatus;
+var
+  response: string;
+  sJSON: TJSONStringType;
+  jObj: TJSONObject;
+begin
+  // more than a minute = POST, less than a minute ignore
+  if SecondsBetween(start_time, end_time) >= 60 then
+  begin
+    jObj := TJSONObject.Create;
+    jObj.Add('start_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
+      LocalTimeToUniversal(start_time)));
+    jObj.Add('end_time', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
+      LocalTimeToUniversal(end_time)));
+    jObj.Add('task_id', task_id);
+    if FOffline then
+    begin
+      jObj.Add('offline', True);
+      jObj.Add('source', 'createtimeentry');
+    end;
+    sJSON := jObj.FormatJSON();
+    jObj.Free;
+    Result := Post('entries/', sJSON, response);
+  end
+  else
+    Result := prOK;
+end;
+
+function TPaymo.StopAdditionalTimer(index: integer; end_time: TDateTime): TPaymoResponseStatus;
+begin
+  Result := CreateTimeEntry(TTaskList.StringToDateTime(FAdditionalTimers[index].GetPath('start_time').AsString), end_time, FAdditionalTimers[index].GetPath('task_id').AsInt64);
+  if Result = prOK then
+  begin
+    FAdditionalTimers.Remove(FAdditionalTimers[index]);
+  end;
 end;
 
 function TPaymo.SaveJSON(FileName: string; sJSON: string): TPaymoResponseStatus;

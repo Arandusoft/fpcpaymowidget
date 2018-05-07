@@ -580,6 +580,7 @@ begin
   end
   else
     ShowMessage(rsErrorCantCreateTask);
+  frmMain.RefreshTabs;
 end;
 
 procedure TfrmTimeEntry.btnCreateTask(Sender: TObject);
