@@ -726,7 +726,7 @@ begin
     lblProject.Caption := Paymo.GetProjectName(
       Paymo.RunningTimerData.GetPath('project_id').AsInteger);
     lblTask.Caption := Paymo.GetTaskName(Paymo.RunningTimerData.GetPath(
-      'task_id').AsInteger);
+      'task_id').AsInt64);
     start_time := TTaskList.StringToDateTime(
       Paymo.RunningTimerData.GetPath('start_time').AsString);
     pnlTime.Visible := True;

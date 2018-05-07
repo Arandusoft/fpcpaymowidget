@@ -81,7 +81,7 @@ type
     selected_task: integer;
     selected_tasklist: integer;
     procedure ShowData(FromRefresh: boolean = False);
-    procedure SelectItems(project_id: int64; task_id: integer; tasklist_id: integer);
+    procedure SelectItems(project_id, task_id, tasklist_id: int64);
   end;
 
 var
@@ -251,14 +251,13 @@ begin
     pnlSetTime.Visible := False;
     chkCompletedTask.Visible := True;
     SelectItems(Data.GetPath('project_id').AsInt64,
-      Data.GetPath('task_id').AsInteger, 0);
+      Data.GetPath('task_id').AsInt64, 0);
     selected_data := Data.GetPath('id').AsInteger;
   end;
   FillDateAndTime;
 end;
 
-procedure TfrmTimeEntry.SelectItems(project_id: int64; task_id: integer;
-  tasklist_id: integer);
+procedure TfrmTimeEntry.SelectItems(project_id, task_id, tasklist_id: int64);
 var
   t_id: integer;
   i: integer;
