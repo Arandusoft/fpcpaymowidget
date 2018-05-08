@@ -10,7 +10,7 @@ object frmUserList: TfrmUserList
   LCLVersion = '1.9.0.0'
   object ListBox1: TListBox
     Left = 0
-    Height = 214
+    Height = 190
     Top = 26
     Width = 320
     Align = alClient
@@ -31,5 +31,13 @@ object frmUserList: TfrmUserList
       Caption = 'Refresh'
       OnClick = ToolButton1Click
     end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 24
+    Top = 216
+    Width = 320
+    Align = alBottom
+    TabOrder = 2
   end
 end

@@ -674,7 +674,7 @@ begin
     FUsersRunningTimer.Clear
   else
     FUsersRunningTimer := TJSONArray.Create;
-  for i := 0 to FUsers.Count - 1 do
+  for i := 0 to Users.Count - 1 do
   begin
     if not FOffline and Assigned(Users.Items[i].GetPath('id')) then
       Result := Get('entries?where=user_id=' + Users.Items[i].GetPath('id').AsString +

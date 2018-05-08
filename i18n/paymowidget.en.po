@@ -294,6 +294,10 @@ msgstr ""
 msgid "Error: Can't update time entry."
 msgstr ""
 
+#: uresourcestring.rslastsincro
+msgid "Last sincro"
+msgstr ""
+
 #: uresourcestring.rsmaintimer
 msgid "Main Timer"
 msgstr ""

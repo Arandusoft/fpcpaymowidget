@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ComCtrls,
-  fpjson, upaymo, utasklist, uresourcestring;
+  ExtCtrls, fpjson, upaymo, utasklist, uresourcestring;
 
 type
 
@@ -14,6 +14,7 @@ type
 
   TfrmUserList = class(TForm)
     ListBox1: TListBox;
+    Panel1: TPanel;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
     procedure ToolButton1Click(Sender: TObject);
@@ -40,6 +41,7 @@ begin
   begin
     if frmMain.Paymo.GetAllUsersRunningTimer() = prOK then
     begin
+      Panel1.Caption := rsLastSincro + ' ' + FormatDateTime('hh:nn', now);
       ListUsers;
     end;
   end;
@@ -59,17 +61,14 @@ begin
   for i:=0 to users.Count-1 do
   begin
     s := users.Items[i].GetPath('name').AsString;
-    try
-      if i <= timers.Count-1 then
-      begin
-        task := frmMain.Paymo.GetSingleTask(timers.Items[i].GetPath('entries').Items[0].GetPath('task_id').AsInteger);
-        ListBox1.Items.Add(s + ' - ' + rsSince + ' ' + FormatDateTime('hh:nn', TTaskList.StringToDateTime(timers[i].GetPath('entries').Items[0].GetPath('start_time').AsString)) + ' ' + rsWorkingOn + ' ' + frmMain.Paymo.GetProjectName(task.GetPath('tasks').Items[i].GetPath('project_id').AsInt64) + ' [' + task.GetPath('tasks').Items[i].GetPath('name').AsString + ']');
-        task.Free;
-      end
-      else
-        ListBox1.Items.Add(s);
-    finally
-    end;
+    if (timers.Items[i].GetPath('entries').Count = 1) then
+    begin
+      task := frmMain.Paymo.GetSingleTask(timers.Items[i].GetPath('entries').Items[0].GetPath('task_id').AsInteger);
+      ListBox1.Items.Add(s + ' - ' + rsSince + ' ' + FormatDateTime('hh:nn', TTaskList.StringToDateTime(timers[i].GetPath('entries').Items[0].GetPath('start_time').AsString)) + ' ' + rsWorkingOn + ' ' + frmMain.Paymo.GetProjectName(task.GetPath('tasks').Items[0].GetPath('project_id').AsInt64) + ' [' + task.GetPath('tasks').Items[0].GetPath('name').AsString + ']');
+      task.Free;
+    end
+    else
+      ListBox1.Items.Add(s);
   end;
 end;
 

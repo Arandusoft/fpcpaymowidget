@@ -304,6 +304,10 @@ msgstr "Error: No se puede actualizar la tarea."
 msgid "Error: Can't update time entry."
 msgstr "Error: No se puede actualizar la entrada de tiempo."
 
+#: uresourcestring.rslastsincro
+msgid "Last sincro"
+msgstr "Última sincro"
+
 #: uresourcestring.rsmaintimer
 msgid "Main Timer"
 msgstr "Temporizador Principal"
