@@ -1,7 +1,7 @@
 unit umain;
 
 {$mode objfpc}{$H+}
-{$define debugoffline}
+{ $define debugoffline}
 
 interface
 

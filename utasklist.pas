@@ -517,7 +517,7 @@ begin
         l.OnMouseLeave := @OnMouseLeaveTimeLabel;
         l.Tag := arrFilteredEntries[j].GetPath('id').AsInteger;
         // disable OnClick if offline
-        if not Assigned(arrFilteredEntries[j].FindPath('offline')) then
+        if not PaymoInstance.Offline then
           l.OnClick := @OnClickTimeEntry;
         l.Parent := e;
         // entry time label
