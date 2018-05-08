@@ -492,11 +492,11 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
-  {if Paymo.MyData.GetPath('type').AsString = 'Admin' then
-  begin  }
+  if Paymo.MyData.GetPath('type').AsString = 'Admin' then
+  begin
     miViewUsers.Visible := True;
     btnViewUsers.Visible := True;
-  {end;}
+  end;
   //frmTimeEntry.Show;
   tiTray.Show;
   {$IFDEF WINDOWS}
