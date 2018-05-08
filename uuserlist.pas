@@ -13,12 +13,18 @@ type
   { TfrmUserList }
 
   TfrmUserList = class(TForm)
+    chkAutoUpdate: TCheckBox;
     ListView1: TListView;
     Panel1: TPanel;
+    tmrRefresh: TTimer;
     ToolBar1: TToolBar;
-    ToolButton1: TToolButton;
+    btnRefresh: TToolButton;
     procedure FormShow(Sender: TObject);
-    procedure ToolButton1Click(Sender: TObject);
+    procedure ListView1AdvancedCustomDrawItem(Sender: TCustomListView;
+      Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
+      var DefaultDraw: Boolean);
+    procedure tmrRefreshTimer(Sender: TObject);
+    procedure btnRefreshClick(Sender: TObject);
   private
 
   public
@@ -36,7 +42,7 @@ uses
 
 { TfrmUserList }
 
-procedure TfrmUserList.ToolButton1Click(Sender: TObject);
+procedure TfrmUserList.btnRefreshClick(Sender: TObject);
 begin
   if frmMain.Paymo.GetUsers() = prOK then
   begin
@@ -58,6 +64,22 @@ begin
     Left := l;
   if Top <> t then
     Top := t;
+end;
+
+procedure TfrmUserList.ListView1AdvancedCustomDrawItem(Sender: TCustomListView;
+  Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
+  var DefaultDraw: Boolean);
+begin
+   if odd(Item.Index) then
+       Sender.Canvas.Brush.Color := $F6ECB7
+   else
+       Sender.Canvas.Brush.Color := $CDCDCD;
+end;
+
+procedure TfrmUserList.tmrRefreshTimer(Sender: TObject);
+begin
+  if (chkAutoUpdate.Checked) and (btnRefresh.Enabled) then
+     btnRefresh.Click;
 end;
 
 procedure TfrmUserList.ListUsers;

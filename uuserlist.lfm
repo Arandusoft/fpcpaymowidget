@@ -1,7 +1,7 @@
 object frmUserList: TfrmUserList
-  Left = 439
+  Left = 793
   Height = 240
-  Top = 123
+  Top = 219
   Width = 320
   Caption = 'Users'
   ClientHeight = 240
@@ -17,11 +17,20 @@ object frmUserList: TfrmUserList
     Caption = 'ToolBar1'
     ShowCaptions = True
     TabOrder = 0
-    object ToolButton1: TToolButton
+    object btnRefresh: TToolButton
       Left = 1
       Top = 2
       Caption = 'Refresh'
-      OnClick = ToolButton1Click
+      OnClick = btnRefreshClick
+    end
+    object chkAutoUpdate: TCheckBox
+      Left = 236
+      Height = 24
+      Top = 2
+      Width = 84
+      Align = alRight
+      Caption = 'AutoUpdate'
+      TabOrder = 0
     end
   end
   object Panel1: TPanel
@@ -38,21 +47,26 @@ object frmUserList: TfrmUserList
     Top = 26
     Width = 320
     Align = alClient
+    AutoWidthLastColumn = True
     Columns = <    
       item
-        AutoSize = True
         Caption = 'Name'
-        MinWidth = 200
-        Width = 10
+        Width = 100
       end    
       item
-        AutoSize = True
         Caption = 'Task'
-        MinWidth = 200
-        Width = 10
+        Width = 200
       end>
+    RowSelect = True
     SortType = stText
     TabOrder = 2
     ViewStyle = vsReport
+    OnAdvancedCustomDrawItem = ListView1AdvancedCustomDrawItem
+  end
+  object tmrRefresh: TTimer
+    Interval = 60000
+    OnTimer = tmrRefreshTimer
+    Left = 288
+    Top = 32
   end
 end
