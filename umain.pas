@@ -22,6 +22,7 @@ type
     btnMenu: TColorSpeedButton;
     btnAddTask: TColorSpeedButton;
     btnRefresh: TColorSpeedButton;
+    btnViewUsers: TColorSpeedButton;
     btnSettingsExit: TColorSpeedButton;
     btnOpenPaymoApp: TColorSpeedButton;
     btnMenuExit: TColorSpeedButton;
@@ -44,6 +45,7 @@ type
     lblTask: TLabel;
     lblTime: TLabel;
     leAPIURL: TLabeledEdit;
+    miViewUsers: TMenuItem;
     miOpenPaymoApp: TMenuItem;
     miRefresh: TMenuItem;
     miSettings: TMenuItem;
@@ -83,6 +85,7 @@ type
     procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
     procedure btnSettingsExitClick(Sender: TObject);
     procedure btnOpenSettingsFolderClick(Sender: TObject);
+    procedure btnViewUsersClick(Sender: TObject);
     procedure DownloadCompanyExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure DownloadCompanyFinish(const Sender: TTask; const Msg: word;
@@ -315,6 +318,11 @@ begin
   OpenDocument(ExtractFilePath(JSONPropStorage1.JSONFileName));
 end;
 
+procedure TfrmMain.btnViewUsersClick(Sender: TObject);
+begin
+  uuserlist.frmUserList.Show;
+end;
+
 procedure TfrmMain.DownloadCompanyExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
@@ -475,7 +483,11 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
-  uuserlist.frmUserList.Show;
+  if Paymo.MyData.GetPath('type').AsString = 'Admin' then
+  begin
+    miViewUsers.Visible := True;
+    btnViewUsers.Visible := True;
+  end;
   //frmTimeEntry.Show;
   tiTray.Show;
   {$IFDEF WINDOWS}

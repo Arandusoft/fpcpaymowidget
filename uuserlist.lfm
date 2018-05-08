@@ -6,6 +6,7 @@ object frmUserList: TfrmUserList
   Caption = 'Users'
   ClientHeight = 240
   ClientWidth = 320
+  Position = poMainFormCenter
   LCLVersion = '1.9.0.0'
   object ListBox1: TListBox
     Left = 0

@@ -45,6 +45,11 @@ msgctxt "tfrmmain.btnsettingsexit.caption"
 msgid "←"
 msgstr ""
 
+#: tfrmmain.btnviewusers.caption
+msgctxt "tfrmmain.btnviewusers.caption"
+msgid "View Users"
+msgstr ""
+
 #: tfrmmain.caption
 msgid "FPC Paymo Widget"
 msgstr ""
@@ -104,6 +109,11 @@ msgstr ""
 
 #: tfrmmain.mishow.caption
 msgid "Show"
+msgstr ""
+
+#: tfrmmain.miviewusers.caption
+msgctxt "tfrmmain.miviewusers.caption"
+msgid "View Users"
 msgstr ""
 
 #: tfrmmain.pnlmenucompany.caption
@@ -313,6 +323,10 @@ msgctxt "uresourcestring.rssaveentry"
 msgid "Save Entry"
 msgstr ""
 
+#: uresourcestring.rssince
+msgid "Since"
+msgstr ""
+
 #: uresourcestring.rsstarttimer
 msgid "Start Timer"
 msgstr ""
@@ -343,6 +357,10 @@ msgstr ""
 
 #: uresourcestring.rsworkingofflinethedatawillbesavedthenexttimeyouareonline
 msgid "Working Offline: The data will be saved the next time you are online."
+msgstr ""
+
+#: uresourcestring.rsworkingon
+msgid "working on"
 msgstr ""
 
 #: uresourcestring.rsyesterday
