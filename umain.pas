@@ -10,7 +10,7 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType;
+  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType, udebug;
 
 type
 
@@ -130,7 +130,7 @@ type
     procedure wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
   private
     Tasks: TTaskList;
-    procedure WMMove(var Message: TLMMove); message LM_MOVE;
+    //procedure WMMove(var Message: TLMMove); message LM_MOVE;
   public
     Paymo: TPaymo;
     start_time: TDateTime;
@@ -326,6 +326,7 @@ end;
 procedure TfrmMain.DownloadCompanyExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadCompany', 'Start');
   if not Sender.Terminated then
     Paymo.GetCompany();
 end;
@@ -333,6 +334,7 @@ end;
 procedure TfrmMain.DownloadCompanyFinish(const Sender: TTask;
   const Msg: word; const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadCompany', 'Finish');
   pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
   pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
 end;
@@ -346,6 +348,7 @@ end;
 procedure TfrmMain.DownloadProjectsExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadProjects', 'Start');
   if not Sender.Terminated then
     Paymo.GetProjects();
 end;
@@ -353,12 +356,14 @@ end;
 procedure TfrmMain.DownloadProjectsFinish(const Sender: TTask;
   const Msg: word; const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadProjects', 'Finish');
   //ShowMessage('Projects OK');
 end;
 
 procedure TfrmMain.DownloadRunningTimerExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadRunningTimer', 'Start');
   if not Sender.Terminated then
     Paymo.GetRunningTimer();
 end;
@@ -366,18 +371,21 @@ end;
 procedure TfrmMain.DownloadRunningTimerFinish(const Sender: TTask;
   const Msg: word; const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadRunningTimer', 'Finish');
   ListTimeEntry();
 end;
 
 procedure TfrmMain.DownloadTaskListsFinish(const Sender: TTask;
   const Msg: word; const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadTaskLists', 'Finish');
   //ShowMessage('TaskLists OK');
 end;
 
 procedure TfrmMain.DownloadTasksExecute(const Sender: TTask; const Msg: word;
   var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadTasks', 'Start');
   if not Sender.Terminated then
     Paymo.GetTasks();
 end;
@@ -385,6 +393,7 @@ end;
 procedure TfrmMain.DownloadTasksFinish(const Sender: TTask; const Msg: word;
   const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadTasks', 'Finish');
   //ShowMessage(Paymo.TasksArray.formatJSON());
   if not Assigned(Tasks) then
   begin
@@ -603,6 +612,7 @@ end;
 procedure TfrmMain.DownloadTaskListsExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadTaskLists', 'Start');
   if not Sender.Terminated then
     Paymo.GetTaskLists();
 end;
@@ -634,6 +644,7 @@ procedure TfrmMain.timerRefreshTimer(Sender: TObject);
 begin
   if not Paymo.Offline or firstSync then
   begin
+    DebugLog('FPC Paymo Widget', 'Refresh', 'Start');
     timerRefresh.Enabled := False;
     pbRefresh.Visible := True;
     Application.ProcessMessages;
@@ -672,6 +683,7 @@ end;
 
 procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
 begin
+  DebugLog('FPC Paymo Widget', 'Refresh', 'Finish');
   if Assigned(frmTimeEntry) then
   begin
     if (frmTimeEntry.Visible) then
@@ -684,7 +696,7 @@ begin
   Sync;
 end;
 
-procedure TfrmMain.WMMove(var Message: TLMMove);
+{procedure TfrmMain.WMMove(var Message: TLMMove);
 var
   l, t: integer;
 begin
@@ -699,7 +711,7 @@ begin
   if frmTimeEntry.Top <> t then
     frmTimeEntry.Top := t;
   {$ENDIF}
-end;
+end;}
 
 procedure TfrmMain.Login;
 begin
@@ -763,14 +775,17 @@ var
 begin
   if not Paymo.Offline and Paymo.HasOfflineData then
   begin
+    DebugLog('FPC Paymo Widget', 'Sync', 'Start');
     i := Paymo.SYNC_OfflineData;
     if i <> 0 then
     begin
       ShowMessage(rsSyncCompleteWithError);
+      DebugLog('FPC Paymo Widget', 'Sync', 'Finish: Errors ' + IntToStr(i));
     end
     else
     begin
       ShowMessage(rsSyncCompleteSuccessfully);
+      DebugLog('FPC Paymo Widget', 'Sync', 'Finish: OK');
     end;
     timerRefreshTimer(nil);
   end;

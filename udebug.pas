@@ -19,7 +19,7 @@ var
   DebugFileName: string;
 
 const
-  LIMITE = 500;
+  LIMITE = 1000;
 
 procedure DebugLog(Usuario: string; API: string; Mensaje: string);
 var

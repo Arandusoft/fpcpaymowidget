@@ -514,6 +514,7 @@ function TPaymo.Get(Endpoint: string; var Response: string): TPaymoResponseStatu
 var
   client: TFPHTTPClient;
 begin
+  DebugLog('FPC Paymo Widget', 'Get:' + endpoint, 'Start');
   Result := prERROR;
   try
     client := TFPHttpClient.Create(nil);
@@ -545,6 +546,7 @@ begin
       end;
     end;
   finally
+    DebugLog('FPC Paymo Widget', 'Get:' + endpoint, 'Finish');
     client.Free;
   end;
 end;
