@@ -850,6 +850,9 @@ begin
     jObj.Add('complete', False);
     jObj.Add('seq', 0);
     jObj.Add('project_id', GetTaskList(TaskListID).GetPath('project_id').AsInt64);
+    jObj.Add('entries', TJSONArray.Create); // required by task list
+    jObj.Add('created_on', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
+      LocalTimeToUniversal(now))); // required by task list
     // detect that this is an offline created task
     jObj.Add('offline', True);
     jObj.Add('source', 'createtask');
