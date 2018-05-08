@@ -70,10 +70,16 @@ procedure TfrmUserList.ListView1AdvancedCustomDrawItem(Sender: TCustomListView;
   Item: TListItem; State: TCustomDrawState; Stage: TCustomDrawStage;
   var DefaultDraw: Boolean);
 begin
-   if odd(Item.Index) then
-       Sender.Canvas.Brush.Color := $F6ECB7
+   if Item.SubItems.Count>0 then
+   begin
+       Sender.Canvas.Brush.Color := $F6ECB7;
+       Sender.Canvas.Font.Style:=[fsBold];
+   end
    else
+   begin
        Sender.Canvas.Brush.Color := $CDCDCD;
+       Sender.Canvas.Font.Style:=[];
+   end;
 end;
 
 procedure TfrmUserList.tmrRefreshTimer(Sender: TObject);
