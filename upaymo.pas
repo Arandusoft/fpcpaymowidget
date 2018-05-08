@@ -691,7 +691,7 @@ begin
       end;
     end;
   end;
-  SaveJSON('userstimmer.json',FUsersRunningTimer.FormatJSON());
+  //SaveJSON('userstimer.json',FUsersRunningTimer.FormatJSON());
 end;
 
 function TPaymo.GetCompany(): TPaymoResponseStatus;
@@ -870,6 +870,7 @@ begin
     begin
       task := GetJSON(response);
       TasksArray.Add(task);
+      SaveJSON('tasks.json', FTasks.FormatJSON());
     end;
   end;
 end;
@@ -892,6 +893,8 @@ begin
   sJSON := jObj.FormatJSON();
   jObj.Free;
   Result := Post('tasks/' + task.GetPath('id').AsString, sJSON, response);
+  if FOffline then
+    SaveJSON('tasks.json', FTasks.FormatJSON());
   {case Result of
     prOK: begin
       task := GetJSON(response).GetPath('tasks').Items[0];
@@ -974,6 +977,9 @@ var
   response: string;
 begin
   Result := Delete('entries/' + TimeEntryID, response);
+  // ToDo: delete time entry from list
+  if FOffline then
+    SaveJSON('tasks.json', FTasks.FormatJSON());
 end;
 
 function TPaymo.UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
@@ -1011,6 +1017,8 @@ begin
   sJSON := jObj.FormatJSON();
   jObj.Free;
   r := Post('tasks/' + task_id.ToString, sJSON, response);
+  if FOffline then
+    SaveJSON('tasks.json', FTasks.FormatJSON());
 end;
 
 function TPaymo.CreateTimeEntry(start_time, end_time: TDateTime;
@@ -1044,6 +1052,8 @@ begin
     end;
     jObj.Free;
     Result := Post('entries/', sJSON, response);
+    if FOffline then
+      SaveJSON('tasks.json', FTasks.FormatJSON());
   end
   else
     Result := prOK;

@@ -585,7 +585,8 @@ begin
   end
   else
     ShowMessage(rsErrorCantCreateTask);
-  frmMain.RefreshTabs;
+  if PaymoInstance.Offline then
+    frmMain.RefreshTabs;
 end;
 
 procedure TfrmTimeEntry.btnCreateTask(Sender: TObject);
@@ -612,19 +613,21 @@ begin
   end;
   case PaymoInstance.CreateTask(memoDescription.Lines.Text, '',
       TJSONData(acTaskList.SelectedObject).GetPath('id').AsInteger, task) of
-    prOK:
+    prOK, prNOInternet:
     begin
+      if PaymoInstance.Offline then
+        frmMain.RefreshTabs;
       Self.Close;
     end;
     prERROR, prTRYAGAIN:
     begin
       ShowMessage(rsErrorCantCreateTask);
     end;
-    prNOInternet:
+    {prNOInternet:
     begin
       ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
       Self.Close;
-    end;
+    end;}
   end;
 end;
 
@@ -633,6 +636,8 @@ begin
   case PaymoInstance.DeleteTimeEntry(Data.GetPath('id').AsString) of
     prOK, prNOInternet:
     begin
+      if PaymoInstance.Offline then
+        frmMain.RefreshTabs;
       Self.Close;
       Application.ProcessMessages;
       // Sync for now, ToDo: change to async with tasks
