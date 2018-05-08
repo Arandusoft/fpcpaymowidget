@@ -71,6 +71,7 @@ msgid "■"
 msgstr ""
 
 #: tfrmmain.lbltask.caption
+msgctxt "tfrmmain.lbltask.caption"
 msgid "Task"
 msgstr ""
 
@@ -234,6 +235,15 @@ msgstr ""
 
 #: tfrmuserlist.caption
 msgid "Users"
+msgstr ""
+
+#: tfrmuserlist.listview1.columns[0].caption
+msgid "Name"
+msgstr ""
+
+#: tfrmuserlist.listview1.columns[1].caption
+msgctxt "tfrmuserlist.listview1.columns[1].caption"
+msgid "Task"
 msgstr ""
 
 #: tfrmuserlist.toolbar1.caption

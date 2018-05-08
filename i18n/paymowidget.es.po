@@ -81,6 +81,7 @@ msgid "■"
 msgstr ""
 
 #: tfrmmain.lbltask.caption
+msgctxt "tfrmmain.lbltask.caption"
 msgid "Task"
 msgstr "Tarea"
 
@@ -246,6 +247,16 @@ msgstr ""
 msgid "Users"
 msgstr "Usuarios"
 
+#: tfrmuserlist.listview1.columns[0].caption
+msgid "Name"
+msgstr ""
+
+#: tfrmuserlist.listview1.columns[1].caption
+#, fuzzy
+msgctxt "tfrmuserlist.listview1.columns[1].caption"
+msgid "Task"
+msgstr "Tarea"
+
 #: tfrmuserlist.toolbar1.caption
 msgid "ToolBar1"
 msgstr ""
@@ -380,3 +391,4 @@ msgstr "trabajando en"
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
+

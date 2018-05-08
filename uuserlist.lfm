@@ -6,17 +6,9 @@ object frmUserList: TfrmUserList
   Caption = 'Users'
   ClientHeight = 240
   ClientWidth = 320
+  OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '1.9.0.0'
-  object ListBox1: TListBox
-    Left = 0
-    Height = 190
-    Top = 26
-    Width = 320
-    Align = alClient
-    ItemHeight = 0
-    TabOrder = 0
-  end
   object ToolBar1: TToolBar
     Left = 0
     Height = 26
@@ -24,7 +16,7 @@ object frmUserList: TfrmUserList
     Width = 320
     Caption = 'ToolBar1'
     ShowCaptions = True
-    TabOrder = 1
+    TabOrder = 0
     object ToolButton1: TToolButton
       Left = 1
       Top = 2
@@ -38,6 +30,29 @@ object frmUserList: TfrmUserList
     Top = 216
     Width = 320
     Align = alBottom
+    TabOrder = 1
+  end
+  object ListView1: TListView
+    Left = 0
+    Height = 190
+    Top = 26
+    Width = 320
+    Align = alClient
+    Columns = <    
+      item
+        AutoSize = True
+        Caption = 'Name'
+        MinWidth = 200
+        Width = 10
+      end    
+      item
+        AutoSize = True
+        Caption = 'Task'
+        MinWidth = 200
+        Width = 10
+      end>
+    SortType = stText
     TabOrder = 2
+    ViewStyle = vsReport
   end
 end

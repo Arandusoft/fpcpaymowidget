@@ -13,10 +13,11 @@ type
   { TfrmUserList }
 
   TfrmUserList = class(TForm)
-    ListBox1: TListBox;
+    ListView1: TListView;
     Panel1: TPanel;
     ToolBar1: TToolBar;
     ToolButton1: TToolButton;
+    procedure FormShow(Sender: TObject);
     procedure ToolButton1Click(Sender: TObject);
   private
 
@@ -47,6 +48,18 @@ begin
   end;
 end;
 
+procedure TfrmUserList.FormShow(Sender: TObject);
+var
+  l, t: integer;
+begin
+  l := frmMain.Left - Width;
+  t := frmMain.Top;
+  if Left <> l then
+    Left := l;
+  if Top <> t then
+    Top := t;
+end;
+
 procedure TfrmUserList.ListUsers;
 var
   users: TJSONData;
@@ -54,21 +67,22 @@ var
   i: integer;
   s: string;
   task: TJSONData;
+  item: TListItem;
 begin
-  ListBox1.Clear;
+  ListView1.Clear;
   users := frmMain.Paymo.Users;
   timers := frmMain.Paymo.UsersRunningTimer;
   for i:=0 to users.Count-1 do
   begin
     s := users.Items[i].GetPath('name').AsString;
+    item := ListView1.Items.Add;
+    item.Caption := s;
     if (timers.Items[i].GetPath('entries').Count = 1) then
     begin
       task := frmMain.Paymo.GetSingleTask(timers.Items[i].GetPath('entries').Items[0].GetPath('task_id').AsInteger);
-      ListBox1.Items.Add(s + ' - ' + rsSince + ' ' + FormatDateTime('hh:nn', TTaskList.StringToDateTime(timers[i].GetPath('entries').Items[0].GetPath('start_time').AsString)) + ' ' + rsWorkingOn + ' ' + frmMain.Paymo.GetProjectName(task.GetPath('tasks').Items[0].GetPath('project_id').AsInt64) + ' [' + task.GetPath('tasks').Items[0].GetPath('name').AsString + ']');
+      item.SubItems.Add(rsSince + ' ' + FormatDateTime('hh:nn', TTaskList.StringToDateTime(timers[i].GetPath('entries').Items[0].GetPath('start_time').AsString)) + ' ' + rsWorkingOn + ' ' + frmMain.Paymo.GetProjectName(task.GetPath('tasks').Items[0].GetPath('project_id').AsInt64) + ' [' + task.GetPath('tasks').Items[0].GetPath('name').AsString + ']');
       task.Free;
-    end
-    else
-      ListBox1.Items.Add(s);
+    end;
   end;
 end;
 
