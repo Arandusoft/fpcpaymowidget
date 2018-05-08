@@ -1031,10 +1031,17 @@ begin
     jObj.Add('task_id', task_id);
     if FOffline then
     begin
+      jObj.Add('id', 99999999); // offline time entries are read only
+      jObj.Add('user_id', MyData.GetPath('id').AsInteger);
       jObj.Add('offline', True);
       jObj.Add('source', 'createtimeentry');
     end;
     sJSON := jObj.FormatJSON();
+    // add to list of objects
+    if FOffline then
+    begin
+      TJSONArray(GetTask(task_id).GetPath('entries')).Add(jObj.Clone);
+    end;
     jObj.Free;
     Result := Post('entries/', sJSON, response);
   end

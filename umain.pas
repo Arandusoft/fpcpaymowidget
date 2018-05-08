@@ -577,6 +577,7 @@ begin
             Paymo.GetTasks();
             DownloadTasksFinish(nil, 0, 0);
           end;
+          ListTasks;
         end;
         prTRYAGAIN, prERROR:
         begin
@@ -590,7 +591,8 @@ begin
       end;
     end;
   end;
-  RefreshTabs;
+  if Paymo.Offline then
+    RefreshTabs;
 end;
 
 procedure TfrmMain.leAPIURLChange(Sender: TObject);

@@ -465,6 +465,8 @@ begin
       frmMain.DownloadTasksFinish(nil, 0, 0);
     end;
   end;
+  if PaymoInstance.Offline then
+    frmMain.ListTasks;
 end;
 
 procedure TfrmTimeEntry.btnSet15Click(Sender: TObject);
