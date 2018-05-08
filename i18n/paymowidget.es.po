@@ -249,10 +249,9 @@ msgstr "Usuarios"
 
 #: tfrmuserlist.listview1.columns[0].caption
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: tfrmuserlist.listview1.columns[1].caption
-#, fuzzy
 msgctxt "tfrmuserlist.listview1.columns[1].caption"
 msgid "Task"
 msgstr "Tarea"
@@ -391,4 +390,3 @@ msgstr "trabajando en"
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
-
