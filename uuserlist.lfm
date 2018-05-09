@@ -24,10 +24,10 @@ object frmUserList: TfrmUserList
       OnClick = btnRefreshClick
     end
     object chkAutoUpdate: TCheckBox
-      Left = 236
+      Left = 230
       Height = 24
       Top = 2
-      Width = 84
+      Width = 90
       Align = alRight
       Caption = 'AutoUpdate'
       TabOrder = 0
@@ -55,7 +55,7 @@ object frmUserList: TfrmUserList
       end    
       item
         Caption = 'Task'
-        Width = 200
+        Width = 210
       end>
     RowSelect = True
     SortType = stText
