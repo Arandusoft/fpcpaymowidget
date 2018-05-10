@@ -15,7 +15,6 @@ uses {$IFDEF UNIX} {$IFDEF UseCThreads}
 {$R *.res}
 
 begin
-  Application.Scaled:=True;
   Application.Title := 'FPC Paymo Widget';
   RequireDerivedFormResource := True;
   Application.Initialize;
