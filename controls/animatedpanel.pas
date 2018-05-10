@@ -77,10 +77,14 @@ end;
 
 function TAnimatedPanel.easeInOutQuad(t: double): double;
 begin
+  {$ifndef darwin}
   if t < 0.5 then
     Result := 2 * t * t
   else
     Result := -1 + (4 - 2 * t) * t;
+  {$else}
+    Result := 1;
+  {$endif}
 end;
 
 procedure TAnimatedPanel.Animate();
@@ -185,13 +189,8 @@ begin
   inherited Create(AOwner);
   DoubleBuffered := True;
   FTimer := TTimer.Create(Self);
-  {$IFNDEF DARWIN}
   FStep := 0.1;
   FTimer.Interval := 15;
-  {$ELSE}
-  FStep := 0.3;
-  FTimer.Interval := 15;  
-  {$ENDIF}
   FTimer.Enabled := False;
   FTimer.OnTimer := @OnTimer;
   FTimer.OnStartTimer := @OnStartTimer;
