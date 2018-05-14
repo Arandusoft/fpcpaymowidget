@@ -718,7 +718,8 @@ begin
   pnlTop.Enabled := True;
   edSearch.Enabled := True;
   pnlTime.Enabled := True;
-  TabControl1.Visible := True;
+  if TabControl1.Tabs.Count > 0 then
+     TabControl1.Visible := True;
   if Assigned(Tasks) then
     Tasks.Enabled := True;
 end;
