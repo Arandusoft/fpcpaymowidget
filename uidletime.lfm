@@ -1,0 +1,99 @@
+object frmIdleTime: TfrmIdleTime
+  Left = 334
+  Height = 240
+  Top = 119
+  Width = 320
+  BorderStyle = bsDialog
+  Caption = 'Idle Time Alert'
+  ClientHeight = 240
+  ClientWidth = 320
+  Color = clWhite
+  Position = poMainFormCenter
+  LCLVersion = '1.9.0.0'
+  object btnDiscardIdleTime: TColorSpeedButton
+    Tag = -14
+    Left = 48
+    Height = 40
+    Top = 104
+    Width = 235
+    Anchors = [akTop, akLeft, akRight]
+    Caption = 'Discard Idle Time'
+    Font.Color = 3883776
+    Font.Height = 19
+    Font.Name = 'Nunito Sans'
+    Font.Style = [fsBold]
+    OnClick = btnDiscardIdleTimeClick
+    ParentFont = False
+    Toggle = False
+    Pressed = False
+    PopupMode = False
+    StateNormal.Color = clWhite
+    StateNormal.BorderColor = 8421631
+    StateNormal.BorderWidth = 0
+    StateHover.Color = 16185824
+    StateHover.BorderColor = 14120960
+    StateHover.BorderWidth = 0
+    StateActive.Color = 15003043
+    StateActive.BorderColor = 10048512
+    StateActive.BorderWidth = 0
+    StateDisabled.Color = 12566463
+    StateDisabled.BorderColor = clBlack
+    StateDisabled.BorderWidth = 1
+  end
+  object btnKeepIdleTime: TColorSpeedButton
+    Tag = -14
+    Left = 48
+    Height = 40
+    Top = 160
+    Width = 235
+    Anchors = [akTop, akLeft, akRight]
+    Caption = 'Keep Idle Time'
+    Font.Color = 3883776
+    Font.Height = 19
+    Font.Name = 'Nunito Sans'
+    Font.Style = [fsBold]
+    OnClick = btnKeepIdleTimeClick
+    ParentFont = False
+    Toggle = False
+    Pressed = False
+    PopupMode = False
+    StateNormal.Color = 12111890
+    StateNormal.BorderColor = clWhite
+    StateNormal.BorderWidth = 1
+    StateHover.Color = 12942607
+    StateHover.BorderColor = clWhite
+    StateHover.BorderWidth = 1
+    StateActive.Color = 12942607
+    StateActive.BorderColor = clWhite
+    StateActive.BorderWidth = 1
+    StateDisabled.Color = 12566463
+    StateDisabled.BorderColor = clBlack
+    StateDisabled.BorderWidth = 1
+  end
+  object lblDescription1: TLabel
+    Tag = -14
+    Left = 48
+    Height = 19
+    Top = 32
+    Width = 99
+    Caption = 'You''ve been idle:'
+    Font.Color = clBlack
+    Font.Height = 19
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+  object lblDescription2: TLabel
+    Tag = -14
+    Left = 48
+    Height = 19
+    Top = 56
+    Width = 35
+    Caption = '00:00'
+    Font.Color = clBlack
+    Font.Height = 19
+    Font.Name = 'Nunito Sans'
+    ParentColor = False
+    ParentFont = False
+  end
+end

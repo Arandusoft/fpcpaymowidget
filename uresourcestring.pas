@@ -39,6 +39,9 @@ resourcestring
   rsAdditional = 'Additional';
   rsMainTimer = 'Main Timer';
   rsMainTimerCantBeStoppedWithoutInternet = 'Main timer can''t be stopped without internet.';
+  rsSince = 'Since';
+  rsWorkingOn = 'working on';
+  rsLastSincro = 'Last sincro';
 
 implementation
 

@@ -59,6 +59,8 @@ type
     FCompany: TJSONObject;
     FOfflineData: TJSONArray;
     FAdditionalTimers: TJSONArray;
+    FUsers: TJSONObject;
+    FUsersRunningTimer: TJSONArray;
     function GetFHasOfflineData: boolean;
     procedure SetFAPIKey(AValue: string);
     procedure SetFAPIKeyURL(AValue: string);
@@ -80,6 +82,10 @@ type
     function CompanyData: TJSONData;
     { Current running timer }
     function RunningTimerData: TJSONData;
+    { Company users }
+    function Users: TJSONArray;
+    { All users running timers}
+    function UsersRunningTimer: TJSONArray;
     { Returns the name of the Project given the ID }
     function GetProjectName(ProjectID: int64): string;
     { Returns the name of the Task given the ID}
@@ -113,6 +119,8 @@ type
     function Get(Endpoint: string; var Response: string): TPaymoResponseStatus;
     { Retrieve tasks online or offline }
     function GetTasks(): TPaymoResponseStatus;
+    { Retrieve a task given it's id }
+    function GetSingleTask(id: integer): TJSONData;
     { Retrieve projects online or offline }
     function GetProjects(): TPaymoResponseStatus;
     { Retrieve task lists online or offline }
@@ -121,8 +129,12 @@ type
     function GetMe(): TPaymoResponseStatus;
     { Retrieve current running timer }
     function GetRunningTimer(): TPaymoResponseStatus;
+    { Retrieve all users running timer }
+    function GetAllUsersRunningTimer(): TPaymoResponseStatus;
     { Retrieve company information }
     function GetCompany(): TPaymoResponseStatus;
+    { Retrieve users }
+    function GetUsers(): TPaymoResponseStatus;
     { Creates or updates data to an endpoint, providing a JSON string, stores the server response in the response variable }
     function Post(Endpoint: string; sJSON: TJSONStringType;
       var Response: string): TPaymoResponseStatus;
@@ -146,10 +158,11 @@ type
     function UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
       project_id, task_id, tasklist_id: int64): TPaymoResponseStatus;
     { Create a time entry with start and end time }
-    function CreateTimeEntry(start_time, end_time: TDateTime; task_id: int64): TPaymoResponseStatus;
+    function CreateTimeEntry(start_time, end_time: TDateTime;
+      task_id: int64): TPaymoResponseStatus;
     { Stop additional timer }
-    function StopAdditionalTimer(index: integer; end_time: TDateTime
-      ): TPaymoResponseStatus;
+    function StopAdditionalTimer(index: integer;
+      end_time: TDateTime): TPaymoResponseStatus;
   public
     { Persists a JSON to file, used to save offline data }
     function SaveJSON(FileName: string; sJSON: string): TPaymoResponseStatus;
@@ -182,6 +195,7 @@ var
   PAYMO_SORT_INSTANCE: TPaymo;
 
 implementation
+
 uses
   utasklist;
 
@@ -344,6 +358,18 @@ begin
     Result := nil;
 end;
 
+function TPaymo.Users: TJSONArray;
+begin
+  if not Assigned(FUsers) then
+    exit(nil);
+  FUsers.Find('users', Result);
+end;
+
+function TPaymo.UsersRunningTimer: TJSONArray;
+begin
+  Result := FUsersRunningTimer;
+end;
+
 function TPaymo.GetProjectName(ProjectID: int64): string;
 var
   i: integer;
@@ -430,10 +456,13 @@ begin
   Result := '';
   if RunningTimerData <> nil then
   begin
-    Result := GetProjectName(GetTask(RunningTimerData.GetPath('task_id').AsInt64).GetPath('project_id').AsInt64) + LineEnding;
+    Result := GetProjectName(GetTask(RunningTimerData.GetPath(
+      'task_id').AsInt64).GetPath('project_id').AsInt64) + LineEnding;
   end;
-  for i:=0 to FAdditionalTimers.Count-1 do
-    Result += GetProjectName(GetTask(FAdditionalTimers[i].GetPath('task_id').AsInt64).GetPath('project_id').AsInt64) + ' [' + (i+1).ToString + ']' + LineEnding;
+  for i := 0 to FAdditionalTimers.Count - 1 do
+    Result += GetProjectName(GetTask(FAdditionalTimers[i].GetPath(
+      'task_id').AsInt64).GetPath('project_id').AsInt64) + ' [' + (i + 1).ToString +
+      ']' + LineEnding;
 end;
 
 constructor TPaymo.Create;
@@ -464,6 +493,10 @@ begin
     FOfflineData.Free;
   if Assigned(FAdditionalTimers) then
     FAdditionalTimers.Free;
+  if Assigned(FUsers) then
+    FUsers.Free;
+  if Assigned(FUsersRunningTimer) then
+    FUsersRunningTimer.Free;
   inherited Destroy;
 end;
 
@@ -481,6 +514,7 @@ function TPaymo.Get(Endpoint: string; var Response: string): TPaymoResponseStatu
 var
   client: TFPHTTPClient;
 begin
+  DebugLog('FPC Paymo Widget', 'Get:' + endpoint, 'Start');
   Result := prERROR;
   try
     client := TFPHttpClient.Create(nil);
@@ -512,6 +546,7 @@ begin
       end;
     end;
   finally
+    DebugLog('FPC Paymo Widget', 'Get:' + endpoint, 'Finish');
     client.Free;
   end;
 end;
@@ -533,6 +568,21 @@ begin
       TasksArray.Sort(@NameSort);
       SaveJSON('tasks.json', FTasks.FormatJSON());
     end;
+  end;
+end;
+
+function TPaymo.GetSingleTask(id: integer): TJSONData;
+var
+  response: string;
+begin
+  if not FOffline then
+  case Get('tasks/' + IntToStr(id), response) of
+    prOK:
+    begin
+      Result := GetJSON(response);
+    end;
+    else
+      Result := TJSONData.Create;
   end;
 end;
 
@@ -615,6 +665,35 @@ begin
   end;
 end;
 
+function TPaymo.GetAllUsersRunningTimer(): TPaymoResponseStatus;
+var
+  response: string;
+  i: integer;
+begin
+  if Assigned(FUsersRunningTimer) then
+    FUsersRunningTimer.Clear
+  else
+    FUsersRunningTimer := TJSONArray.Create;
+  for i := 0 to Users.Count - 1 do
+  begin
+    if not FOffline and Assigned(Users.Items[i].GetPath('id')) then
+      Result := Get('entries?where=user_id=' + Users.Items[i].GetPath('id').AsString +
+        '%20and%20end_time=null', response)
+    else
+    begin
+      Result := prNOInternet;
+      //exit;
+    end;
+    case Result of
+      prOK:
+      begin
+        FUsersRunningTimer.Add(GetJSON(response));
+      end;
+    end;
+  end;
+  //SaveJSON('userstimer.json',FUsersRunningTimer.FormatJSON());
+end;
+
 function TPaymo.GetCompany(): TPaymoResponseStatus;
 var
   response: string;
@@ -630,6 +709,25 @@ begin
         FCompany.Free;
       FCompany := TJSONObject(GetJSON(response));
       SaveJSON('company.json', FCompany.FormatJSON());
+    end;
+  end;
+end;
+
+function TPaymo.GetUsers(): TPaymoResponseStatus;
+var
+  response: string;
+begin
+  if not FOffline then
+    Result := Get('users?where=active=true', response)
+  else
+    Result := LoadJSON('users.json', response);
+  case Result of
+    prOK:
+    begin
+      if Assigned(FUsers) then
+        FUsers.Free;
+      FUsers := TJSONObject(GetJSON(response));
+      SaveJSON('users.json', FUsers.FormatJSON());
     end;
   end;
 end;
@@ -752,6 +850,9 @@ begin
     jObj.Add('complete', False);
     jObj.Add('seq', 0);
     jObj.Add('project_id', GetTaskList(TaskListID).GetPath('project_id').AsInt64);
+    jObj.Add('entries', TJSONArray.Create); // required by task list
+    jObj.Add('created_on', FormatDateTime('yyyy-mm-dd"T"hh:nn:ss"Z"',
+      LocalTimeToUniversal(now))); // required by task list
     // detect that this is an offline created task
     jObj.Add('offline', True);
     jObj.Add('source', 'createtask');
@@ -769,6 +870,7 @@ begin
     begin
       task := GetJSON(response);
       TasksArray.Add(task);
+      SaveJSON('tasks.json', FTasks.FormatJSON());
     end;
   end;
 end;
@@ -791,6 +893,8 @@ begin
   sJSON := jObj.FormatJSON();
   jObj.Free;
   Result := Post('tasks/' + task.GetPath('id').AsString, sJSON, response);
+  if FOffline then
+    SaveJSON('tasks.json', FTasks.FormatJSON());
   {case Result of
     prOK: begin
       task := GetJSON(response).GetPath('tasks').Items[0];
@@ -863,7 +967,7 @@ begin
     end;
     jObj.Add('project_id', GetTask(task_id).GetPath('project_id').AsInt64);
     FAdditionalTimers.Add(jObj);
-    SaveJSON('additionaltimers.json',FAdditionalTimers.FormatJSON());
+    SaveJSON('additionaltimers.json', FAdditionalTimers.FormatJSON());
     Result := prOK;
   end;
 end;
@@ -873,6 +977,9 @@ var
   response: string;
 begin
   Result := Delete('entries/' + TimeEntryID, response);
+  // ToDo: delete time entry from list
+  if FOffline then
+    SaveJSON('tasks.json', FTasks.FormatJSON());
 end;
 
 function TPaymo.UpdateTimeEntry(TimeEntryID: integer; start_time, end_time: TDateTime;
@@ -910,10 +1017,12 @@ begin
   sJSON := jObj.FormatJSON();
   jObj.Free;
   r := Post('tasks/' + task_id.ToString, sJSON, response);
+  if FOffline then
+    SaveJSON('tasks.json', FTasks.FormatJSON());
 end;
 
-function TPaymo.CreateTimeEntry(start_time, end_time: TDateTime; task_id: int64
-  ): TPaymoResponseStatus;
+function TPaymo.CreateTimeEntry(start_time, end_time: TDateTime;
+  task_id: int64): TPaymoResponseStatus;
 var
   response: string;
   sJSON: TJSONStringType;
@@ -930,20 +1039,32 @@ begin
     jObj.Add('task_id', task_id);
     if FOffline then
     begin
+      jObj.Add('id', 99999999); // offline time entries are read only
+      jObj.Add('user_id', MyData.GetPath('id').AsInteger);
       jObj.Add('offline', True);
       jObj.Add('source', 'createtimeentry');
     end;
     sJSON := jObj.FormatJSON();
+    // add to list of objects
+    if FOffline then
+    begin
+      TJSONArray(GetTask(task_id).GetPath('entries')).Add(jObj.Clone);
+    end;
     jObj.Free;
     Result := Post('entries/', sJSON, response);
+    if FOffline then
+      SaveJSON('tasks.json', FTasks.FormatJSON());
   end
   else
     Result := prOK;
 end;
 
-function TPaymo.StopAdditionalTimer(index: integer; end_time: TDateTime): TPaymoResponseStatus;
+function TPaymo.StopAdditionalTimer(index: integer;
+  end_time: TDateTime): TPaymoResponseStatus;
 begin
-  Result := CreateTimeEntry(TTaskList.StringToDateTime(FAdditionalTimers[index].GetPath('start_time').AsString), end_time, FAdditionalTimers[index].GetPath('task_id').AsInt64);
+  Result := CreateTimeEntry(TTaskList.StringToDateTime(
+    FAdditionalTimers[index].GetPath('start_time').AsString), end_time,
+    FAdditionalTimers[index].GetPath('task_id').AsInt64);
   if (Result = prOK) or (Result = prNOInternet) then
   begin
     FAdditionalTimers.Remove(FAdditionalTimers[index]);
@@ -1115,7 +1236,7 @@ var
   items_err: integer = 0;
   obj: TJSONObject;
   task, temp_obj: TJSONData;
-  response, source: string;
+  response, Source: string;
   s: TStringList;
 begin
   s := TStringList.Create;
@@ -1125,28 +1246,31 @@ begin
     // POST items
     if obj.GetPath('Type').AsString = 'POST' then
     begin
-      source := obj.GetPath('Data').GetPath('source').AsString;
+      Source := obj.GetPath('Data').GetPath('source').AsString;
       // create task and get the real id
-      if (source = 'createtask') then
+      if (Source = 'createtask') then
       begin
         case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
-          response) of
+            response) of
           prERROR, prTRYAGAIN:
           begin
             //obj.Add('SyncError', 'True');
             DebugLog('Error', 'SYNC_OfflineData', obj.FormatJSON());
             Inc(items_err);
           end;
-          prOK: begin
+          prOK:
+          begin
             temp_obj := GetJSON(response).GetPath('tasks').Items[0];
             // real id available now on stringlist
-            s.AddPair(obj.GetPath('Data').GetPath('id').AsString, temp_obj.GetPath('id').AsString);
+            s.AddPair(obj.GetPath('Data').GetPath('id').AsString,
+              temp_obj.GetPath('id').AsString);
             temp_obj.Free;
           end;
         end;
       end
       // update task completion with the 'real_id'
-      else if ((source = 'updatetaskcompletion') or (source = 'updatetimeentry_task')) then
+      else if ((Source = 'updatetaskcompletion') or
+        (Source = 'updatetimeentry_task')) then
       begin
         // get task and determine if it is an online task or an offline task
         // if is an online task do a normal post
@@ -1157,7 +1281,7 @@ begin
         if task <> nil then
         begin
           case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
-            response) of
+              response) of
             prERROR, prTRYAGAIN:
             begin
               //obj.Add('SyncError', 'True');
@@ -1169,8 +1293,8 @@ begin
         // with offline task
         else
         begin
-          case POST('tasks/' + s.Values[obj.GetPath('Data').GetPath('task_id').AsString], obj.GetPath('Data').AsJSON,
-            response) of
+          case POST('tasks/' + s.Values[obj.GetPath('Data').GetPath('task_id').AsString],
+              obj.GetPath('Data').AsJSON, response) of
             prERROR, prTRYAGAIN:
             begin
               //obj.Add('SyncError', 'True');
@@ -1181,14 +1305,14 @@ begin
         end;
       end
       // additional timer time entry
-      else if (source = 'createtimeentry') then
+      else if (Source = 'createtimeentry') then
       begin
         task := GetTask(obj.GetPath('Data').GetPath('task_id').AsInt64);
         // with already online task
         if task <> nil then
         begin
           case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
-            response) of
+              response) of
             prERROR, prTRYAGAIN:
             begin
               //obj.Add('SyncError', 'True');
@@ -1200,9 +1324,10 @@ begin
         // with offline task
         else
         begin
-          obj.GetPath('Data').GetPath('task_id').AsString := s.Values[obj.GetPath('Data').GetPath('task_id').AsString];
+          obj.GetPath('Data').GetPath('task_id').AsString :=
+            s.Values[obj.GetPath('Data').GetPath('task_id').AsString];
           case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
-            response) of
+              response) of
             prERROR, prTRYAGAIN:
             begin
               //obj.Add('SyncError', 'True');
@@ -1214,14 +1339,14 @@ begin
       end
 
       // change time entry data
-      else if (source = 'updatetimeentry_entry') then
+      else if (Source = 'updatetimeentry_entry') then
       begin
         task := GetTask(obj.GetPath('Data').GetPath('task_id').AsInt64);
         // with already online task
         if task <> nil then
         begin
           case POST(obj.GetPath('Endpoint').AsString, obj.GetPath('Data').AsJSON,
-            response) of
+              response) of
             prERROR, prTRYAGAIN:
             begin
               //obj.Add('SyncError', 'True');
@@ -1233,8 +1358,9 @@ begin
         // with offline task
         else
         begin
-          case POST('entries/' + s.Values[obj.GetPath('Data').GetPath('task_id').AsString], obj.GetPath('Data').AsJSON,
-            response) of
+          case POST('entries/' +
+              s.Values[obj.GetPath('Data').GetPath('task_id').AsString],
+              obj.GetPath('Data').AsJSON, response) of
             prERROR, prTRYAGAIN:
             begin
               //obj.Add('SyncError', 'True');

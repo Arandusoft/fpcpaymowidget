@@ -1,0 +1,72 @@
+object frmUserList: TfrmUserList
+  Left = 793
+  Height = 240
+  Top = 219
+  Width = 320
+  Caption = 'Users'
+  ClientHeight = 240
+  ClientWidth = 320
+  OnShow = FormShow
+  Position = poMainFormCenter
+  LCLVersion = '1.9.0.0'
+  object ToolBar1: TToolBar
+    Left = 0
+    Height = 26
+    Top = 0
+    Width = 320
+    Caption = 'ToolBar1'
+    ShowCaptions = True
+    TabOrder = 0
+    object btnRefresh: TToolButton
+      Left = 1
+      Top = 2
+      Caption = 'Refresh'
+      OnClick = btnRefreshClick
+    end
+    object chkAutoUpdate: TCheckBox
+      Left = 230
+      Height = 24
+      Top = 2
+      Width = 90
+      Align = alRight
+      Caption = 'AutoUpdate'
+      TabOrder = 0
+    end
+  end
+  object Panel1: TPanel
+    Left = 0
+    Height = 24
+    Top = 216
+    Width = 320
+    Align = alBottom
+    TabOrder = 1
+  end
+  object ListView1: TListView
+    Left = 0
+    Height = 190
+    Top = 26
+    Width = 320
+    Align = alClient
+    AutoWidthLastColumn = True
+    Columns = <    
+      item
+        Caption = 'Name'
+        Width = 100
+      end    
+      item
+        Caption = 'Task'
+        Width = 210
+      end>
+    RowSelect = True
+    SortType = stText
+    TabOrder = 2
+    ViewStyle = vsReport
+    OnAdvancedCustomDrawItem = ListView1AdvancedCustomDrawItem
+  end
+  object tmrRefresh: TTimer
+    Interval = 60000
+    OnTimer = tmrRefreshTimer
+    Left = 288
+    Top = 32
+  end
+end

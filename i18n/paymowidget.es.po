@@ -11,6 +11,26 @@ msgstr ""
 "Language: es\n"
 "X-Generator: Poedit 2.0.6\n"
 
+#: tfrmidletime.btndiscardidletime.caption
+msgid "Discard Idle Time"
+msgstr "Descartar Tiempo Inactivo"
+
+#: tfrmidletime.btnkeepidletime.caption
+msgid "Keep Idle Time"
+msgstr "Mantener Tiempo Inactivo"
+
+#: tfrmidletime.caption
+msgid "Idle Time Alert"
+msgstr "Alerta de Tiempo Inactivo"
+
+#: tfrmidletime.lbldescription1.caption
+msgid "You've been idle:"
+msgstr "Has estado inactivo:"
+
+#: tfrmidletime.lbldescription2.caption
+msgid "00:00"
+msgstr ""
+
 #: tfrmmain.btnabout.caption
 msgctxt "tfrmmain.btnabout.caption"
 msgid "About"
@@ -27,7 +47,6 @@ msgid "Open Paymo App"
 msgstr "Abrir Paymo App"
 
 #: tfrmmain.btnopensettingsfolder.caption
-msgctxt "tfrmmain.btnopensettingsfolder.caption"
 msgid "Open Settings Folder..."
 msgstr "Carpeta Configuración..."
 
@@ -39,7 +58,7 @@ msgstr "Salir"
 #: tfrmmain.btnrefresh.caption
 msgctxt "tfrmmain.btnrefresh.caption"
 msgid "Refresh"
-msgstr "Recargar"
+msgstr "Refrescar"
 
 #: tfrmmain.btnreset.caption
 msgid "Reset"
@@ -55,6 +74,11 @@ msgctxt "tfrmmain.btnsettingsexit.caption"
 msgid "←"
 msgstr ""
 
+#: tfrmmain.btnviewusers.caption
+msgctxt "tfrmmain.btnviewusers.caption"
+msgid "View Users"
+msgstr "Ver Usuarios"
+
 #: tfrmmain.caption
 msgid "FPC Paymo Widget"
 msgstr "FPC Paymo Widget"
@@ -69,13 +93,14 @@ msgstr "Proyecto"
 
 #: tfrmmain.lblrefreshinterval.caption
 msgid "Refresh data interval (in seconds)"
-msgstr "Intervalo de refresco de datos (en segundos)"
+msgstr "Intervalo de refresco (segundos)"
 
 #: tfrmmain.lblstop.caption
 msgid "■"
 msgstr ""
 
 #: tfrmmain.lbltask.caption
+msgctxt "tfrmmain.lbltask.caption"
 msgid "Task"
 msgstr "Tarea"
 
@@ -105,7 +130,7 @@ msgstr "Salir"
 #: tfrmmain.mirefresh.caption
 msgctxt "tfrmmain.mirefresh.caption"
 msgid "Refresh"
-msgstr "Recargar"
+msgstr "Refrescar"
 
 #: tfrmmain.misettings.caption
 msgctxt "tfrmmain.misettings.caption"
@@ -115,6 +140,11 @@ msgstr "Configuración"
 #: tfrmmain.mishow.caption
 msgid "Show"
 msgstr "Mostrar"
+
+#: tfrmmain.miviewusers.caption
+msgctxt "tfrmmain.miviewusers.caption"
+msgid "View Users"
+msgstr "Ver Usuarios"
 
 #: tfrmmain.pnlmenucompany.caption
 msgid "Company"
@@ -232,6 +262,28 @@ msgstr ""
 msgid "‒"
 msgstr ""
 
+#: tfrmuserlist.caption
+msgid "Users"
+msgstr "Usuarios"
+
+#: tfrmuserlist.listview1.columns[0].caption
+msgid "Name"
+msgstr "Nombre"
+
+#: tfrmuserlist.listview1.columns[1].caption
+msgctxt "tfrmuserlist.listview1.columns[1].caption"
+msgid "Task"
+msgstr "Tarea"
+
+#: tfrmuserlist.toolbar1.caption
+msgid "ToolBar1"
+msgstr ""
+
+#: tfrmuserlist.toolbutton1.caption
+msgctxt "tfrmuserlist.toolbutton1.caption"
+msgid "Refresh"
+msgstr "Recargar"
+
 #: uresourcestring.rsadditional
 msgid "Additional"
 msgstr "Adicional"
@@ -281,13 +333,17 @@ msgstr "Error: No se puede actualizar la tarea."
 msgid "Error: Can't update time entry."
 msgstr "Error: No se puede actualizar la entrada de tiempo."
 
+#: uresourcestring.rslastsincro
+msgid "Last sincro"
+msgstr "Última sincro"
+
 #: uresourcestring.rsmaintimer
 msgid "Main Timer"
 msgstr "Temporizador Principal"
 
 #: uresourcestring.rsmaintimercantbestoppedwithoutinternet
 msgid "Main timer can't be stopped without internet."
-msgstr ""
+msgstr "El temporizador principal no se puede detener sin internet."
 
 #: uresourcestring.rsnointernettryagainsoon
 msgid "Apparently there is no Internet connection. Try again soon."
@@ -309,6 +365,10 @@ msgstr "Por favor llene todos los campos."
 msgctxt "uresourcestring.rssaveentry"
 msgid "Save Entry"
 msgstr "Guardar Entrada"
+
+#: uresourcestring.rssince
+msgid "Since"
+msgstr "Desde"
 
 #: uresourcestring.rsstarttimer
 msgid "Start Timer"
@@ -342,7 +402,10 @@ msgstr "Demasiadas peticiones. Intenta de nuevo pronto."
 msgid "Working Offline: The data will be saved the next time you are online."
 msgstr "Trabajando Offline: Los datos serán guardados la próxima vez que estés online."
 
+#: uresourcestring.rsworkingon
+msgid "working on"
+msgstr "trabajando en"
+
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
-

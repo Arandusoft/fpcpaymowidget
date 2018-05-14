@@ -454,6 +454,8 @@ begin
       if arr[i].GetPath('complete').AsBoolean then
         l.Font.Style := [fsStrikeOut];
       l.Caption := arr[i].GetPath('name').AsString;
+      if Assigned(arr[i].FindPath('offline')) then
+        l.Caption := l.Caption + ' [*offline*]';
       l.OnClick := @OnClickItem;
       l.Parent := p;
       l.Name := 'taskl';
@@ -509,10 +511,14 @@ begin
           arrFilteredEntries[j].GetPath('start_time').AsString)) +
           ' ‒ ' + FormatDateTime('t', StringToDateTime(
           arrFilteredEntries[j].GetPath('end_time').AsString));
+        if Assigned(arrFilteredEntries[j].FindPath('offline')) then
+          l.Caption := l.Caption + ' [*offline*]';
         l.OnMouseEnter := @OnMouseEnterTimeLabel;
         l.OnMouseLeave := @OnMouseLeaveTimeLabel;
         l.Tag := arrFilteredEntries[j].GetPath('id').AsInteger;
-        l.OnClick := @OnClickTimeEntry;
+        // disable OnClick if offline
+        if not PaymoInstance.Offline then
+          l.OnClick := @OnClickTimeEntry;
         l.Parent := e;
         // entry time label
         l := TLabel.Create(e);
@@ -727,6 +733,8 @@ begin
       if arr[i].GetPath('complete').AsBoolean then
         l.Font.Style := [fsStrikeOut];
       l.Caption := arr[i].GetPath('name').AsString;
+      if Assigned(arr[i].FindPath('offline')) then
+        l.Caption := l.Caption + ' [*offline*]';
       //l.OnClick := @OnClickItem;
       l.Name := 'taskl';
       l.Parent := p;

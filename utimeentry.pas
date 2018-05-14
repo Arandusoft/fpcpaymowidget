@@ -72,7 +72,7 @@ type
   private
     procedure FillDateAndTime;
     procedure FillStartTime;
-    procedure WMMove(var Message: TLMMove); message LM_MOVE;
+    //procedure WMMove(var Message: TLMMove); message LM_MOVE;
   public
     PaymoInstance: TPaymo;
     Data: TJSONData;
@@ -158,7 +158,7 @@ begin
   time_start_mm.Caption := FormatDateTime('nn', dlgDate.Date);
 end;
 
-procedure TfrmTimeEntry.WMMove(var Message: TLMMove);
+{procedure TfrmTimeEntry.WMMove(var Message: TLMMove);
 var
   l, t: integer;
 begin
@@ -173,7 +173,7 @@ begin
   if frmMain.Top <> t then
     frmMain.Top := t;
   {$ENDIF}
-end;
+end;}
 
 procedure TfrmTimeEntry.ShowData(FromRefresh: boolean);
 begin
@@ -465,6 +465,8 @@ begin
       frmMain.DownloadTasksFinish(nil, 0, 0);
     end;
   end;
+  if PaymoInstance.Offline then
+    frmMain.ListTasks;
 end;
 
 procedure TfrmTimeEntry.btnSet15Click(Sender: TObject);
@@ -583,7 +585,8 @@ begin
   end
   else
     ShowMessage(rsErrorCantCreateTask);
-  frmMain.RefreshTabs;
+  if PaymoInstance.Offline then
+    frmMain.RefreshTabs;
 end;
 
 procedure TfrmTimeEntry.btnCreateTask(Sender: TObject);
@@ -610,19 +613,21 @@ begin
   end;
   case PaymoInstance.CreateTask(memoDescription.Lines.Text, '',
       TJSONData(acTaskList.SelectedObject).GetPath('id').AsInteger, task) of
-    prOK:
+    prOK, prNOInternet:
     begin
+      if PaymoInstance.Offline then
+        frmMain.RefreshTabs;
       Self.Close;
     end;
     prERROR, prTRYAGAIN:
     begin
       ShowMessage(rsErrorCantCreateTask);
     end;
-    prNOInternet:
+    {prNOInternet:
     begin
       ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
       Self.Close;
-    end;
+    end;}
   end;
 end;
 
@@ -631,6 +636,8 @@ begin
   case PaymoInstance.DeleteTimeEntry(Data.GetPath('id').AsString) of
     prOK, prNOInternet:
     begin
+      if PaymoInstance.Offline then
+        frmMain.RefreshTabs;
       Self.Close;
       Application.ProcessMessages;
       // Sync for now, ToDo: change to async with tasks

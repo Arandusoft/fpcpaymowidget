@@ -77,10 +77,14 @@ end;
 
 function TAnimatedPanel.easeInOutQuad(t: double): double;
 begin
+  {$ifndef darwin}
   if t < 0.5 then
     Result := 2 * t * t
   else
     Result := -1 + (4 - 2 * t) * t;
+  {$else}
+    Result := 1;
+  {$endif}
 end;
 
 procedure TAnimatedPanel.Animate();

@@ -1,6 +1,26 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
+#: tfrmidletime.btndiscardidletime.caption
+msgid "Discard Idle Time"
+msgstr ""
+
+#: tfrmidletime.btnkeepidletime.caption
+msgid "Keep Idle Time"
+msgstr ""
+
+#: tfrmidletime.caption
+msgid "Idle Time Alert"
+msgstr ""
+
+#: tfrmidletime.lbldescription1.caption
+msgid "You've been idle:"
+msgstr ""
+
+#: tfrmidletime.lbldescription2.caption
+msgid "00:00"
+msgstr ""
+
 #: tfrmmain.btnabout.caption
 msgctxt "tfrmmain.btnabout.caption"
 msgid "About"
@@ -17,7 +37,6 @@ msgid "Open Paymo App"
 msgstr ""
 
 #: tfrmmain.btnopensettingsfolder.caption
-msgctxt "tfrmmain.btnopensettingsfolder.caption"
 msgid "Open Settings Folder..."
 msgstr ""
 
@@ -45,6 +64,11 @@ msgctxt "tfrmmain.btnsettingsexit.caption"
 msgid "←"
 msgstr ""
 
+#: tfrmmain.btnviewusers.caption
+msgctxt "tfrmmain.btnviewusers.caption"
+msgid "View Users"
+msgstr ""
+
 #: tfrmmain.caption
 msgid "FPC Paymo Widget"
 msgstr ""
@@ -66,6 +90,7 @@ msgid "■"
 msgstr ""
 
 #: tfrmmain.lbltask.caption
+msgctxt "tfrmmain.lbltask.caption"
 msgid "Task"
 msgstr ""
 
@@ -104,6 +129,11 @@ msgstr ""
 
 #: tfrmmain.mishow.caption
 msgid "Show"
+msgstr ""
+
+#: tfrmmain.miviewusers.caption
+msgctxt "tfrmmain.miviewusers.caption"
+msgid "View Users"
 msgstr ""
 
 #: tfrmmain.pnlmenucompany.caption
@@ -222,6 +252,28 @@ msgstr ""
 msgid "‒"
 msgstr ""
 
+#: tfrmuserlist.caption
+msgid "Users"
+msgstr ""
+
+#: tfrmuserlist.listview1.columns[0].caption
+msgid "Name"
+msgstr ""
+
+#: tfrmuserlist.listview1.columns[1].caption
+msgctxt "tfrmuserlist.listview1.columns[1].caption"
+msgid "Task"
+msgstr ""
+
+#: tfrmuserlist.toolbar1.caption
+msgid "ToolBar1"
+msgstr ""
+
+#: tfrmuserlist.toolbutton1.caption
+msgctxt "tfrmuserlist.toolbutton1.caption"
+msgid "Refresh"
+msgstr ""
+
 #: uresourcestring.rsadditional
 msgid "Additional"
 msgstr ""
@@ -271,6 +323,10 @@ msgstr ""
 msgid "Error: Can't update time entry."
 msgstr ""
 
+#: uresourcestring.rslastsincro
+msgid "Last sincro"
+msgstr ""
+
 #: uresourcestring.rsmaintimer
 msgid "Main Timer"
 msgstr ""
@@ -298,6 +354,10 @@ msgstr ""
 #: uresourcestring.rssaveentry
 msgctxt "uresourcestring.rssaveentry"
 msgid "Save Entry"
+msgstr ""
+
+#: uresourcestring.rssince
+msgid "Since"
 msgstr ""
 
 #: uresourcestring.rsstarttimer
@@ -330,6 +390,10 @@ msgstr ""
 
 #: uresourcestring.rsworkingofflinethedatawillbesavedthenexttimeyouareonline
 msgid "Working Offline: The data will be saved the next time you are online."
+msgstr ""
+
+#: uresourcestring.rsworkingon
+msgid "working on"
 msgstr ""
 
 #: uresourcestring.rsyesterday

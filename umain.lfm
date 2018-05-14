@@ -1,12 +1,12 @@
 object frmMain: TfrmMain
-  Left = 377
-  Height = 541
-  Top = 67
-  Width = 360
+  Left = 576
+  Height = 649
+  Top = 84
+  Width = 456
   ActiveControl = edSearch
   Caption = 'FPC Paymo Widget'
-  ClientHeight = 541
-  ClientWidth = 360
+  ClientHeight = 649
+  ClientWidth = 456
   Color = clWhite
   Constraints.MinHeight = 540
   Constraints.MinWidth = 360
@@ -25,12 +25,12 @@ object frmMain: TfrmMain
     Left = 0
     Height = 50
     Top = 0
-    Width = 360
+    Width = 456
     Align = alTop
     BevelOuter = bvNone
     Caption = 'Timesheet'
     ClientHeight = 50
-    ClientWidth = 360
+    ClientWidth = 456
     Color = 13348638
     Constraints.MinHeight = 50
     Font.Color = clWhite
@@ -68,7 +68,7 @@ object frmMain: TfrmMain
     end
     object btnAddTask: TColorSpeedButton
       Cursor = crHandPoint
-      Left = 326
+      Left = 422
       Height = 17
       Top = 17
       Width = 17
@@ -93,6 +93,20 @@ object frmMain: TfrmMain
       StateDisabled.Color = 13348638
       StateDisabled.BorderColor = clBlack
       StateDisabled.BorderWidth = 0
+    end
+    object lblIdle: TLabel
+      Left = 291
+      Height = 21
+      Top = 32
+      Width = 163
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'Nunito Sans ExtraBold'
+      ParentColor = False
+      ParentFont = False
     end
   end
   object pnlMenu: TAnimatedPanel
@@ -148,7 +162,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 191
+      Top = 231
       Width = 270
       Align = alTop
       AutoSize = True
@@ -182,7 +196,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 282
+      Top = 322
       Width = 270
       Align = alTop
       AutoSize = True
@@ -214,7 +228,7 @@ object frmMain: TfrmMain
     object pnlSpacer1: TPanel
       Left = 30
       Height = 1
-      Top = 276
+      Top = 316
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -263,7 +277,7 @@ object frmMain: TfrmMain
     object pnlSpacer2: TPanel
       Left = 30
       Height = 1
-      Top = 185
+      Top = 225
       Width = 210
       Align = alTop
       BorderSpacing.Left = 30
@@ -314,7 +328,7 @@ object frmMain: TfrmMain
       Cursor = crHandPoint
       Left = 0
       Height = 40
-      Top = 231
+      Top = 271
       Width = 270
       Align = alTop
       AutoSize = True
@@ -377,11 +391,46 @@ object frmMain: TfrmMain
       StateDisabled.BorderColor = 2365715
       StateDisabled.BorderWidth = 0
     end
+    object btnViewUsers: TColorSpeedButton
+      Tag = -14
+      Cursor = crHandPoint
+      Left = 0
+      Height = 40
+      Top = 180
+      Width = 270
+      Align = alTop
+      AutoSize = True
+      Constraints.MinHeight = 40
+      Caption = 'View Users'
+      Font.Color = 10260359
+      Font.Height = 19
+      Font.Name = 'Nunito Sans'
+      Visible = False
+      OnClick = btnViewUsersClick
+      OnMouseEnter = btnOpenPaymoAppMouseEnter
+      OnMouseLeave = btnOpenPaymoAppMouseLeave
+      ParentFont = False
+      Toggle = False
+      Pressed = False
+      PopupMode = False
+      StateNormal.Color = 2365715
+      StateNormal.BorderColor = 2365715
+      StateNormal.BorderWidth = 0
+      StateHover.Color = 2102801
+      StateHover.BorderColor = 2102801
+      StateHover.BorderWidth = 0
+      StateActive.Color = 5131537
+      StateActive.BorderColor = 5131537
+      StateActive.BorderWidth = 1
+      StateDisabled.Color = 2365715
+      StateDisabled.BorderColor = 2365715
+      StateDisabled.BorderWidth = 0
+    end
   end
   object pnlSettings: TPanel
-    Left = 8
+    Left = 296
     Height = 320
-    Top = 220
+    Top = 296
     Width = 336
     BevelOuter = bvNone
     ClientHeight = 320
@@ -516,7 +565,7 @@ object frmMain: TfrmMain
     Left = 0
     Height = 20
     Top = 50
-    Width = 360
+    Width = 456
     Align = alTop
     Style = pbstMarquee
     TabOrder = 3
@@ -526,7 +575,7 @@ object frmMain: TfrmMain
     Left = 0
     Height = 24
     Top = 70
-    Width = 360
+    Width = 456
     Align = alTop
     OnChange = edSearchChange
     TabOrder = 4
@@ -535,7 +584,7 @@ object frmMain: TfrmMain
     Left = 0
     Height = 250
     Top = 94
-    Width = 360
+    Width = 456
     OnChange = TabControl1Change
     TabIndex = 0
     Tabs.Strings = (
@@ -548,11 +597,11 @@ object frmMain: TfrmMain
       Left = 2
       Height = 222
       Top = 23
-      Width = 356
+      Width = 452
       Align = alTop
       BevelOuter = bvNone
       ClientHeight = 222
-      ClientWidth = 356
+      ClientWidth = 452
       Color = 16182455
       Constraints.MinHeight = 50
       Font.Color = clWhite
@@ -577,7 +626,7 @@ object frmMain: TfrmMain
         Left = 38
         Height = 80
         Top = 48
-        Width = 280
+        Width = 376
         Anchors = [akTop, akLeft, akRight]
         AutoSize = False
         Caption = 'Task'
@@ -641,6 +690,11 @@ object frmMain: TfrmMain
     object miRefresh: TMenuItem
       Caption = 'Refresh'
       OnClick = btnRefreshClick
+    end
+    object miViewUsers: TMenuItem
+      Caption = 'View Users'
+      Visible = False
+      OnClick = btnViewUsersClick
     end
     object miSettings: TMenuItem
       Caption = 'Settings'
@@ -1639,5 +1693,10 @@ object frmMain: TfrmMain
     OnTimer = timerRefreshTimer
     Left = 280
     Top = 136
+  end
+  object tmrIdle: TTimer
+    OnTimer = tmrIdleTimer
+    Left = 344
+    Top = 88
   end
 end

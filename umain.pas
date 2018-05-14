@@ -10,10 +10,22 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType;
+  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType, udebug;
+
+{$ifdef win32}
+type
+  PLASTINPUTINFO = ^LASTINPUTINFO;
+  tagLASTINPUTINFO = record
+    cbSize: UINT;
+    dwTime: DWORD;
+  end;
+  LASTINPUTINFO = tagLASTINPUTINFO;
+  TLastInputInfo = LASTINPUTINFO;
+
+ function GetLastInputInfo(var plii: TLastInputInfo): BOOL;stdcall; external 'user32' name 'GetLastInputInfo';
+ {$endif}
 
 type
-
   { TfrmMain }
 
   TfrmMain = class(TForm)
@@ -22,6 +34,7 @@ type
     btnMenu: TColorSpeedButton;
     btnAddTask: TColorSpeedButton;
     btnRefresh: TColorSpeedButton;
+    btnViewUsers: TColorSpeedButton;
     btnSettingsExit: TColorSpeedButton;
     btnOpenPaymoApp: TColorSpeedButton;
     btnMenuExit: TColorSpeedButton;
@@ -38,12 +51,14 @@ type
     ilTrayOfflineWin: TImageList;
     ilApplication: TImageList;
     JSONPropStorage1: TJSONPropStorage;
+    lblIdle: TLabel;
     lblProject: TLabel;
     lblRefreshInterval: TLabel;
     lblStop: TLabel;
     lblTask: TLabel;
     lblTime: TLabel;
     leAPIURL: TLabeledEdit;
+    miViewUsers: TMenuItem;
     miOpenPaymoApp: TMenuItem;
     miRefresh: TMenuItem;
     miSettings: TMenuItem;
@@ -67,6 +82,7 @@ type
     DownloadRunningTimer: TTask;
     seRefreshInterval: TSpinEdit;
     TabControl1: TTabControl;
+    tmrIdle: TTimer;
     timerEntry: TTimer;
     timerRefresh: TTimer;
     tiTray: TTrayIcon;
@@ -83,6 +99,7 @@ type
     procedure btnOpenPaymoAppMouseLeave(Sender: TObject);
     procedure btnSettingsExitClick(Sender: TObject);
     procedure btnOpenSettingsFolderClick(Sender: TObject);
+    procedure btnViewUsersClick(Sender: TObject);
     procedure DownloadCompanyExecute(const Sender: TTask; const Msg: word;
       var Param: variant);
     procedure DownloadCompanyFinish(const Sender: TTask; const Msg: word;
@@ -111,6 +128,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure tmrIdleTimer(Sender: TObject);
     procedure JSONPropStorage1RestoreProperties(Sender: TObject);
     procedure lblStopClick(Sender: TObject);
     procedure leAPIURLChange(Sender: TObject);
@@ -127,7 +145,7 @@ type
     procedure wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
   private
     Tasks: TTaskList;
-    procedure WMMove(var Message: TLMMove); message LM_MOVE;
+    //procedure WMMove(var Message: TLMMove); message LM_MOVE;
   public
     Paymo: TPaymo;
     start_time: TDateTime;
@@ -142,6 +160,7 @@ type
     procedure ChangeIcon(const AIndex: integer);
     procedure RefreshTimeEntry();
     function StopTimeEntry(): boolean;
+    function StopTimer(end_time: TDateTime): boolean;
     procedure SetFonts(Control: TControl);
     procedure RefreshTabs;
     procedure AssignTask;
@@ -153,11 +172,12 @@ var
 implementation
 
 uses
-  utimeentry, ulogin;
+  utimeentry, ulogin, uuserlist, uidletime;
 
 {$R *.lfm}
 
 { TfrmMain }
+
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
@@ -315,9 +335,15 @@ begin
   OpenDocument(ExtractFilePath(JSONPropStorage1.JSONFileName));
 end;
 
+procedure TfrmMain.btnViewUsersClick(Sender: TObject);
+begin
+  uuserlist.frmUserList.Show;
+end;
+
 procedure TfrmMain.DownloadCompanyExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadCompany', 'Start');
   if not Sender.Terminated then
     Paymo.GetCompany();
 end;
@@ -325,6 +351,7 @@ end;
 procedure TfrmMain.DownloadCompanyFinish(const Sender: TTask;
   const Msg: word; const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadCompany', 'Finish');
   pnlMenuUser.Caption := Paymo.MyData.GetPath('name').AsString;
   pnlMenuCompany.Caption := Paymo.CompanyData.GetPath('name').AsString;
 end;
@@ -338,6 +365,7 @@ end;
 procedure TfrmMain.DownloadProjectsExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadProjects', 'Start');
   if not Sender.Terminated then
     Paymo.GetProjects();
 end;
@@ -345,12 +373,14 @@ end;
 procedure TfrmMain.DownloadProjectsFinish(const Sender: TTask;
   const Msg: word; const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadProjects', 'Finish');
   //ShowMessage('Projects OK');
 end;
 
 procedure TfrmMain.DownloadRunningTimerExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadRunningTimer', 'Start');
   if not Sender.Terminated then
     Paymo.GetRunningTimer();
 end;
@@ -358,18 +388,21 @@ end;
 procedure TfrmMain.DownloadRunningTimerFinish(const Sender: TTask;
   const Msg: word; const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadRunningTimer', 'Finish');
   ListTimeEntry();
 end;
 
 procedure TfrmMain.DownloadTaskListsFinish(const Sender: TTask;
   const Msg: word; const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadTaskLists', 'Finish');
   //ShowMessage('TaskLists OK');
 end;
 
 procedure TfrmMain.DownloadTasksExecute(const Sender: TTask; const Msg: word;
   var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadTasks', 'Start');
   if not Sender.Terminated then
     Paymo.GetTasks();
 end;
@@ -377,6 +410,7 @@ end;
 procedure TfrmMain.DownloadTasksFinish(const Sender: TTask; const Msg: word;
   const Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadTasks', 'Finish');
   //ShowMessage(Paymo.TasksArray.formatJSON());
   if not Assigned(Tasks) then
   begin
@@ -475,6 +509,11 @@ end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
 begin
+  if Paymo.MyData.GetPath('type').AsString = 'Admin' then
+  begin
+    miViewUsers.Visible := True;
+    btnViewUsers.Visible := True;
+  end;
   //frmTimeEntry.Show;
   tiTray.Show;
   {$IFDEF WINDOWS}
@@ -489,6 +528,71 @@ begin
   timerRefresh.Enabled := True;
 end;
 
+procedure TfrmMain.tmrIdleTimer(Sender: TObject);
+{$IFDEF WIN32}
+function IdleTime: DWord;
+var
+  LastInput: TLastInputInfo;
+begin
+  LastInput.cbSize := SizeOf(TLastInputInfo);
+  GetLastInputInfo(LastInput);
+  Result := (GetTickCount - LastInput.dwTime) DIV 1000;
+end;
+var
+  task_id: int64;
+begin
+   //if IdleTime>60  then
+   //begin
+      //lblIdle.Caption:='System idle time: '+Format('%.2d:%.2d', [IdleTime div 60, IdleTime mod 60]);
+      // 10 minutes
+      if (IdleTime>60*10) and (not frmIdleTime.IsVisible) and (Paymo.RunningTimerData <> nil) then
+      begin
+        frmIdleTime.lblDescription2.Caption := Format('%.2d:%.2d', [IdleTime div 60, IdleTime mod 60]);
+        case frmIdleTime.ShowModal of
+          // Discard Idle Time
+          mrOK: begin
+            task_id := Paymo.RunningTimerData.GetPath('task_id').AsInt64;
+            StopTimer(IncMinute(now, -10)); //< discard 10 minutes
+            case Paymo.StartRunningTimer(task_id, now) of
+              prOK, prNOInternet:
+              begin
+                case Paymo.GetRunningTimer() of
+                  prOK, prNOInternet:
+                  begin
+                    frmMain.DownloadRunningTimerFinish(nil, 0, 0);
+                  end;
+                  prTRYAGAIN, prERROR:
+                  begin
+                    ShowMessage(rsErrorCantStartTimer);
+                  end;
+                  {prNOInternet:
+                  begin
+                    ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+                  end;}
+                end;
+              end;
+              prTRYAGAIN, prERROR:
+              begin
+                ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
+              end;
+              {prNOInternet:
+              begin
+                ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+              end;}
+            end;
+          end;
+        end;
+      end;
+   //end
+   //else
+      //lblIdle.Caption:='';
+end;
+{$ELSE}
+ Begin
+   //todo: detect idle time in another plataforms /macos/linux
+ End;
+{$ENDIF}
+
 procedure TfrmMain.JSONPropStorage1RestoreProperties(Sender: TObject);
 begin
   if leAPIURL.Text = '' then
@@ -499,76 +603,8 @@ begin
 end;
 
 procedure TfrmMain.lblStopClick(Sender: TObject);
-var
-  index: integer;
 begin
-  Index := TabControl1.TabIndex;
-  if (Paymo.RunningTimerData = nil) and (TabControl1.TabIndex = 0) then
-    Index := 1;
-  case Index of
-    // main timer
-    0:
-    begin
-      if (Paymo.RunningTimerData <> nil) then
-      begin
-        case Paymo.StopRunningTimer(start_time, now, '') of
-          prOK:
-          begin
-            stop_ok := True;
-            //pnlTime.Visible := False;
-            Application.ProcessMessages;
-            // Sync for now, ToDo: change to async with tasks
-            Paymo.GetRunningTimer();
-            DownloadRunningTimerFinish(nil, 0, 0);
-            Application.ProcessMessages;
-            // Sync for now, ToDo: change to async with tasks
-            Paymo.GetTasks();
-            DownloadTasksFinish(nil, 0, 0);
-          end;
-          prTRYAGAIN, prERROR:
-          begin
-            stop_ok := False;
-            ShowMessage(rsErrorCantStopTimer);
-          end;
-          prNOInternet:
-          begin
-            ShowMessage(rsMainTimerCantBeStoppedWithoutInternet);
-          end;
-        end;
-      end;
-    end;
-    // additional timers
-    else
-    begin
-      index := TabControl1.TabIndex;
-      if Paymo.RunningTimerData <> nil then
-        Dec(index);
-      case Paymo.StopAdditionalTimer(index, now) of
-        prOK, prNOInternet:
-        begin
-          stop_ok := True;
-          //pnlTime.Visible := False;
-          Application.ProcessMessages;
-          // Sync for now, ToDo: change to async with tasks
-          if not Paymo.Offline then
-          begin
-            Paymo.GetTasks();
-            DownloadTasksFinish(nil, 0, 0);
-          end;
-        end;
-        prTRYAGAIN, prERROR:
-        begin
-          stop_ok := False;
-          ShowMessage(rsErrorCantStopTimer);
-        end;
-        {prNOInternet:
-        begin
-          ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-        end;}
-      end;
-    end;
-  end;
-  RefreshTabs;
+  StopTimer(now);
 end;
 
 procedure TfrmMain.leAPIURLChange(Sender: TObject);
@@ -590,6 +626,7 @@ end;
 procedure TfrmMain.DownloadTaskListsExecute(const Sender: TTask;
   const Msg: word; var Param: variant);
 begin
+  DebugLog('FPC Paymo Widget', 'DownloadTaskLists', 'Start');
   if not Sender.Terminated then
     Paymo.GetTaskLists();
 end;
@@ -621,6 +658,7 @@ procedure TfrmMain.timerRefreshTimer(Sender: TObject);
 begin
   if not Paymo.Offline or firstSync then
   begin
+    DebugLog('FPC Paymo Widget', 'Refresh', 'Start');
     timerRefresh.Enabled := False;
     pbRefresh.Visible := True;
     Application.ProcessMessages;
@@ -659,6 +697,7 @@ end;
 
 procedure TfrmMain.wcThreadDownloaderAllTasksFinished(const Sender: TWCthread);
 begin
+  DebugLog('FPC Paymo Widget', 'Refresh', 'Finish');
   if Assigned(frmTimeEntry) then
   begin
     if (frmTimeEntry.Visible) then
@@ -671,7 +710,7 @@ begin
   Sync;
 end;
 
-procedure TfrmMain.WMMove(var Message: TLMMove);
+{procedure TfrmMain.WMMove(var Message: TLMMove);
 var
   l, t: integer;
 begin
@@ -686,7 +725,7 @@ begin
   if frmTimeEntry.Top <> t then
     frmTimeEntry.Top := t;
   {$ENDIF}
-end;
+end;}
 
 procedure TfrmMain.Login;
 begin
@@ -750,14 +789,17 @@ var
 begin
   if not Paymo.Offline and Paymo.HasOfflineData then
   begin
+    DebugLog('FPC Paymo Widget', 'Sync', 'Start');
     i := Paymo.SYNC_OfflineData;
     if i <> 0 then
     begin
       ShowMessage(rsSyncCompleteWithError);
+      DebugLog('FPC Paymo Widget', 'Sync', 'Finish: Errors ' + IntToStr(i));
     end
     else
     begin
       ShowMessage(rsSyncCompleteSuccessfully);
+      DebugLog('FPC Paymo Widget', 'Sync', 'Finish: OK');
     end;
     timerRefreshTimer(nil);
   end;
@@ -884,6 +926,81 @@ begin
   Result := True;
   lblStopClick(nil);
   Result := stop_ok;
+end;
+
+function TfrmMain.StopTimer(end_time: TDateTime): boolean;
+var
+  index: integer;
+begin
+  Index := TabControl1.TabIndex;
+  if (Paymo.RunningTimerData = nil) and (TabControl1.TabIndex = 0) then
+    Index := 1;
+  case Index of
+    // main timer
+    0:
+    begin
+      if (Paymo.RunningTimerData <> nil) then
+      begin
+        case Paymo.StopRunningTimer(start_time, end_time, '') of
+          prOK:
+          begin
+            stop_ok := True;
+            //pnlTime.Visible := False;
+            Application.ProcessMessages;
+            // Sync for now, ToDo: change to async with tasks
+            Paymo.GetRunningTimer();
+            DownloadRunningTimerFinish(nil, 0, 0);
+            Application.ProcessMessages;
+            // Sync for now, ToDo: change to async with tasks
+            Paymo.GetTasks();
+            DownloadTasksFinish(nil, 0, 0);
+          end;
+          prTRYAGAIN, prERROR:
+          begin
+            stop_ok := False;
+            ShowMessage(rsErrorCantStopTimer);
+          end;
+          prNOInternet:
+          begin
+            ShowMessage(rsMainTimerCantBeStoppedWithoutInternet);
+          end;
+        end;
+      end;
+    end;
+    // additional timers
+    else
+    begin
+      index := TabControl1.TabIndex;
+      if Paymo.RunningTimerData <> nil then
+        Dec(index);
+      case Paymo.StopAdditionalTimer(index, end_time) of
+        prOK, prNOInternet:
+        begin
+          stop_ok := True;
+          //pnlTime.Visible := False;
+          Application.ProcessMessages;
+          // Sync for now, ToDo: change to async with tasks
+          if not Paymo.Offline then
+          begin
+            Paymo.GetTasks();
+            DownloadTasksFinish(nil, 0, 0);
+          end;
+          ListTasks;
+        end;
+        prTRYAGAIN, prERROR:
+        begin
+          stop_ok := False;
+          ShowMessage(rsErrorCantStopTimer);
+        end;
+        {prNOInternet:
+        begin
+          ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+        end;}
+      end;
+    end;
+  end;
+  if Paymo.Offline then
+    RefreshTabs;
 end;
 
 procedure TfrmMain.SetFonts(Control: TControl);
