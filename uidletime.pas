@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ColorSpeedButton;
+  ColorSpeedButton, DateUtils, utasklist;
 
 type
 
@@ -19,16 +19,22 @@ type
     lblDescription2: TLabel;
     procedure btnDiscardIdleTimeClick(Sender: TObject);
     procedure btnKeepIdleTimeClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
   private
 
   public
-
+    minutes, seconds: integer;
+    first_idle: TDateTime;
+    form_loaded: boolean;
+    procedure UpdateDisplay;
   end;
 
 var
   frmIdleTime: TfrmIdleTime;
 
 implementation
+uses
+  umain;
 
 {$R *.lfm}
 
@@ -36,11 +42,25 @@ implementation
 
 procedure TfrmIdleTime.btnKeepIdleTimeClick(Sender: TObject);
 begin
+  form_loaded := False;
   ModalResult := mrCancel;
+end;
+
+procedure TfrmIdleTime.FormShow(Sender: TObject);
+begin
+  form_loaded := True;
+  first_idle := IncMinute(now, -IDLETIMECHECK);
+  UpdateDisplay;
+end;
+
+procedure TfrmIdleTime.UpdateDisplay;
+begin
+  lblDescription2.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(now, first_idle));
 end;
 
 procedure TfrmIdleTime.btnDiscardIdleTimeClick(Sender: TObject);
 begin
+  form_loaded := False;
   ModalResult := mrOK;
 end;
 
