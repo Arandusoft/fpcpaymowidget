@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 377
+  Left = 1425
   Height = 649
-  Top = 67
+  Top = 83
   Width = 456
   ActiveControl = edSearch
   Caption = 'FPC Paymo Widget'
@@ -93,6 +93,20 @@ object frmMain: TfrmMain
       StateDisabled.Color = 13348638
       StateDisabled.BorderColor = clBlack
       StateDisabled.BorderWidth = 0
+    end
+    object lblIdle: TLabel
+      Left = 291
+      Height = 21
+      Top = 32
+      Width = 163
+      Alignment = taRightJustify
+      Anchors = [akTop, akRight]
+      AutoSize = False
+      Font.Color = clWhite
+      Font.Height = -11
+      Font.Name = 'Nunito Sans ExtraBold'
+      ParentColor = False
+      ParentFont = False
     end
   end
   object pnlMenu: TAnimatedPanel
@@ -428,7 +442,7 @@ object frmMain: TfrmMain
       Left = 16
       Height = 23
       Top = 64
-      Width = 156
+      Width = 160
       Caption = 'Show time in app icon'
       Font.Height = 19
       Font.Name = 'Nunito Sans'
@@ -448,8 +462,8 @@ object frmMain: TfrmMain
       EditLabel.AnchorSideRight.Side = asrBottom
       EditLabel.AnchorSideBottom.Control = leAPIURL
       EditLabel.Left = 16
-      EditLabel.Height = 16
-      EditLabel.Top = 101
+      EditLabel.Height = 15
+      EditLabel.Top = 102
       EditLabel.Width = 224
       EditLabel.Caption = 'API URL'
       EditLabel.ParentColor = False
@@ -528,7 +542,7 @@ object frmMain: TfrmMain
       Left = 16
       Height = 19
       Top = 160
-      Width = 198
+      Width = 201
       Caption = 'Refresh data interval (in seconds)'
       Font.Height = 19
       ParentColor = False
@@ -559,7 +573,7 @@ object frmMain: TfrmMain
   end
   object edSearch: TEdit
     Left = 0
-    Height = 24
+    Height = 23
     Top = 70
     Width = 456
     Align = alTop
@@ -569,7 +583,7 @@ object frmMain: TfrmMain
   object TabControl1: TTabControl
     Left = 0
     Height = 250
-    Top = 94
+    Top = 93
     Width = 456
     OnChange = TabControl1Change
     TabIndex = 0
@@ -599,7 +613,7 @@ object frmMain: TfrmMain
         Left = 38
         Height = 16
         Top = 24
-        Width = 34
+        Width = 38
         Caption = 'Project'
         Font.Color = 4805637
         Font.Height = 16
@@ -628,7 +642,7 @@ object frmMain: TfrmMain
         Left = 99
         Height = 53
         Top = 128
-        Width = 154
+        Width = 156
         Caption = '00:00:00'
         Font.Color = clWhite
         Font.Height = 53
@@ -1679,5 +1693,10 @@ object frmMain: TfrmMain
     OnTimer = timerRefreshTimer
     Left = 280
     Top = 136
+  end
+  object tmrIdle: TTimer
+    OnTimer = tmrIdleTimer
+    Left = 344
+    Top = 88
   end
 end

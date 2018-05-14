@@ -12,8 +12,20 @@ uses
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
   BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType, udebug;
 
+{$ifdef win32}
 type
+  PLASTINPUTINFO = ^LASTINPUTINFO;
+  tagLASTINPUTINFO = record
+    cbSize: UINT;
+    dwTime: DWORD;
+  end;
+  LASTINPUTINFO = tagLASTINPUTINFO;
+  TLastInputInfo = LASTINPUTINFO;
 
+ function GetLastInputInfo(var plii: TLastInputInfo): BOOL;stdcall; external 'user32' name 'GetLastInputInfo';
+ {$endif}
+
+type
   { TfrmMain }
 
   TfrmMain = class(TForm)
@@ -39,6 +51,7 @@ type
     ilTrayOfflineWin: TImageList;
     ilApplication: TImageList;
     JSONPropStorage1: TJSONPropStorage;
+    lblIdle: TLabel;
     lblProject: TLabel;
     lblRefreshInterval: TLabel;
     lblStop: TLabel;
@@ -69,6 +82,7 @@ type
     DownloadRunningTimer: TTask;
     seRefreshInterval: TSpinEdit;
     TabControl1: TTabControl;
+    tmrIdle: TTimer;
     timerEntry: TTimer;
     timerRefresh: TTimer;
     tiTray: TTrayIcon;
@@ -114,6 +128,7 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormResize(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure tmrIdleTimer(Sender: TObject);
     procedure JSONPropStorage1RestoreProperties(Sender: TObject);
     procedure lblStopClick(Sender: TObject);
     procedure leAPIURLChange(Sender: TObject);
@@ -161,6 +176,7 @@ uses
 {$R *.lfm}
 
 { TfrmMain }
+
 
 procedure TfrmMain.FormCreate(Sender: TObject);
 begin
@@ -510,6 +526,28 @@ begin
   timerEntry.Enabled := True;
   timerRefresh.Enabled := True;
 end;
+
+procedure TfrmMain.tmrIdleTimer(Sender: TObject);
+{$IFDEF WIN32}
+function IdleTime: DWord;
+var
+  LastInput: TLastInputInfo;
+begin
+  LastInput.cbSize := SizeOf(TLastInputInfo);
+  GetLastInputInfo(LastInput);
+  Result := (GetTickCount - LastInput.dwTime) DIV 1000;
+end;
+begin
+   if IdleTime>60 then
+      lblIdle.Caption:='System idle time: '+Format('%.2d:%.2d', [IdleTime div 60, IdleTime mod 60])
+   else
+      lblIdle.Caption:='';
+end;
+{$ELSE}
+ Begin
+   //todo: detect idle time in another plataforms /macos/linux
+ End;
+{$ENDIF}
 
 procedure TfrmMain.JSONPropStorage1RestoreProperties(Sender: TObject);
 begin

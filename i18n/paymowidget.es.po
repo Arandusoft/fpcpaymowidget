@@ -27,9 +27,8 @@ msgid "Open Paymo App"
 msgstr "Abrir Paymo App"
 
 #: tfrmmain.btnopensettingsfolder.caption
-msgctxt "tfrmmain.btnopensettingsfolder.caption"
 msgid "Open Settings Folder..."
-msgstr "Carpeta Configuración..."
+msgstr ""
 
 #: tfrmmain.btnquit.caption
 msgctxt "tfrmmain.btnquit.caption"
@@ -39,7 +38,7 @@ msgstr "Salir"
 #: tfrmmain.btnrefresh.caption
 msgctxt "tfrmmain.btnrefresh.caption"
 msgid "Refresh"
-msgstr "Recargar"
+msgstr ""
 
 #: tfrmmain.btnreset.caption
 msgid "Reset"
@@ -74,7 +73,7 @@ msgstr "Proyecto"
 
 #: tfrmmain.lblrefreshinterval.caption
 msgid "Refresh data interval (in seconds)"
-msgstr "Intervalo de refresco de datos (en segundos)"
+msgstr ""
 
 #: tfrmmain.lblstop.caption
 msgid "■"
@@ -99,6 +98,7 @@ msgid "About"
 msgstr "Acerca de"
 
 #: tfrmmain.miopenpaymoapp.caption
+#, fuzzy
 msgctxt "tfrmmain.miopenpaymoapp.caption"
 msgid "Open Paymo App"
 msgstr "Abrir Paymo App"
@@ -111,9 +111,10 @@ msgstr "Salir"
 #: tfrmmain.mirefresh.caption
 msgctxt "tfrmmain.mirefresh.caption"
 msgid "Refresh"
-msgstr "Recargar"
+msgstr ""
 
 #: tfrmmain.misettings.caption
+#, fuzzy
 msgctxt "tfrmmain.misettings.caption"
 msgid "Settings"
 msgstr "Configuración"
@@ -248,12 +249,16 @@ msgid "Users"
 msgstr "Usuarios"
 
 #: tfrmuserlist.listview1.columns[0].caption
-msgid "Name"
+#, fuzzy
+#| msgid "Name"
+msgid "Usuario"
 msgstr "Nombre"
 
 #: tfrmuserlist.listview1.columns[1].caption
+#, fuzzy
+#| msgid "Task"
 msgctxt "tfrmuserlist.listview1.columns[1].caption"
-msgid "Task"
+msgid "Tarea"
 msgstr "Tarea"
 
 #: tfrmuserlist.toolbar1.caption

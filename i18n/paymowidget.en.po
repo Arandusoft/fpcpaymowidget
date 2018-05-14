@@ -17,7 +17,6 @@ msgid "Open Paymo App"
 msgstr ""
 
 #: tfrmmain.btnopensettingsfolder.caption
-msgctxt "tfrmmain.btnopensettingsfolder.caption"
 msgid "Open Settings Folder..."
 msgstr ""
 
@@ -238,12 +237,12 @@ msgid "Users"
 msgstr ""
 
 #: tfrmuserlist.listview1.columns[0].caption
-msgid "Name"
+msgid "Usuario"
 msgstr ""
 
 #: tfrmuserlist.listview1.columns[1].caption
 msgctxt "tfrmuserlist.listview1.columns[1].caption"
-msgid "Task"
+msgid "Tarea"
 msgstr ""
 
 #: tfrmuserlist.toolbar1.caption
