@@ -8,6 +8,7 @@ object frmIdleTime: TfrmIdleTime
   ClientHeight = 240
   ClientWidth = 320
   Color = clWhite
+  OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '1.9.0.0'
   object btnDiscardIdleTime: TColorSpeedButton

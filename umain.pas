@@ -10,7 +10,14 @@ uses
   Menus, upaymo, fpjson, uresourcestring, utasklist, AnimatedPanel,
   ColorSpeedButton, DefaultTranslator, LCLIntF, wcthread, LMessages,
   JSONPropStorage, IDEWindowIntf, DateUtils, BGRABitmap,
-  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType, udebug;
+  BGRABitmapTypes, PropertyStorage, ComCtrls, Spin, LazUTF8, LCLType, udebug
+  , fileinfo
+  , winpeimagereader {need this for reading exe info}
+  , elfreader {needed for reading ELF executables}
+  , machoreader {needed for reading MACH-O executables}  ;
+
+const
+  IDLETIMECHECK = 10; // seconds
 
 {$ifdef win32}
 type
@@ -184,6 +191,10 @@ begin
   // prevent flickering
   {$ifdef windows}
   DoubleBuffered := True;
+  pnlMenu.DoubleBuffered := True;
+  pnlTop.DoubleBuffered := True;
+  pnlSettings.DoubleBuffered := True;
+  TabControl1.DoubleBuffered := True;
   {$endif}
   // To grab data from disk when offline
   firstSync := True;
@@ -259,6 +270,7 @@ begin
   pnlTop.Enabled := False;
   edSearch.Enabled := False;
   pnlTime.Enabled := False;
+  TabControl1.Visible := False;
   if Assigned(Tasks) then
     Tasks.Enabled := False;
 end;
@@ -307,6 +319,7 @@ procedure TfrmMain.btnRefreshClick(Sender: TObject);
 begin
   Self.ShowInTaskBar := stDefault;
   Self.Show;
+  hideMenu(nil);
   frmMain.timerRefreshTimer(nil);
 end;
 
@@ -541,39 +554,27 @@ end;
 var
   task_id: int64;
 begin
-   //if IdleTime>60  then
-   //begin
-      //lblIdle.Caption:='System idle time: '+Format('%.2d:%.2d', [IdleTime div 60, IdleTime mod 60]);
-      // 10 minutes
-      if (IdleTime>60*10) and (not frmIdleTime.IsVisible) and (Paymo.RunningTimerData <> nil) then
-      begin
-        frmIdleTime.lblDescription2.Caption := Format('%.2d:%.2d', [IdleTime div 60, IdleTime mod 60]);
-        case frmIdleTime.ShowModal of
-          // Discard Idle Time
-          mrOK: begin
-            task_id := Paymo.RunningTimerData.GetPath('task_id').AsInt64;
-            StopTimer(IncMinute(now, -10)); //< discard 10 minutes
-            case Paymo.StartRunningTimer(task_id, now) of
+  // always update display
+  frmIdleTime.updateDisplay;
+  if (IdleTime>=60*IDLETIMECHECK) and (Paymo.RunningTimerData <> nil) then
+  begin
+    if (not frmIdleTime.IsVisible) then
+    case frmIdleTime.ShowModal of
+      // Discard Idle Time
+      mrOK: begin
+        task_id := Paymo.RunningTimerData.GetPath('task_id').AsInt64;
+        StopTimer(frmIdleTime.first_idle);
+        case Paymo.StartRunningTimer(task_id, now) of
+          prOK, prNOInternet:
+          begin
+            case Paymo.GetRunningTimer() of
               prOK, prNOInternet:
               begin
-                case Paymo.GetRunningTimer() of
-                  prOK, prNOInternet:
-                  begin
-                    frmMain.DownloadRunningTimerFinish(nil, 0, 0);
-                  end;
-                  prTRYAGAIN, prERROR:
-                  begin
-                    ShowMessage(rsErrorCantStartTimer);
-                  end;
-                  {prNOInternet:
-                  begin
-                    ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-                  end;}
-                end;
+                frmMain.DownloadRunningTimerFinish(nil, 0, 0);
               end;
               prTRYAGAIN, prERROR:
               begin
-                ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
+                ShowMessage(rsErrorCantStartTimer);
               end;
               {prNOInternet:
               begin
@@ -581,11 +582,18 @@ begin
               end;}
             end;
           end;
+          prTRYAGAIN, prERROR:
+          begin
+            ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
+          end;
+          {prNOInternet:
+          begin
+            ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+          end;}
         end;
       end;
-   //end
-   //else
-      //lblIdle.Caption:='';
+    end;
+  end;
 end;
 {$ELSE}
  Begin
@@ -613,8 +621,27 @@ begin
 end;
 
 procedure TfrmMain.miAboutClick(Sender: TObject);
+var
+  FileVerInfo: TFileVersionInfo;
+  s: string = '';
 begin
-  ShowMessage('Copyright © 2018 Arandú Software');
+  FileVerInfo:=TFileVersionInfo.Create(nil);
+  try
+    FileVerInfo.ReadFileInfo;
+    s :=
+    //'Company: ' + FileVerInfo.VersionStrings.Values['CompanyName'] + LineEnding +
+    //'File description: ' + FileVerInfo.VersionStrings.Values['FileDescription'] + LineEnding +
+    'File version: ' + FileVerInfo.VersionStrings.Values['FileVersion'] + LineEnding // +
+    //'Internal name: ' + FileVerInfo.VersionStrings.Values['InternalName'] + LineEnding +
+    //'Legal copyright: ' + FileVerInfo.VersionStrings.Values['LegalCopyright'] + LineEnding +
+    //'Original filename: ' + FileVerInfo.VersionStrings.Values['OriginalFilename'] + LineEnding +
+    //'Product name: ' + FileVerInfo.VersionStrings.Values['ProductName'] + LineEnding +
+    //'Product version: ' + FileVerInfo.VersionStrings.Values['ProductVersion'] + LineEnding
+    ;
+  finally
+    FileVerInfo.Free;
+  end;
+  ShowMessage(s + 'Copyright © 2018 Arandú Software');
 end;
 
 procedure TfrmMain.miQuitClick(Sender: TObject);
@@ -691,6 +718,7 @@ begin
   pnlTop.Enabled := True;
   edSearch.Enabled := True;
   pnlTime.Enabled := True;
+  TabControl1.Visible := True;
   if Assigned(Tasks) then
     Tasks.Enabled := True;
 end;
