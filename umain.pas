@@ -160,6 +160,7 @@ type
     procedure ChangeIcon(const AIndex: integer);
     procedure RefreshTimeEntry();
     function StopTimeEntry(): boolean;
+    function StopTimer(end_time: TDateTime): boolean;
     procedure SetFonts(Control: TControl);
     procedure RefreshTabs;
     procedure AssignTask;
@@ -171,7 +172,7 @@ var
 implementation
 
 uses
-  utimeentry, ulogin, uuserlist;
+  utimeentry, ulogin, uuserlist, uidletime;
 
 {$R *.lfm}
 
@@ -537,11 +538,54 @@ begin
   GetLastInputInfo(LastInput);
   Result := (GetTickCount - LastInput.dwTime) DIV 1000;
 end;
+var
+  task_id: int64;
 begin
-   if IdleTime>60 then
-      lblIdle.Caption:='System idle time: '+Format('%.2d:%.2d', [IdleTime div 60, IdleTime mod 60])
-   else
-      lblIdle.Caption:='';
+   //if IdleTime>60  then
+   //begin
+      //lblIdle.Caption:='System idle time: '+Format('%.2d:%.2d', [IdleTime div 60, IdleTime mod 60]);
+      // 10 minutes
+      if (IdleTime>60*10) and (not frmIdleTime.IsVisible) and (Paymo.RunningTimerData <> nil) then
+      begin
+        frmIdleTime.lblDescription2.Caption := Format('%.2d:%.2d', [IdleTime div 60, IdleTime mod 60]);
+        case frmIdleTime.ShowModal of
+          // Discard Idle Time
+          mrOK: begin
+            task_id := Paymo.RunningTimerData.GetPath('task_id').AsInt64;
+            StopTimer(IncMinute(now, -10)); //< discard 10 minutes
+            case Paymo.StartRunningTimer(task_id, now) of
+              prOK, prNOInternet:
+              begin
+                case Paymo.GetRunningTimer() of
+                  prOK, prNOInternet:
+                  begin
+                    frmMain.DownloadRunningTimerFinish(nil, 0, 0);
+                  end;
+                  prTRYAGAIN, prERROR:
+                  begin
+                    ShowMessage(rsErrorCantStartTimer);
+                  end;
+                  {prNOInternet:
+                  begin
+                    ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+                  end;}
+                end;
+              end;
+              prTRYAGAIN, prERROR:
+              begin
+                ShowMessage(rsErrorCantStartTimerTryStoppingCurrentTimerFirst);
+              end;
+              {prNOInternet:
+              begin
+                ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+              end;}
+            end;
+          end;
+        end;
+      end;
+   //end
+   //else
+      //lblIdle.Caption:='';
 end;
 {$ELSE}
  Begin
@@ -559,78 +603,8 @@ begin
 end;
 
 procedure TfrmMain.lblStopClick(Sender: TObject);
-var
-  index: integer;
 begin
-  Index := TabControl1.TabIndex;
-  if (Paymo.RunningTimerData = nil) and (TabControl1.TabIndex = 0) then
-    Index := 1;
-  case Index of
-    // main timer
-    0:
-    begin
-      if (Paymo.RunningTimerData <> nil) then
-      begin
-        case Paymo.StopRunningTimer(start_time, now, '') of
-          prOK:
-          begin
-            stop_ok := True;
-            //pnlTime.Visible := False;
-            Application.ProcessMessages;
-            // Sync for now, ToDo: change to async with tasks
-            Paymo.GetRunningTimer();
-            DownloadRunningTimerFinish(nil, 0, 0);
-            Application.ProcessMessages;
-            // Sync for now, ToDo: change to async with tasks
-            Paymo.GetTasks();
-            DownloadTasksFinish(nil, 0, 0);
-          end;
-          prTRYAGAIN, prERROR:
-          begin
-            stop_ok := False;
-            ShowMessage(rsErrorCantStopTimer);
-          end;
-          prNOInternet:
-          begin
-            ShowMessage(rsMainTimerCantBeStoppedWithoutInternet);
-          end;
-        end;
-      end;
-    end;
-    // additional timers
-    else
-    begin
-      index := TabControl1.TabIndex;
-      if Paymo.RunningTimerData <> nil then
-        Dec(index);
-      case Paymo.StopAdditionalTimer(index, now) of
-        prOK, prNOInternet:
-        begin
-          stop_ok := True;
-          //pnlTime.Visible := False;
-          Application.ProcessMessages;
-          // Sync for now, ToDo: change to async with tasks
-          if not Paymo.Offline then
-          begin
-            Paymo.GetTasks();
-            DownloadTasksFinish(nil, 0, 0);
-          end;
-          ListTasks;
-        end;
-        prTRYAGAIN, prERROR:
-        begin
-          stop_ok := False;
-          ShowMessage(rsErrorCantStopTimer);
-        end;
-        {prNOInternet:
-        begin
-          ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
-        end;}
-      end;
-    end;
-  end;
-  if Paymo.Offline then
-    RefreshTabs;
+  StopTimer(now);
 end;
 
 procedure TfrmMain.leAPIURLChange(Sender: TObject);
@@ -952,6 +926,81 @@ begin
   Result := True;
   lblStopClick(nil);
   Result := stop_ok;
+end;
+
+function TfrmMain.StopTimer(end_time: TDateTime): boolean;
+var
+  index: integer;
+begin
+  Index := TabControl1.TabIndex;
+  if (Paymo.RunningTimerData = nil) and (TabControl1.TabIndex = 0) then
+    Index := 1;
+  case Index of
+    // main timer
+    0:
+    begin
+      if (Paymo.RunningTimerData <> nil) then
+      begin
+        case Paymo.StopRunningTimer(start_time, end_time, '') of
+          prOK:
+          begin
+            stop_ok := True;
+            //pnlTime.Visible := False;
+            Application.ProcessMessages;
+            // Sync for now, ToDo: change to async with tasks
+            Paymo.GetRunningTimer();
+            DownloadRunningTimerFinish(nil, 0, 0);
+            Application.ProcessMessages;
+            // Sync for now, ToDo: change to async with tasks
+            Paymo.GetTasks();
+            DownloadTasksFinish(nil, 0, 0);
+          end;
+          prTRYAGAIN, prERROR:
+          begin
+            stop_ok := False;
+            ShowMessage(rsErrorCantStopTimer);
+          end;
+          prNOInternet:
+          begin
+            ShowMessage(rsMainTimerCantBeStoppedWithoutInternet);
+          end;
+        end;
+      end;
+    end;
+    // additional timers
+    else
+    begin
+      index := TabControl1.TabIndex;
+      if Paymo.RunningTimerData <> nil then
+        Dec(index);
+      case Paymo.StopAdditionalTimer(index, end_time) of
+        prOK, prNOInternet:
+        begin
+          stop_ok := True;
+          //pnlTime.Visible := False;
+          Application.ProcessMessages;
+          // Sync for now, ToDo: change to async with tasks
+          if not Paymo.Offline then
+          begin
+            Paymo.GetTasks();
+            DownloadTasksFinish(nil, 0, 0);
+          end;
+          ListTasks;
+        end;
+        prTRYAGAIN, prERROR:
+        begin
+          stop_ok := False;
+          ShowMessage(rsErrorCantStopTimer);
+        end;
+        {prNOInternet:
+        begin
+          ShowMessage(rsWorkingOfflineTheDataWillBeSavedTheNextTimeYouAreOnline);
+        end;}
+      end;
+    end;
+  end;
+  if Paymo.Offline then
+    RefreshTabs;
 end;
 
 procedure TfrmMain.SetFonts(Control: TControl);

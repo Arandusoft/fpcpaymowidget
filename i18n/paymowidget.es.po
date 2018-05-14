@@ -11,6 +11,26 @@ msgstr ""
 "Language: es\n"
 "X-Generator: Poedit 2.0.6\n"
 
+#: tfrmidletime.btndiscardidletime.caption
+msgid "Discard Idle Time"
+msgstr "Descartar Tiempo Inactivo"
+
+#: tfrmidletime.btnkeepidletime.caption
+msgid "Keep Idle Time"
+msgstr "Mantener Tiempo Inactivo"
+
+#: tfrmidletime.caption
+msgid "Idle Time Alert"
+msgstr "Alerta de Tiempo Inactivo"
+
+#: tfrmidletime.lbldescription1.caption
+msgid "You've been idle:"
+msgstr "Has estado inactivo:"
+
+#: tfrmidletime.lbldescription2.caption
+msgid "00:00"
+msgstr ""
+
 #: tfrmmain.btnabout.caption
 msgctxt "tfrmmain.btnabout.caption"
 msgid "About"
@@ -28,7 +48,7 @@ msgstr "Abrir Paymo App"
 
 #: tfrmmain.btnopensettingsfolder.caption
 msgid "Open Settings Folder..."
-msgstr ""
+msgstr "Carpeta Configuración..."
 
 #: tfrmmain.btnquit.caption
 msgctxt "tfrmmain.btnquit.caption"
@@ -38,7 +58,7 @@ msgstr "Salir"
 #: tfrmmain.btnrefresh.caption
 msgctxt "tfrmmain.btnrefresh.caption"
 msgid "Refresh"
-msgstr ""
+msgstr "Refrescar"
 
 #: tfrmmain.btnreset.caption
 msgid "Reset"
@@ -57,7 +77,7 @@ msgstr ""
 #: tfrmmain.btnviewusers.caption
 msgctxt "tfrmmain.btnviewusers.caption"
 msgid "View Users"
-msgstr ""
+msgstr "Ver Usuarios"
 
 #: tfrmmain.caption
 msgid "FPC Paymo Widget"
@@ -73,7 +93,7 @@ msgstr "Proyecto"
 
 #: tfrmmain.lblrefreshinterval.caption
 msgid "Refresh data interval (in seconds)"
-msgstr ""
+msgstr "Intervalo de refresco (segundos)"
 
 #: tfrmmain.lblstop.caption
 msgid "■"
@@ -98,7 +118,6 @@ msgid "About"
 msgstr "Acerca de"
 
 #: tfrmmain.miopenpaymoapp.caption
-#, fuzzy
 msgctxt "tfrmmain.miopenpaymoapp.caption"
 msgid "Open Paymo App"
 msgstr "Abrir Paymo App"
@@ -111,10 +130,9 @@ msgstr "Salir"
 #: tfrmmain.mirefresh.caption
 msgctxt "tfrmmain.mirefresh.caption"
 msgid "Refresh"
-msgstr ""
+msgstr "Refrescar"
 
 #: tfrmmain.misettings.caption
-#, fuzzy
 msgctxt "tfrmmain.misettings.caption"
 msgid "Settings"
 msgstr "Configuración"
@@ -126,7 +144,7 @@ msgstr "Mostrar"
 #: tfrmmain.miviewusers.caption
 msgctxt "tfrmmain.miviewusers.caption"
 msgid "View Users"
-msgstr ""
+msgstr "Ver Usuarios"
 
 #: tfrmmain.pnlmenucompany.caption
 msgid "Company"
@@ -249,16 +267,12 @@ msgid "Users"
 msgstr "Usuarios"
 
 #: tfrmuserlist.listview1.columns[0].caption
-#, fuzzy
-#| msgid "Name"
-msgid "Usuario"
+msgid "Name"
 msgstr "Nombre"
 
 #: tfrmuserlist.listview1.columns[1].caption
-#, fuzzy
-#| msgid "Task"
 msgctxt "tfrmuserlist.listview1.columns[1].caption"
-msgid "Tarea"
+msgid "Task"
 msgstr "Tarea"
 
 #: tfrmuserlist.toolbar1.caption
@@ -266,7 +280,6 @@ msgid "ToolBar1"
 msgstr ""
 
 #: tfrmuserlist.toolbutton1.caption
-#, fuzzy
 msgctxt "tfrmuserlist.toolbutton1.caption"
 msgid "Refresh"
 msgstr "Recargar"
@@ -396,4 +409,3 @@ msgstr "trabajando en"
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
-
