@@ -1,7 +1,7 @@
 object frmTimeEntry: TfrmTimeEntry
-  Left = 433
+  Left = 745
   Height = 632
-  Top = 33
+  Top = 39
   Width = 360
   BorderIcons = [biSystemMenu]
   Caption = 'Edit Time Entry'
@@ -121,9 +121,9 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription: TLabel
     Tag = -14
     Left = 16
-    Height = 19
+    Height = 22
     Top = 205
-    Width = 98
+    Width = 159
     Caption = 'Task description:'
     Font.Color = 3883776
     Font.Height = 19
@@ -134,9 +134,9 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription1: TLabel
     Tag = -14
     Left = 16
-    Height = 19
+    Height = 22
     Top = 8
-    Width = 44
+    Width = 71
     Caption = 'Project:'
     Font.Color = 3883776
     Font.Height = 19
@@ -147,9 +147,9 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription2: TLabel
     Tag = -14
     Left = 16
-    Height = 19
+    Height = 22
     Top = 72
-    Width = 53
+    Width = 87
     Caption = 'Task List:'
     Font.Color = 3883776
     Font.Height = 19
@@ -160,9 +160,9 @@ object frmTimeEntry: TfrmTimeEntry
   object lblDescription3: TLabel
     Tag = -14
     Left = 16
-    Height = 19
+    Height = 22
     Top = 129
-    Width = 30
+    Width = 48
     Caption = 'Task:'
     Font.Color = 3883776
     Font.Height = 19
@@ -204,9 +204,9 @@ object frmTimeEntry: TfrmTimeEntry
   object chkCompletedTask: TCheckBox
     Tag = -14
     Left = 64
-    Height = 23
+    Height = 21
     Top = 304
-    Width = 121
+    Width = 113
     Caption = 'Completed Task'
     Font.Color = clWhite
     Font.Height = 19
@@ -226,8 +226,8 @@ object frmTimeEntry: TfrmTimeEntry
     TabOrder = 5
     object pnlSetTime: TPanel
       Left = 0
-      Height = 23
-      Top = 21
+      Height = 26
+      Top = 25
       Width = 235
       Align = alTop
       AutoSize = True
@@ -237,15 +237,15 @@ object frmTimeEntry: TfrmTimeEntry
       ChildSizing.ShrinkHorizontal = crsScaleChilds
       ChildSizing.Layout = cclLeftToRightThenTopToBottom
       ChildSizing.ControlsPerLine = 5
-      ClientHeight = 23
+      ClientHeight = 26
       ClientWidth = 235
       TabOrder = 0
       object btnSetNow: TColorSpeedButton
         Tag = -14
         Left = 0
-        Height = 23
+        Height = 26
         Top = 0
-        Width = 51
+        Width = 50
         Caption = 'Now'
         Font.Color = 3883776
         Font.Height = 19
@@ -271,8 +271,8 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object btnSet15: TColorSpeedButton
         Tag = -14
-        Left = 59
-        Height = 23
+        Left = 58
+        Height = 26
         Top = 0
         Width = 38
         Caption = '-15'
@@ -300,8 +300,8 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object btnSet30: TColorSpeedButton
         Tag = -14
-        Left = 105
-        Height = 23
+        Left = 104
+        Height = 26
         Top = 0
         Width = 38
         Caption = '-30'
@@ -329,8 +329,8 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object btnSet45: TColorSpeedButton
         Tag = -14
-        Left = 151
-        Height = 23
+        Left = 150
+        Height = 26
         Top = 0
         Width = 38
         Caption = '-45'
@@ -358,10 +358,10 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object btnSet1h: TColorSpeedButton
         Tag = -14
-        Left = 197
-        Height = 23
+        Left = 196
+        Height = 26
         Top = 0
-        Width = 38
+        Width = 39
         Caption = '-1h'
         Font.Color = 3883776
         Font.Height = 19
@@ -388,22 +388,22 @@ object frmTimeEntry: TfrmTimeEntry
     end
     object Panel1: TPanel
       Left = 0
-      Height = 21
+      Height = 25
       Top = 0
       Width = 235
       Align = alTop
       AutoSize = True
       BevelOuter = bvNone
-      ClientHeight = 21
+      ClientHeight = 25
       ClientWidth = 235
       TabOrder = 1
       object lbl_date: TLabel
         Tag = -16
         Cursor = crIBeam
         Left = 0
-        Height = 21
+        Height = 25
         Top = 0
-        Width = 32
+        Width = 50
         Caption = 'Date'
         Font.Color = clWhite
         Font.Height = 21
@@ -430,9 +430,9 @@ object frmTimeEntry: TfrmTimeEntry
       object time_start_hh: TEdit
         Tag = -16
         Left = 0
-        Height = 21
+        Height = 29
         Top = 0
-        Width = 56
+        Width = 54
         Alignment = taCenter
         BorderStyle = bsNone
         Font.Color = clWhite
@@ -448,10 +448,10 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object time_start_separator: TLabel
         Tag = -16
-        Left = 56
-        Height = 21
+        Left = 54
+        Height = 29
         Top = 0
-        Width = 2
+        Width = 5
         Caption = ':'
         Font.Color = clWhite
         Font.Height = 21
@@ -461,10 +461,10 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object time_start_mm: TEdit
         Tag = -16
-        Left = 58
-        Height = 21
+        Left = 59
+        Height = 29
         Top = 0
-        Width = 56
+        Width = 54
         Alignment = taCenter
         BorderStyle = bsNone
         Font.Color = clWhite
@@ -480,10 +480,10 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object time_start_separator1: TLabel
         Tag = -16
-        Left = 114
-        Height = 21
+        Left = 113
+        Height = 29
         Top = 0
-        Width = 6
+        Width = 9
         Caption = '‒'
         Font.Color = clWhite
         Font.Height = 21
@@ -493,10 +493,10 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object time_end_hh: TEdit
         Tag = -16
-        Left = 120
-        Height = 21
+        Left = 122
+        Height = 29
         Top = 0
-        Width = 56
+        Width = 54
         Alignment = taCenter
         AutoSize = False
         BorderStyle = bsNone
@@ -514,9 +514,9 @@ object frmTimeEntry: TfrmTimeEntry
       object time_end_separator: TLabel
         Tag = -16
         Left = 176
-        Height = 21
+        Height = 29
         Top = 0
-        Width = 2
+        Width = 5
         Caption = ':'
         Font.Color = clWhite
         Font.Height = 21
@@ -526,10 +526,10 @@ object frmTimeEntry: TfrmTimeEntry
       end
       object time_end_mm: TEdit
         Tag = -16
-        Left = 178
-        Height = 21
+        Left = 181
+        Height = 29
         Top = 0
-        Width = 57
+        Width = 54
         Alignment = taCenter
         AutoSize = False
         BorderStyle = bsNone
