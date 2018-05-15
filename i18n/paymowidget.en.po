@@ -252,17 +252,8 @@ msgstr ""
 msgid "‒"
 msgstr ""
 
-#: tfrmuserlist.btnrefresh.caption
-msgctxt "tfrmuserlist.btnrefresh.caption"
-msgid "Refresh"
-msgstr ""
-
 #: tfrmuserlist.caption
 msgid "Users"
-msgstr ""
-
-#: tfrmuserlist.chkautoupdate.caption
-msgid "AutoUpdate"
 msgstr ""
 
 #: tfrmuserlist.listview1.columns[0].caption
@@ -276,6 +267,11 @@ msgstr ""
 
 #: tfrmuserlist.toolbar1.caption
 msgid "ToolBar1"
+msgstr ""
+
+#: tfrmuserlist.toolbutton1.caption
+msgctxt "tfrmuserlist.toolbutton1.caption"
+msgid "Refresh"
 msgstr ""
 
 #: uresourcestring.rsadditional
