@@ -300,14 +300,15 @@ begin
           sl.Add(tempstr);
       end;
     end;
-    // show only last 14 days
-    while (sl.Count > 14) do
-    begin
-      sl.Delete(sl.Count-1);
-    end;
   end;
 
   sl.Sort;
+
+  // show only last 14 days
+  while (sl.Count > 14) do
+  begin
+    sl.Delete(0);
+  end;
 
   for k := 0 to sl.Count - 1 do
   begin
