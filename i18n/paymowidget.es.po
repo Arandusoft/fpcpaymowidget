@@ -11,26 +11,6 @@ msgstr ""
 "Language: es\n"
 "X-Generator: Poedit 2.0.6\n"
 
-#: tfrmidletime.btndiscardidletime.caption
-msgid "Discard Idle Time"
-msgstr "Descartar Tiempo Inactivo"
-
-#: tfrmidletime.btnkeepidletime.caption
-msgid "Keep Idle Time"
-msgstr "Mantener Tiempo Inactivo"
-
-#: tfrmidletime.caption
-msgid "Idle Time Alert"
-msgstr "Alerta de Tiempo Inactivo"
-
-#: tfrmidletime.lbldescription1.caption
-msgid "You've been idle:"
-msgstr "Has estado inactivo:"
-
-#: tfrmidletime.lbldescription2.caption
-msgid "00:00"
-msgstr ""
-
 #: tfrmmain.btnabout.caption
 msgctxt "tfrmmain.btnabout.caption"
 msgid "About"
@@ -267,12 +247,16 @@ msgid "Users"
 msgstr "Usuarios"
 
 #: tfrmuserlist.listview1.columns[0].caption
-msgid "Name"
+#, fuzzy
+#| msgid "Name"
+msgid "Usuario"
 msgstr "Nombre"
 
 #: tfrmuserlist.listview1.columns[1].caption
+#, fuzzy
+#| msgid "Task"
 msgctxt "tfrmuserlist.listview1.columns[1].caption"
-msgid "Task"
+msgid "Tarea"
 msgstr "Tarea"
 
 #: tfrmuserlist.toolbar1.caption
@@ -409,3 +393,4 @@ msgstr "trabajando en"
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
+

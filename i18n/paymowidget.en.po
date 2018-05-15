@@ -1,26 +1,6 @@
 msgid ""
 msgstr "Content-Type: text/plain; charset=UTF-8"
 
-#: tfrmidletime.btndiscardidletime.caption
-msgid "Discard Idle Time"
-msgstr ""
-
-#: tfrmidletime.btnkeepidletime.caption
-msgid "Keep Idle Time"
-msgstr ""
-
-#: tfrmidletime.caption
-msgid "Idle Time Alert"
-msgstr ""
-
-#: tfrmidletime.lbldescription1.caption
-msgid "You've been idle:"
-msgstr ""
-
-#: tfrmidletime.lbldescription2.caption
-msgid "00:00"
-msgstr ""
-
 #: tfrmmain.btnabout.caption
 msgctxt "tfrmmain.btnabout.caption"
 msgid "About"
@@ -257,12 +237,12 @@ msgid "Users"
 msgstr ""
 
 #: tfrmuserlist.listview1.columns[0].caption
-msgid "Name"
+msgid "Usuario"
 msgstr ""
 
 #: tfrmuserlist.listview1.columns[1].caption
 msgctxt "tfrmuserlist.listview1.columns[1].caption"
-msgid "Task"
+msgid "Tarea"
 msgstr ""
 
 #: tfrmuserlist.toolbar1.caption

@@ -55,7 +55,11 @@ end;
 
 procedure TfrmIdleTime.UpdateDisplay;
 begin
-  lblDescription2.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(now, first_idle));
+  try
+    lblDescription2.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(now, first_idle));
+  except
+    //lblDescription2.Caption := 'ERROR!';
+  end;
 end;
 
 procedure TfrmIdleTime.btnDiscardIdleTimeClick(Sender: TObject);
