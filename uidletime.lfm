@@ -76,7 +76,7 @@ object frmIdleTime: TfrmIdleTime
     Left = 48
     Height = 19
     Top = 32
-    Width = 99
+    Width = 102
     Caption = 'You''ve been idle:'
     Font.Color = clBlack
     Font.Height = 19

@@ -55,6 +55,7 @@ end;
 
 procedure TfrmIdleTime.UpdateDisplay;
 begin
+  if Assigned(frmIdleTime) then
   try
     lblDescription2.Caption := TTaskList.SecondsToHHMMSS(SecondsBetween(now, first_idle));
   except

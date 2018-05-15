@@ -1,7 +1,7 @@
 object frmUserList: TfrmUserList
-  Left = 793
+  Left = 1365
   Height = 240
-  Top = 219
+  Top = 261
   Width = 320
   Caption = 'Users'
   ClientHeight = 240
