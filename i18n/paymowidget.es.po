@@ -13,19 +13,19 @@ msgstr ""
 
 #: tfrmidletime.btndiscardidletime.caption
 msgid "Discard Idle Time"
-msgstr "Descartar Tiempo Inactivo"
+msgstr ""
 
 #: tfrmidletime.btnkeepidletime.caption
 msgid "Keep Idle Time"
-msgstr "Mantener Tiempo Inactivo"
+msgstr ""
 
 #: tfrmidletime.caption
 msgid "Idle Time Alert"
-msgstr "Alerta de Tiempo Inactivo"
+msgstr ""
 
 #: tfrmidletime.lbldescription1.caption
 msgid "You've been idle:"
-msgstr "Has estado inactivo:"
+msgstr ""
 
 #: tfrmidletime.lbldescription2.caption
 msgid "00:00"
@@ -267,10 +267,14 @@ msgid "Users"
 msgstr "Usuarios"
 
 #: tfrmuserlist.listview1.columns[0].caption
+#, fuzzy
+#| msgid "Name"
 msgid "Name"
 msgstr "Nombre"
 
 #: tfrmuserlist.listview1.columns[1].caption
+#, fuzzy
+#| msgid "Task"
 msgctxt "tfrmuserlist.listview1.columns[1].caption"
 msgid "Task"
 msgstr "Tarea"
@@ -409,3 +413,4 @@ msgstr "trabajando en"
 #: uresourcestring.rsyesterday
 msgid "YESTERDAY"
 msgstr "AYER"
+

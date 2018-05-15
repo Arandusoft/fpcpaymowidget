@@ -22,7 +22,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
-      <RevisionNr Value="13"/>
+      <RevisionNr Value="14"/>
       <StringTable CompanyName="Arandusoft"/>
     </VersionInfo>
     <BuildModes Count="10">
@@ -462,7 +462,7 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="4">
+    <Exceptions Count="6">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -475,6 +475,12 @@
       <Item4>
         <Name Value="EFCreateError"/>
       </Item4>
+      <Item5>
+        <Name Value="ERangeError"/>
+      </Item5>
+      <Item6>
+        <Name Value="RunError(201)"/>
+      </Item6>
     </Exceptions>
   </Debugging>
 </CONFIG>

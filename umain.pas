@@ -229,7 +229,7 @@ begin
   begin
     try
       timerRefresh.Enabled := True;
-      timerRefreshTimer(self);
+      //timerRefreshTimer(self);
     except
     end;
   end;
@@ -539,6 +539,7 @@ begin
   {$ENDIF}
   timerEntry.Enabled := True;
   timerRefresh.Enabled := True;
+  timerRefreshTimer(self);
 end;
 
 procedure TfrmMain.tmrIdleTimer(Sender: TObject);
@@ -553,10 +554,17 @@ begin
 end;
 var
   task_id: int64;
+  iSecondsIdle: integer;
 begin
   // always update display
   frmIdleTime.updateDisplay;
-  if (IdleTime>=60*IDLETIMECHECK) and (Paymo.RunningTimerData <> nil) then
+  try
+     iSecondsIdle:=IdleTime;
+  except
+     iSecondsIdle:=0;
+     DebugLog('FPC Paymo Widget', 'Idle detection', 'Error');
+  end;
+  if (iSecondsIdle>=60*IDLETIMECHECK) and (Paymo.RunningTimerData <> nil) then
   begin
     if (not frmIdleTime.IsVisible) then
     case frmIdleTime.ShowModal of
@@ -718,7 +726,8 @@ begin
   pnlTop.Enabled := True;
   edSearch.Enabled := True;
   pnlTime.Enabled := True;
-  TabControl1.Visible := True;
+  if TabControl1.Tabs.Count > 0 then
+     TabControl1.Visible := True;
   if Assigned(Tasks) then
     Tasks.Enabled := True;
 end;
