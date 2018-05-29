@@ -22,7 +22,7 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
-      <RevisionNr Value="15"/>
+      <RevisionNr Value="16"/>
       <StringTable CompanyName="Arandusoft"/>
     </VersionInfo>
     <BuildModes Count="10">
