@@ -1022,7 +1022,7 @@ begin
             Paymo.GetTasks();
             DownloadTasksFinish(nil, 0, 0);
           end;
-          ListTasks;
+          RefreshTabs;
         end;
         prTRYAGAIN, prERROR:
         begin
