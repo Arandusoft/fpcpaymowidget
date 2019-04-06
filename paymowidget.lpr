@@ -4,8 +4,14 @@ program paymowidget;
 
 uses {$IFDEF UNIX} {$IFDEF UseCThreads}
   cthreads, {$ENDIF} {$ENDIF}
+  {$IFNDEF DEBUG}
+  {$IFNDEF DARWIN}
+  cmem,
+  {$ENDIF}
+  {$ENDIF}
   Interfaces, // this includes the LCL widgetset
   Forms,
+  opensslsockets,
   umain,
   upaymo,
   ulogin,
